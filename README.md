@@ -11,15 +11,15 @@ Medical Registration Application, wrote in javaFX
      </ul>
    </li>
    <li>Patient have access to Patient module</li>
-   <li>Medic have access to Medical module</li>
+   <li>Doctor have access to Doctor module</li>
    <li>Administrator have access to All modules</li>
    <li>Possibility to generate raports</li>
  </ol>    
 <hr/>       
 <h2 id="1">User administration module:</h2>
 <ul>
-    <li>Managing accounts (patient, medic, administrator): Adding, Removing, Editing</li>
-    <li>Adding new medical specializations</li>
+    <li>Managing accounts (patient, doctor, administrator): Adding, Removing, Editing</li>
+    <li>Adding new doctor specializations</li>
 </ul>       
 <h2 id="2">Report module:</h2>
 <h4>This module is responsible for creating a pdf files.</h4>
@@ -27,11 +27,11 @@ Medical Registration Application, wrote in javaFX
     <li>Generating prescriptions -> P</li>
     <li>Generating referral -> P</li>
     <li>Generating patient documentation -> P</li>
-    <li>Generating list of patients -> M</li>
-    <li>Generating schedule -> M</li>
+    <li>Generating list of patients -> D</li>
+    <li>Generating schedule -> D</li>
     <li>Generating logs report -> A</li>
 </ul>
-<h6>P-patient, M-medic, A-administrator</h6>
+<h6>P-patient, D-doctor, A-administrator</h6>
 <h2 id="3">Configuration module:</h2>
 <h4>This module simplifying database configuration.</h4>
 <ul>
