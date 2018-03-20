@@ -43,6 +43,10 @@ Medical Registration Application, wrote in javaFX
 <h2>UML</h2>
 <h3>Use Case Diagram:</h3>
 <img src="uml/useCaseDiagram.JPG">
+<h3>Sequence Diagram:</h3>
+<img src="uml/Patient.png">
+<img src="uml/Medic.png">
+<img src="uml/Admin.png">
 <hr/>
 <h1>Target and scope of system:</h1>
 <p>System will be used to register patient and keeping his medical documentation like history of health state, diseases and health benefits. During creating account patient must choose his first contact doctor. After create account and log in patient have possibility to choose day and hour of visit to the doctor.<br>
