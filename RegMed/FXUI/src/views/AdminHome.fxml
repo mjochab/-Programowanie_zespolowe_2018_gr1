@@ -15,7 +15,7 @@
                <font>
                   <Font size="46.0" />
                </font></Button>
-            <Button layoutX="23.0" layoutY="121.0" mnemonicParsing="false" onAction="#doctorsButtonClicked" text="Doctors administration">
+            <Button layoutX="23.0" layoutY="121.0" mnemonicParsing="false" onAction="#doctorsButtonClicked" text="Doctors module">
                <font>
                   <Font size="46.0" />
                </font>
