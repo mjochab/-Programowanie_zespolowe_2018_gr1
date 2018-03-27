@@ -47,3 +47,6 @@
 */.crashlytics.properties
 */.crashlytics-build.properties
 */.fabric.properties
+
+#Added by us
+RegMed/out/*
