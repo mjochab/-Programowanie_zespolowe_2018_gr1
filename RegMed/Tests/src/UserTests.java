@@ -1,6 +1,7 @@
 import entities.Doctor;
 import entities.Patient;
 import org.junit.jupiter.api.*;
+import repositories.PatientRepository;
 import repositories.RepositoryInterface;
 import repositories.UserRepository;
 
@@ -21,5 +22,15 @@ public class UserTests {
 
         assertTrue(userRepository.get(1) instanceof Patient);
         assertTrue(userRepository.get(2) instanceof Doctor);
+    }
+
+    @Test
+    void add_patient_test() {
+        PatientRepository patientRepository = new PatientRepository();
+        Patient patient = new Patient("Forename", "Name", "password", "123456897", "Brzozow");
+        patientRepository.add(patient);
+
+        assertTrue(patientRepository.getAll().size() == 3);
+        assertTrue(patientRepository.get(2).getName() == "Name");
     }
 }

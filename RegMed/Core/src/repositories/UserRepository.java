@@ -37,13 +37,13 @@ public class UserRepository implements RepositoryInterface<User> {
     }
 
     public void seed() {
-        User u1 = new Patient(1, "patient1", "patient1", "password", "123456789", "Rzeszow");
+        User u1 = new Patient("patient1", "patient1", "password", "123456789", "Rzeszow");
         users.add(u1);
-        User u2 = new Patient(1, "patient2", "patient2", "password", "123456789", "Rzeszow");
+        User u2 = new Patient("patient2", "patient2", "password", "123456789", "Rzeszow");
         users.add(u2);
-        User u3 = new Doctor(3, "doctor1", "doctor1", "password", "987654321", "Warszawa", "Laryngolog");
+        User u3 = new Doctor("doctor1", "doctor1", "password", "987654321", "Warszawa", "Laryngolog");
         users.add(u3);
-        User u4 = new Administrator(4, "Administrator", "John", "superStrong");
+        User u4 = new Administrator("Administrator", "John", "superStrong");
         users.add(u4);
     }
 

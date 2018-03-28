@@ -1,9 +1,11 @@
 package entities;
 
+import java.util.UUID;
+
 public class Administrator extends User {
 
 
-    public Administrator(int id, String forename, String name, String password) {
-        super(id, forename, name, password);
+    public Administrator(String forename, String name, String password) {
+        super(forename, name, password);
     }
 }
