@@ -5,14 +5,13 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="655.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="655.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.DoctorEditController">
    <children>
-      <CheckBox layoutX="146.0" layoutY="120.0" mnemonicParsing="false" />
-      <CheckBox layoutX="146.0" layoutY="150.0" mnemonicParsing="false" />
-      <CheckBox layoutX="146.0" layoutY="181.0" mnemonicParsing="false" />
-      <CheckBox layoutX="146.0" layoutY="213.0" mnemonicParsing="false" />
-      <CheckBox layoutX="146.0" layoutY="244.0" mnemonicParsing="false" />
+      <CheckBox fx:id="mondayBox" layoutX="146.0" layoutY="120.0" mnemonicParsing="false" onAction="#mondayClickHandler" />
+      <CheckBox fx:id="tuesdayBox" layoutX="146.0" layoutY="150.0" mnemonicParsing="false" onAction="#tuesdayClickHandler" />
+      <CheckBox fx:id="wednesdayBox" layoutX="146.0" layoutY="181.0" mnemonicParsing="false" onAction="#wednesdayClickHandler" />
+      <CheckBox fx:id="thursdayBox" layoutX="146.0" layoutY="213.0" mnemonicParsing="false" onAction="#thursdayClickHandler" />
+      <CheckBox fx:id="fridayBox" layoutX="146.0" layoutY="244.0" mnemonicParsing="false" onAction="#fridayClickHandler" />
       <Label layoutX="43.0" layoutY="115.0" text="Monday">
          <font>
             <Font size="18.0" />
@@ -38,16 +37,16 @@
             <Font size="18.0" />
          </font>
       </Label>
-      <TextField layoutX="178.0" layoutY="116.0" prefHeight="25.0" prefWidth="100.0" />
-      <TextField layoutX="294.0" layoutY="116.0" prefHeight="25.0" prefWidth="100.0" />
-      <TextField layoutX="294.0" layoutY="146.0" prefHeight="25.0" prefWidth="100.0" />
-      <TextField layoutX="178.0" layoutY="146.0" prefHeight="25.0" prefWidth="100.0" />
-      <TextField layoutX="294.0" layoutY="177.0" prefHeight="25.0" prefWidth="100.0" />
-      <TextField layoutX="178.0" layoutY="177.0" prefHeight="25.0" prefWidth="100.0" />
-      <TextField layoutX="294.0" layoutY="209.0" prefHeight="25.0" prefWidth="100.0" />
-      <TextField layoutX="178.0" layoutY="209.0" prefHeight="25.0" prefWidth="100.0" />
-      <TextField layoutX="294.0" layoutY="240.0" prefHeight="25.0" prefWidth="100.0" />
-      <TextField layoutX="178.0" layoutY="240.0" prefHeight="25.0" prefWidth="100.0" />
+      <TextField fx:id="mondayFromTextField" layoutX="178.0" layoutY="116.0" prefHeight="25.0" prefWidth="100.0" visible="false" />
+      <TextField fx:id="mondayToTextField" layoutX="294.0" layoutY="116.0" prefHeight="25.0" prefWidth="100.0" visible="false" />
+      <TextField fx:id="tuesdayToTextField" layoutX="294.0" layoutY="146.0" prefHeight="25.0" prefWidth="100.0" visible="false" />
+      <TextField fx:id="tuesdayFromTextField" layoutX="178.0" layoutY="146.0" prefHeight="25.0" prefWidth="100.0" visible="false" />
+      <TextField fx:id="wednesdayToTextField" layoutX="294.0" layoutY="177.0" prefHeight="25.0" prefWidth="100.0" visible="false" />
+      <TextField fx:id="wednesdayFromTextField" layoutX="178.0" layoutY="177.0" prefHeight="25.0" prefWidth="100.0" visible="false" />
+      <TextField fx:id="thursdayToTextField" layoutX="294.0" layoutY="209.0" prefHeight="25.0" prefWidth="100.0" visible="false" />
+      <TextField fx:id="thursdayFromTextField" layoutX="178.0" layoutY="209.0" prefHeight="25.0" prefWidth="100.0" visible="false" />
+      <TextField fx:id="fridayToTextField" layoutX="294.0" layoutY="240.0" prefHeight="25.0" prefWidth="100.0" visible="false" />
+      <TextField fx:id="fridayFromTextField" layoutX="178.0" layoutY="240.0" prefHeight="25.0" prefWidth="100.0" visible="false" />
       <Label layoutX="207.0" layoutY="79.0" text="From:">
          <font>
             <Font size="17.0" />
@@ -58,5 +57,21 @@
             <Font size="17.0" />
          </font>
       </Label>
+      <TextField fx:id="intervalTextField" layoutX="228.0" layoutY="295.0" prefHeight="25.0" prefWidth="100.0" />
+      <Label layoutX="43.0" layoutY="294.0" text="Time for one patient:">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Button fx:id="okButton" layoutX="560.0" layoutY="393.0" mnemonicParsing="false" text="OK">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Button>
+      <Button fx:id="cancelButton" layoutX="50.0" layoutY="393.0" mnemonicParsing="false" text="Cancel">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>
