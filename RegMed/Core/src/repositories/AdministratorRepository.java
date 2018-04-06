@@ -18,6 +18,18 @@ public class AdministratorRepository implements RepositoryInterface<Administrato
     }
 
     @Override
+    public Administrator get(String name, String pesel) {
+        Administrator singleAdministrator = new Administrator();
+        for (int i = 0; i < administrators.size(); i++) {
+            if (administrators.get(i).getName().equals(name) && administrators.get(i).getPesel().equals(pesel)) {
+                singleAdministrator = administrators.get(i);
+            }
+        }
+        return singleAdministrator;
+    }
+
+
+    @Override
     public List<Administrator> getAll() {
         return administrators;
     }
@@ -28,13 +40,21 @@ public class AdministratorRepository implements RepositoryInterface<Administrato
     }
 
     @Override
-    public void remove(int id) {
-        administrators.remove(id);
+    public void remove(Administrator administrator) {
+        administrators.remove(administrator);
+    }
+
+    @Override
+    public void update(Administrator administrator) {
+        Administrator adminToUpdate = administrators.get(administrator.getId());
+
+        adminToUpdate.setForename(administrator.getForename());
+        adminToUpdate.setName(administrator.getName());
     }
 
     private void seed() {
-        Administrator u1 = new Administrator("admin1", "admin2", "password");
+        Administrator u1 = new Administrator(1, "admin1", "admin2", "password", "91234556894");
         administrators.add(u1);
-        Administrator u2 = new Administrator("admin2", "admin2", "password");
+        Administrator u2 = new Administrator(2, "admin2", "admin2", "password", "91475455524");
     }
 }
