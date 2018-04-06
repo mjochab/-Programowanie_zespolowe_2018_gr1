@@ -60,6 +60,19 @@ public class AdministratorRepository implements RepositoryInterface<Administrato
         adminToUpdate.setName(administrator.getName());
     }
 
+    public int getMaxId() {
+        int maxId = administrators.get(administrators.size()-1).getId();
+        return maxId;
+    }
+
+    @Override
+    public int getNewMaxId() {
+
+        int maxId = administrators.get(administrators.size()-1).getId();
+        int newMaxId = maxId + 1;
+        return newMaxId;
+    }
+
     private void seed() {
         Administrator u1 = new Administrator(1, "admin1", "admin2", "password", "91234556894");
         administrators.add(u1);

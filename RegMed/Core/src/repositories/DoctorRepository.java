@@ -65,6 +65,19 @@ public class DoctorRepository implements RepositoryInterface<Doctor> {
         doctorToUpdate.setSpecialization(doctor.getSpecialization());
     }
 
+    public int getMaxId() {
+        int maxId = doctors.get(doctors.size()-1).getId();
+        return maxId;
+    }
+
+    @Override
+    public int getNewMaxId() {
+        int maxId = doctors.get(doctors.size()-1).getId();
+        int newMaxId = maxId + 1;
+        return newMaxId;
+    }
+
+
     private void seed() {
         Doctor d1 = new Doctor(1, "Doctor1Forename", "Doctor1Name", "password", "123456789", "Rzeszow", "Endokrynolog");
         doctors.add(d1);

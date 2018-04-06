@@ -72,4 +72,21 @@ public class PatientRepositoryTests {
         assertTrue(patientInRepo.getPesel() == patientExpected.getPesel());
         assertFalse(patientBefore.getName() == patientInRepo.getName());
     }
+
+    @Test
+    void add_to_cleared_repo_is_possible() {
+        RepositoryInterface patientRepository = new PatientRepository();
+
+        Patient patientToAdd = new Patient(patientRepository.getNewMaxId(), "Martyna", "Porodowicz",
+                "password", "95829484732", "Brzozów");
+
+        patientRepository.remove(patientRepository.get(1));
+        patientRepository.remove(patientRepository.get(2));
+        patientRepository.remove(patientRepository.get(4));
+        patientRepository.remove(patientRepository.get(3));
+        patientRepository.add(patientToAdd);
+
+        assertTrue(patientRepository.getAll().size() == 1);
+
+    }
 }

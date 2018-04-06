@@ -11,7 +11,7 @@ public interface RepositoryInterface<T> {
     List<T> getAll();
     void add(T t);
     void remove(T t);
-
-    //dodać metodę update/save
     void update(T t);
+    int getMaxId();
+    int getNewMaxId();
 }

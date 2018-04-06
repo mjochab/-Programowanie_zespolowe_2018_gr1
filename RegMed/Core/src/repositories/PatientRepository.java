@@ -64,12 +64,26 @@ public class PatientRepository implements RepositoryInterface<Patient>
 
      }
 
-//     public void update(int id, Patient patientChanged) {
-//        Patient patientToUpdate = get(id);
-//
-//        patientToUpdate.
-//
-//     }
+
+     public int getMaxId() {
+//        int maxId = 0;
+//        for (int i = 0; i < patients.size(); i++) {
+//            if (patients.get(i).getId() > maxId)
+//                maxId = patients.get(i).getId();
+//        }
+
+         int maxId = 0;
+         if(patients.size() > 1)
+             maxId = patients.get(patients.size()-1).getId();
+
+         return maxId;
+     }
+
+     public int getNewMaxId() {
+         int maxId = getMaxId();
+         int newMaxId = maxId + 1;
+         return newMaxId;
+     }
 
 
     private void seed() {
@@ -83,20 +97,6 @@ public class PatientRepository implements RepositoryInterface<Patient>
         patients.add(u4);
     }
 
-    public int getMaxId() {
-//        int maxId = 0;
-//        for (int i = 0; i < patients.size(); i++) {
-//            if (patients.get(i).getId() > maxId)
-//                maxId = patients.get(i).getId();
-//        }
-        int maxId = patients.get(patients.size()-1).getId();
-        return maxId;
-    }
 
-    public int getNewMaxId() {
-        int maxId = patients.get(patients.size()-1).getId();
-        int newMaxId = maxId + 1;
-        return newMaxId;
-    }
 
 }
