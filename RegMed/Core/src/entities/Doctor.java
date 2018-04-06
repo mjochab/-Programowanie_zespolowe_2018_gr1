@@ -14,6 +14,12 @@ public class Doctor extends User{
 
     public Doctor() {}
 
+    public Doctor(Doctor doctor) {
+        super(doctor.getId(), doctor.getForename(), doctor.getName(), doctor.getPassword(), doctor.getPesel());
+        this.address = doctor.getAddress();
+        this.specialization = doctor.getSpecialization();
+    }
+
     public String getAddress() {
         return address;
     }

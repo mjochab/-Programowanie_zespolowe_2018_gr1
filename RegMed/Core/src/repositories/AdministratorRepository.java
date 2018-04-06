@@ -61,14 +61,16 @@ public class AdministratorRepository implements RepositoryInterface<Administrato
     }
 
     public int getMaxId() {
-        int maxId = administrators.get(administrators.size()-1).getId();
+        int maxId = 0;
+        if (administrators.size() > 1)
+            maxId = administrators.get(administrators.size()-1).getId();
         return maxId;
     }
 
     @Override
     public int getNewMaxId() {
 
-        int maxId = administrators.get(administrators.size()-1).getId();
+        int maxId = getMaxId();
         int newMaxId = maxId + 1;
         return newMaxId;
     }

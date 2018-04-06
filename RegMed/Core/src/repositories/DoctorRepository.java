@@ -10,7 +10,7 @@ public class DoctorRepository implements RepositoryInterface<Doctor> {
     private List<Doctor> doctors = new ArrayList<Doctor>();
 
     public DoctorRepository() {
-
+        seed();
     }
 
 
@@ -56,7 +56,7 @@ public class DoctorRepository implements RepositoryInterface<Doctor> {
 
     @Override
     public void update(Doctor doctor) {
-        Doctor doctorToUpdate = doctors.get(doctor.getId());
+        Doctor doctorToUpdate = get(doctor.getId());
 
         doctorToUpdate.setName(doctor.getName());
         doctorToUpdate.setForename(doctor.getForename());
@@ -66,22 +66,24 @@ public class DoctorRepository implements RepositoryInterface<Doctor> {
     }
 
     public int getMaxId() {
-        int maxId = doctors.get(doctors.size()-1).getId();
+        int maxId = 0;
+        if (doctors.size() > 1)
+            maxId = doctors.get(doctors.size()-1).getId();
         return maxId;
     }
 
     @Override
     public int getNewMaxId() {
-        int maxId = doctors.get(doctors.size()-1).getId();
+        int maxId = getMaxId();
         int newMaxId = maxId + 1;
         return newMaxId;
     }
 
 
     private void seed() {
-        Doctor d1 = new Doctor(1, "Doctor1Forename", "Doctor1Name", "password", "123456789", "Rzeszow", "Endokrynolog");
+        Doctor d1 = new Doctor(1, "Sebastian", "Niesielski", "password", "96785622368", "Rzeszow", "Endokrynolog");
         doctors.add(d1);
-        Doctor d2 = new Doctor(2, "Doctor2Forename", "Doctor2Name", "password", "987654321", "Wrocław", "Kardiolog");
+        Doctor d2 = new Doctor(2, "Patryk", "Rogalski", "password", "98765432132", "Wrocław", "Kardiolog");
         doctors.add(d2);
     }
 

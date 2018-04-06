@@ -91,6 +91,7 @@ public class AdminPatientController implements ControllerPagination {
 
         tableData = FXCollections.observableArrayList(patientRepository.getAll());
         patientsTable.setItems(tableData);
+        filteredList = new FilteredList(tableData, e->true);
         patientsTable.refresh();
     }
 
