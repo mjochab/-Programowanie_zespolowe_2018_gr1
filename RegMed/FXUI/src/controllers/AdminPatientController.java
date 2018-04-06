@@ -103,7 +103,7 @@ public class AdminPatientController implements ControllerPagination {
             if (newValue.isEmpty() || newValue == null) {
                 return true;
             }
-            else if (patient.getName().contains(newValue)) {
+            else if (patient.getName().toLowerCase().contains(newValue.toLowerCase())) {
                 return true;
             }
             else if (patient.getPesel().contains(newValue)) {
@@ -177,6 +177,14 @@ public class AdminPatientController implements ControllerPagination {
 
         loadDataToTable();
         clearAddPatientFields();
+    }
+
+    @FXML
+    private void clearPatientClickedAdd(ActionEvent event) {
+        forenameFieldAdd.setText(null);
+        nameFieldAdd.setText(null);
+        peselFieldAdd.setText(null);
+        addressFieldAdd.setText(null);
     }
 
     @FXML
