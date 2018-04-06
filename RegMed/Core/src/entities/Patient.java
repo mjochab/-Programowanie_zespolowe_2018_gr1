@@ -18,6 +18,11 @@ public class Patient extends User {
 
     }
 
+    public Patient(Patient patient) {
+        super(patient.getId(), patient.getForename(), patient.getName(), patient.getPassword(), patient.getPesel());
+        this.address = patient.getAddress();
+    }
+
     public String getAddress() {
         return address;
     }

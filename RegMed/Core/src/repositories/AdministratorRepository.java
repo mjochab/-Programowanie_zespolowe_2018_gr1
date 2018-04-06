@@ -14,7 +14,15 @@ public class AdministratorRepository implements RepositoryInterface<Administrato
 
     @Override
     public Administrator get(int id) {
-        return administrators.get(id);
+        Administrator administratorToReturn = new Administrator();
+
+        for (int i = 0; i < administrators.size(); i++) {
+            if (administrators.get(i).getId() == id) {
+                administratorToReturn = administrators.get(i);
+            }
+        }
+        return administratorToReturn;
+        //return administrators.get(id);
     }
 
     @Override

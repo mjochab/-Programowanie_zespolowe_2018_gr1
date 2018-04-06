@@ -15,7 +15,15 @@ public class PatientRepository implements RepositoryInterface<Patient>
 
     @Override
     public Patient get(int id) {
-        return patients.get(id);
+        Patient patientToReturn = new Patient();
+
+        for (int i = 0; i < patients.size(); i++) {
+            if (patients.get(i).getId() == id) {
+                patientToReturn = patients.get(i);
+            }
+        }
+        return patientToReturn;
+        //return patients.get(id);
     }
 
      @Override
@@ -53,6 +61,7 @@ public class PatientRepository implements RepositoryInterface<Patient>
          patientToUpdate.setForename(patient.getForename());
          patientToUpdate.setPesel(patient.getPesel());
          patientToUpdate.setAddress(patient.getAddress());
+
      }
 
 //     public void update(int id, Patient patientChanged) {

@@ -16,7 +16,15 @@ public class DoctorRepository implements RepositoryInterface<Doctor> {
 
     @Override
     public Doctor get(int id) {
-        return doctors.get(id);
+        Doctor doctorToReturn = new Doctor();
+
+        for (int i = 0; i < doctors.size(); i++) {
+            if (doctors.get(i).getId() == id) {
+                doctorToReturn = doctors.get(i);
+            }
+        }
+        return doctorToReturn;
+        //return doctors.get(id);
     }
 
     @Override
