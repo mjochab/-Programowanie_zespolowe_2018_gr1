@@ -1,8 +1,9 @@
 import entities.Patient;
 import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 import repositories.PatientRepository;
 
-import static org.junit.jupiter.api.Assertions.*;
+
 
 public class PatientEntityTests {
 

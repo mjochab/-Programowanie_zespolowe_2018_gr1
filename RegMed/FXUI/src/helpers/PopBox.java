@@ -3,6 +3,8 @@ package helpers;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 
+//http://code.makery.ch/blog/javafx-dialogs-official/
+
 public class PopBox {
 
     public static boolean choiceBox(String title, String headerText, String contentText) {
@@ -14,5 +16,21 @@ public class PopBox {
         if (alert.getResult() == ButtonType.YES)
             return true;
         else return false;
+    }
+
+    public static void informationBox(String title, String contentText) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(contentText);
+        alert.showAndWait();
+    }
+
+    public static void warningBox(String title, String contentText) {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(contentText);
+        alert.showAndWait();
     }
 }

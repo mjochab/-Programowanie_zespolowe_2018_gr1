@@ -54,10 +54,11 @@ public class AdministratorRepository implements RepositoryInterface<Administrato
 
     @Override
     public void update(Administrator administrator) {
-        Administrator adminToUpdate = administrators.get(administrator.getId());
+        Administrator adminToUpdate = get(administrator.getId());
 
         adminToUpdate.setForename(administrator.getForename());
         adminToUpdate.setName(administrator.getName());
+        adminToUpdate.setPesel(administrator.getPesel());
     }
 
     public int getMaxId() {
@@ -69,15 +70,17 @@ public class AdministratorRepository implements RepositoryInterface<Administrato
 
     @Override
     public int getNewMaxId() {
-
         int maxId = getMaxId();
         int newMaxId = maxId + 1;
         return newMaxId;
     }
 
     private void seed() {
-        Administrator u1 = new Administrator(1, "admin1", "admin2", "password", "91234556894");
+        Administrator u1 = new Administrator(1, "Zbigniew", "Boniek", "password", "91234556894");
         administrators.add(u1);
-        Administrator u2 = new Administrator(2, "admin2", "admin2", "password", "91475455524");
+        Administrator u2 = new Administrator(2, "Eugeniusz", "Wróblewski", "password", "91475455524");
+        administrators.add(u2);
+        Administrator u3 = new Administrator(getNewMaxId(), "Włodzimierz", "Kozłowski", "password", "95281733921");
+        administrators.add(u3);
     }
 }

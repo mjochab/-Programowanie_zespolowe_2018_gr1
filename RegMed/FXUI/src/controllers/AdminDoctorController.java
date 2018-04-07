@@ -133,39 +133,47 @@ public class AdminDoctorController implements ControllerPagination {
     private void removeDoctorClicked(ActionEvent event) {
         Doctor doctorToDelete = getSelectedDoctorInTable();
 
-        if ( PopBox.choiceBox("Remove confirmation", String.format("%s %s will be removed.",
-                doctorToDelete.getForename(), doctorToDelete.getName()), "Are you sure?") ) {
+        if(getSelectedDoctorInTable() != null) {
+            if ( PopBox.choiceBox("Remove confirmation", String.format("%s %s will be removed.",
+                    doctorToDelete.getForename(), doctorToDelete.getName()), "Are you sure?") ) {
 
-            doctorRepository.remove(doctorToDelete);
+                doctorRepository.remove(doctorToDelete);
 
-            loadDataToTable();
-            System.out.println("Ilosc pacjentow w repo: " + doctorRepository.getAll().size());
+                loadDataToTable();
+            }
+        } else {
+            PopBox.warningBox("Information", "Please select doctor to remove in table");
         }
+
+
     }
 
     @FXML
     private void editDoctorClicked(ActionEvent event) {
-        editTabDisable(false);
-        tabPane.getSelectionModel().select(editDoctorTab);
+        if(getSelectedDoctorInTable() != null) {
 
-        Doctor doctorToEdit = getSelectedDoctorInTable();
-        System.out.println("Doctor to edit id: "  + getSelectedDoctorInTable().getId());
+            editTabDisable(false);
+            tabPane.getSelectionModel().select(editDoctorTab);
 
-        fillEditDoctorFields(doctorToEdit);
+            Doctor doctorToEdit = getSelectedDoctorInTable();
 
-        saveEditButton.setOnAction(e -> {
-            doctorRepository.update(createDoctorForEditFromTextfields(doctorToEdit.getId()));
+            fillEditDoctorFields(doctorToEdit);
 
-            loadDataToTable();
-            editTabDisable(true);
-            tabPane.getSelectionModel().select(createDoctorTab);
-        });
+            saveEditButton.setOnAction(e -> {
+                doctorRepository.update(createDoctorForEditFromTextfields(doctorToEdit));
 
-        declineEditButton.setOnAction(e -> {
-            editTabDisable(true);
-            tabPane.getSelectionModel().select(createDoctorTab);
-        });
+                loadDataToTable();
+                editTabDisable(true);
+                tabPane.getSelectionModel().select(createDoctorTab);
+            });
 
+            declineEditButton.setOnAction(e -> {
+                editTabDisable(true);
+                tabPane.getSelectionModel().select(createDoctorTab);
+            });
+        } else {
+            PopBox.warningBox("Information", "Please select doctor to edit in table");
+        }
     }
 
     @FXML
@@ -187,11 +195,7 @@ public class AdminDoctorController implements ControllerPagination {
 
     @FXML
     private void clearDoctorClickedAdd(ActionEvent event) {
-        forenameFieldAdd.setText(null);
-        nameFieldAdd.setText(null);
-        peselFieldAdd.setText(null);
-        addressFieldAdd.setText(null);
-        specializationFieldAdd.setText(null);
+        clearAddDoctorFields();
     }
 
     @FXML
@@ -199,13 +203,13 @@ public class AdminDoctorController implements ControllerPagination {
         helpers.SwitchScene("AdminHome", event);
     }
 
-    private Doctor createDoctorForEditFromTextfields(int id) {
+    private Doctor createDoctorForEditFromTextfields(Doctor doctor) {
         //(int id, String forename, String name, String password, String pesel, String address)
         Doctor doctorToReturn = new Doctor(
-                id,
+                doctor.getId(),
                 forenameField.getText(),
                 nameField.getText(),
-                nameField.getText(),
+                doctor.getPassword(),
                 peselField.getText(),
                 addressField.getText(),
                 specializationField.getText()

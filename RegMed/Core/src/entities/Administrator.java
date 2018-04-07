@@ -9,4 +9,9 @@ public class Administrator extends User {
         super(id, forename, name, password, pesel);
     }
     public Administrator() {};
+
+    public Administrator(Administrator administrator) {
+        super(administrator.getId(), administrator.getForename(), administrator.getName(),
+                administrator.getPassword(), administrator.getPesel());
+    }
 }

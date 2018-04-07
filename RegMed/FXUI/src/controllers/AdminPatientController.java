@@ -96,6 +96,12 @@ public class AdminPatientController implements ControllerPagination {
     }
 
 
+
+    //--ACTION_METHODS--
+
+
+
+
     @FXML
     private void searchPatientsByPeselAndName(KeyEvent event) {
         searchField.textProperty().addListener(((observable, oldValue, newValue) -> {
@@ -113,54 +119,54 @@ public class AdminPatientController implements ControllerPagination {
         });
         }));
 
+        //Seting sorted items in patients table
         SortedList sort = new SortedList(filteredList);
         sort.comparatorProperty().bind(patientsTable.comparatorProperty());
         patientsTable.setItems(sort);
     }
 
 
-
-    //--ACTION_METHODS--
-
-
-
     @FXML
     private void removePatientClicked(ActionEvent event) {
         Patient patientToDelete = getSelectedPatientInTable();
 
-        if ( PopBox.choiceBox("Remove confirmation", String.format("%s %s will be removed.",
-                patientToDelete.getForename(), patientToDelete.getName()), "Are you sure?") ) {
+        if (getSelectedPatientInTable() != null) {
+            if ( PopBox.choiceBox("Remove confirmation", String.format("%s %s will be removed.",
+                    patientToDelete.getForename(), patientToDelete.getName()), "Are you sure?") ) {
 
-            patientRepository.remove(patientToDelete);
+                patientRepository.remove(patientToDelete);
 
-            loadDataToTable();
-            System.out.println("Ilosc pacjentow w repo: " + patientRepository.getAll().size());
+                loadDataToTable();
+            }
+        } else {
+            PopBox.warningBox("Information", "Please select patient to remove in table");
         }
     }
 
     @FXML
     private void editPatientClicked(ActionEvent event) {
-        editTabDisable(false);
-        tabPane.getSelectionModel().select(editPatientTab);
+        if (getSelectedPatientInTable() != null) {
 
-        Patient patientToEdit = getSelectedPatientInTable();
-        System.out.println("Patient to edit id: "  + getSelectedPatientInTable().getId());
+            editTabDisable(false);
+            tabPane.getSelectionModel().select(editPatientTab);
 
-        fillEditPatientFields(patientToEdit);
+            Patient patientToEdit = getSelectedPatientInTable();
+            fillEditPatientFields(patientToEdit);
 
-        saveEditButton.setOnAction(e -> {
-            patientRepository.update(createPatientForEditFromTextfields(patientToEdit.getId()));
+            saveEditButton.setOnAction(e -> {
+                patientRepository.update(createPatientForEditFromTextfields(patientToEdit));
+                loadDataToTable();
+                editTabDisable(true);
+                tabPane.getSelectionModel().select(createPatientTab);
+            });
 
-            loadDataToTable();
-            editTabDisable(true);
-            tabPane.getSelectionModel().select(createPatientTab);
-        });
-
-        declineEditButton.setOnAction(e -> {
-            editTabDisable(true);
-            tabPane.getSelectionModel().select(createPatientTab);
-        });
-
+            declineEditButton.setOnAction(e -> {
+                editTabDisable(true);
+                tabPane.getSelectionModel().select(createPatientTab);
+            });
+        } else {
+            PopBox.warningBox("Information", "Please select patient to edit in table");
+        }
     }
 
     @FXML
@@ -181,10 +187,7 @@ public class AdminPatientController implements ControllerPagination {
 
     @FXML
     private void clearPatientClickedAdd(ActionEvent event) {
-        forenameFieldAdd.setText(null);
-        nameFieldAdd.setText(null);
-        peselFieldAdd.setText(null);
-        addressFieldAdd.setText(null);
+        clearAddPatientFields();
     }
 
     @FXML
@@ -192,13 +195,13 @@ public class AdminPatientController implements ControllerPagination {
         helpers.SwitchScene("AdminHome", event);
     }
 
-    private Patient createPatientForEditFromTextfields(int id) {
+    private Patient createPatientForEditFromTextfields(Patient patient) {
         //(int id, String forename, String name, String password, String pesel, String address)
         Patient patientToReturn = new Patient(
-                id,
+                patient.getId(),
                 forenameField.getText(),
                 nameField.getText(),
-                nameField.getText(),
+                patient.getPassword(),
                 peselField.getText(),
                 addressField.getText()
         );
