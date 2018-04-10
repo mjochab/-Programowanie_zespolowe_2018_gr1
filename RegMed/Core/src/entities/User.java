@@ -1,17 +1,23 @@
 package entities;
 
+import java.util.UUID;
+
 public abstract class User {
     private int id;
     private String forename;
     private String name;
     private String password;
+    private String pesel;
 
-    public User(int id, String forename, String name, String password) {
-        this.id = id;
+    public User(int id, String forename, String name, String password, String pesel) {
+        this.id = id;   //System.identityHashCode(this);
         this.forename = forename;
         this.name = name;
         this.password = password;
+        this.pesel = pesel;
     }
+
+    public User() {};
 
     public int getId() {
         return id;
@@ -43,5 +49,13 @@ public abstract class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getPesel() {
+        return pesel;
+    }
+
+    public void setPesel(String pesel) {
+        this.pesel = pesel;
     }
 }

@@ -12,11 +12,11 @@ import javafx.scene.control.Labeled;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
 
 public class ControllerHelpers {
 
@@ -52,6 +52,5 @@ public class ControllerHelpers {
         clock.setCycleCount(Animation.INDEFINITE);
         clock.play();
     }
-
 
 }
