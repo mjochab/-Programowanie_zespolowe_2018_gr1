@@ -1,12 +1,19 @@
 package controllers;
 
+import helpers.ControllerPagination;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.BorderPane;
+import models.DoctorEditModel;
+import models.ValidatorModel;
 
-public class DoctorEditController {
+import java.io.IOException;
+import java.util.HashMap;
+
+public class DoctorEditController implements ControllerPagination{
 
 
 
@@ -38,54 +45,52 @@ public class DoctorEditController {
             okButton,
             cancelButton;
 
+    @FXML
+    BorderPane
+            borderPane;
+
     public void mondayClickHandler(ActionEvent event) {
-        if (!mondayFromTextField.isVisible()) {
-            mondayFromTextField.setVisible(true);
-            mondayToTextField.setVisible(true);
-        } else {
-            mondayFromTextField.setVisible(false);
-            mondayToTextField.setVisible(false);
-        }
+        mondayFromTextField.setDisable(!mondayBox.isSelected());
+        mondayToTextField.setDisable(!mondayBox.isSelected());
     }
 
-//    public void tuesdayClickHandler(ActionEvent event) {
-//        if (!tuesdayFromTextField.isVisible()) {
-//            tuesdayFromTextField.setVisible(true);
-//            tuesdayToTextField.setVisible(true);
-//        } else {
-//            tuesdayFromTextField.setVisible(false);
-//            tuesdayToTextField.setVisible(false);
-//        }
-//    }
-//
-//    public void wednesdayClickHandler(ActionEvent event) {
-//        if (!wednesdayFromTextField.isVisible()) {
-//            wednesdayFromTextField.setVisible(true);
-//            wednesdayToTextField.setVisible(true);
-//        } else {
-//            wednesdayFromTextField.setVisible(false);
-//            wednesdayToTextField.setVisible(false);
-//        }
-//    }
-//
-//    public void thursdayClickHandler(ActionEvent event) {
-//        if (!thursdayFromTextField.isVisible()) {
-//            thursdayFromTextField.setVisible(true);
-//            thursdayToTextField.setVisible(true);
-//        } else {
-//            thursdayFromTextField.setVisible(false);
-//            thursdayToTextField.setVisible(false);
-//        }
-//    }
-//
-//    public void fridayClickHandler(ActionEvent event) {
-//        if (!fridayFromTextField.isVisible()) {
-//            fridayFromTextField.setVisible(true);
-//            fridayToTextField.setVisible(true);
-//        } else {
-//            fridayFromTextField.setVisible(false);
-//            fridayToTextField.setVisible(false);
-//        }
-//    }
+    public void tuesdayClickHandler(ActionEvent event) {
+        tuesdayFromTextField.setDisable(!tuesdayBox.isSelected());
+        tuesdayToTextField.setDisable(!tuesdayBox.isSelected());
+    }
+
+    public void wednesdayClickHandler(ActionEvent event) {
+        wednesdayFromTextField.setDisable(!wednesdayBox.isSelected());
+        wednesdayToTextField.setDisable(!wednesdayBox.isSelected());
+    }
+
+    public void thursdayClickHandler(ActionEvent event) {
+        thursdayFromTextField.setDisable(!thursdayBox.isSelected());
+        thursdayToTextField.setDisable(!thursdayBox.isSelected());
+    }
+
+    public void fridayClickHandler(ActionEvent event) {
+        fridayFromTextField.setDisable(!fridayBox.isSelected());
+        fridayToTextField.setDisable(!fridayBox.isSelected());
+    }
+
+    public void okButtonOnClick(ActionEvent event){
+        HashMap<String, DoctorEditModel> hours = new HashMap<String, DoctorEditModel>();
+        hours.put("monday", new DoctorEditModel(mondayBox.isSelected(), mondayFromTextField.getText(), mondayToTextField.getText()));
+        hours.put("tuesday", new DoctorEditModel(tuesdayBox.isSelected(), tuesdayFromTextField.getText(), tuesdayToTextField.getText()));
+        hours.put("wednesday", new DoctorEditModel(wednesdayBox.isSelected(), wednesdayFromTextField.getText(), wednesdayToTextField.getText()));
+        hours.put("thursday", new DoctorEditModel(thursdayBox.isSelected(), thursdayFromTextField.getText(), thursdayToTextField.getText()));
+        hours.put("friday", new DoctorEditModel(fridayBox.isSelected(), fridayFromTextField.getText(), fridayToTextField.getText()));
+        System.out.println(ValidatorModel.isTime(hours.get("monday").getFrom()));
+        System.out.println(ValidatorModel.intervalValidation(intervalTextField.getText()));
+
+        hours.forEach((k,v)-> System.out.println("day: " +k+" data: "+v.getFrom()+" "+v.getTo()+" "+v.getActive()));
+
+    }
+
+    public void cancelButtonOnClick(ActionEvent event) throws IOException {
+        borderPane.setCenter(helpers.SwitchAnchor("DoctorReport", event));
+        
+    }
 
 }

@@ -50,17 +50,7 @@
                 </Label>
                 <HBox prefHeight="192.0" prefWidth="433.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                     <children>
-                        <Label fx:id="hourLabel" text="13">
-                            <font>
-                                <Font size="28.0" />
-                            </font>
-                        </Label>
-                        <Label text=":">
-                            <font>
-                                <Font size="28.0" />
-                            </font>
-                        </Label>
-                        <Label fx:id="minuteLabel" text="41">
+                        <Label fx:id="timeLabel" text="13">
                             <font>
                                 <Font size="28.0" />
                             </font>
@@ -91,7 +81,7 @@
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </HBox.margin>
             </Button>
-            <Button fx:id="logoutButton" mnemonicParsing="false" text="Log Out">
+            <Button fx:id="logoutButton" mnemonicParsing="false" onAction="#logOut" text="Log Out">
                <HBox.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </HBox.margin>

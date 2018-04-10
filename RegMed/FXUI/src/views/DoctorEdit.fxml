@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.text.*?>
-<?import javafx.scene.control.*?>
 <?import java.lang.*?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="655.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.DoctorEditController">
    <children>
@@ -37,16 +43,16 @@
             <Font size="18.0" />
          </font>
       </Label>
-      <TextField fx:id="mondayFromTextField" layoutX="178.0" layoutY="116.0" prefHeight="25.0" prefWidth="100.0" visible="false" />
-      <TextField fx:id="mondayToTextField" layoutX="294.0" layoutY="116.0" prefHeight="25.0" prefWidth="100.0" visible="false" />
-      <TextField fx:id="tuesdayToTextField" layoutX="294.0" layoutY="146.0" prefHeight="25.0" prefWidth="100.0" visible="false" />
-      <TextField fx:id="tuesdayFromTextField" layoutX="178.0" layoutY="146.0" prefHeight="25.0" prefWidth="100.0" visible="false" />
-      <TextField fx:id="wednesdayToTextField" layoutX="294.0" layoutY="177.0" prefHeight="25.0" prefWidth="100.0" visible="false" />
-      <TextField fx:id="wednesdayFromTextField" layoutX="178.0" layoutY="177.0" prefHeight="25.0" prefWidth="100.0" visible="false" />
-      <TextField fx:id="thursdayToTextField" layoutX="294.0" layoutY="209.0" prefHeight="25.0" prefWidth="100.0" visible="false" />
-      <TextField fx:id="thursdayFromTextField" layoutX="178.0" layoutY="209.0" prefHeight="25.0" prefWidth="100.0" visible="false" />
-      <TextField fx:id="fridayToTextField" layoutX="294.0" layoutY="240.0" prefHeight="25.0" prefWidth="100.0" visible="false" />
-      <TextField fx:id="fridayFromTextField" layoutX="178.0" layoutY="240.0" prefHeight="25.0" prefWidth="100.0" visible="false" />
+      <TextField fx:id="mondayFromTextField" disable="true" layoutX="178.0" layoutY="116.0" prefHeight="25.0" prefWidth="100.0" />
+      <TextField fx:id="mondayToTextField" disable="true" layoutX="294.0" layoutY="116.0" prefHeight="25.0" prefWidth="100.0" />
+      <TextField fx:id="tuesdayToTextField" disable="true" layoutX="294.0" layoutY="146.0" prefHeight="25.0" prefWidth="100.0" />
+      <TextField fx:id="tuesdayFromTextField" disable="true" layoutX="178.0" layoutY="146.0" prefHeight="25.0" prefWidth="100.0" />
+      <TextField fx:id="wednesdayToTextField" disable="true" layoutX="294.0" layoutY="177.0" prefHeight="25.0" prefWidth="100.0" />
+      <TextField fx:id="wednesdayFromTextField" disable="true" layoutX="178.0" layoutY="177.0" prefHeight="25.0" prefWidth="100.0" />
+      <TextField fx:id="thursdayToTextField" disable="true" layoutX="294.0" layoutY="209.0" prefHeight="25.0" prefWidth="100.0" />
+      <TextField fx:id="thursdayFromTextField" disable="true" layoutX="178.0" layoutY="209.0" prefHeight="25.0" prefWidth="100.0" />
+      <TextField fx:id="fridayToTextField" disable="true" layoutX="294.0" layoutY="240.0" prefHeight="25.0" prefWidth="100.0" />
+      <TextField fx:id="fridayFromTextField" disable="true" layoutX="178.0" layoutY="240.0" prefHeight="25.0" prefWidth="100.0" />
       <Label layoutX="207.0" layoutY="79.0" text="From:">
          <font>
             <Font size="17.0" />
@@ -63,12 +69,12 @@
             <Font size="18.0" />
          </font>
       </Label>
-      <Button fx:id="okButton" layoutX="560.0" layoutY="393.0" mnemonicParsing="false" text="OK">
+      <Button fx:id="okButton" layoutX="560.0" layoutY="393.0" mnemonicParsing="false" onAction="#okButtonOnClick" text="OK">
          <font>
             <Font size="18.0" />
          </font>
       </Button>
-      <Button fx:id="cancelButton" layoutX="50.0" layoutY="393.0" mnemonicParsing="false" text="Cancel">
+      <Button fx:id="cancelButton" layoutX="50.0" layoutY="393.0" mnemonicParsing="false" onAction="#cancelButtonOnClick" text="Cancel">
          <font>
             <Font size="18.0" />
          </font>
