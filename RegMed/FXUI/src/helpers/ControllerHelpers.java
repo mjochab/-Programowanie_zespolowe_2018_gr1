@@ -5,6 +5,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.layout.AnchorPane;
+
+
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -19,5 +22,23 @@ public class ControllerHelpers {
         window.setScene(childScene);
         window.show();
     }
+
+
+
+    public AnchorPane SwitchAnchor(String childView, ActionEvent event) throws IOException {
+        Parent child = FXMLLoader.load(getClass().getResource("../views/" + childView + ".fxml"));
+        AnchorPane anchor = new AnchorPane(child);
+
+        return anchor;
+    }
+
+
+
+
+
+
+
+
+
 
 }
