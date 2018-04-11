@@ -167,6 +167,10 @@
                   </AnchorPane>
             </content>
           </Tab>
+            <Tab fx:id="editWorkingHoursTab" text="Edit working hours">
+                <!--HERE I AM-->
+                <fx:include source="DoctorEdit.fxml" />
+            </Tab>
         </tabs>
       </TabPane>
       <Button fx:id="removeButton" layoutX="379.0" layoutY="110.0" mnemonicParsing="false" onAction="#removeDoctorClicked" prefHeight="50.0" prefWidth="90.0" text="Remove">

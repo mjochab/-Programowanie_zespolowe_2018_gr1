@@ -56,6 +56,9 @@ public class AdminDoctorController implements ControllerPagination {
             addressColumn,
             specializationColumn;
 
+    @FXML
+    private Tab editWorkingHoursTab;
+
     private RepositoryInterface doctorRepository;
 
     private FilteredList filteredList;

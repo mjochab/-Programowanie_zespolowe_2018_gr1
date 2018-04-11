@@ -89,8 +89,9 @@ public class DoctorEditController implements ControllerPagination{
     }
 
     public void cancelButtonOnClick(ActionEvent event) throws IOException {
-        borderPane.setCenter(helpers.SwitchAnchor("DoctorReport", event));
-        
+        //borderPane.setCenter(helpers.SwitchAnchor("DoctorReport", event));
+        helpers.SwitchScene("DoctorMain", event);
+
     }
 
 }

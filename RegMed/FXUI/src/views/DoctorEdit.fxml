@@ -69,7 +69,7 @@
             <Font size="18.0" />
          </font>
       </Label>
-      <Button fx:id="okButton" layoutX="560.0" layoutY="393.0" mnemonicParsing="false" onAction="#okButtonOnClick" text="OK">
+      <Button fx:id="okButton" layoutX="344.0" layoutY="385.0" mnemonicParsing="false" onAction="#okButtonOnClick" text="OK">
          <font>
             <Font size="18.0" />
          </font>

@@ -8,6 +8,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 
 import java.io.IOException;
@@ -38,6 +39,11 @@ public class DoctorMainController implements ControllerPagination {
     BorderPane
             borderPane;
 
+    @FXML
+    AnchorPane anchorPane,
+                anchorEdit,
+                anchorReport;
+
     @FXML public void initialize(){
         helpers.getCurrentDateTime(dateLabel, timeLabel);
     }
@@ -47,14 +53,23 @@ public class DoctorMainController implements ControllerPagination {
     }
 
     @FXML void switchEdit(ActionEvent event) throws IOException{
-        borderPane.setCenter(helpers.SwitchAnchor("DoctorEdit", event));
+        setAllNotVisible();
+        anchorEdit.setVisible(true);
     }
 
     @FXML void switchReport(ActionEvent event) throws IOException{
-        borderPane.setCenter(helpers.SwitchAnchor("DoctorReport", event));
+        setAllNotVisible();
+        anchorReport.setVisible(true);
+        //borderPane.setCenter(helpers.SwitchAnchor("DoctorReport", event));
     }
 
     @FXML void logOut(ActionEvent event) throws IOException{
         helpers.SwitchScene("AdminHome", event);
+    }
+
+    private void setAllNotVisible() {
+        anchorReport.setVisible(false);
+        anchorEdit.setVisible(false);
+
     }
 }
