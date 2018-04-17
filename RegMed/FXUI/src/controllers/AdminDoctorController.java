@@ -2,7 +2,7 @@ package controllers;
 
 import entities.Doctor;
 import helpers.ControllerPagination;
-import helpers.PopBox;
+import helpers.DialogBox;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -137,7 +137,7 @@ public class AdminDoctorController implements ControllerPagination {
         Doctor doctorToDelete = getSelectedDoctorInTable();
 
         if(getSelectedDoctorInTable() != null) {
-            if ( PopBox.choiceBox("Remove confirmation", String.format("%s %s will be removed.",
+            if ( DialogBox.choiceBox("Remove confirmation", String.format("%s %s will be removed.",
                     doctorToDelete.getForename(), doctorToDelete.getName()), "Are you sure?") ) {
 
                 doctorRepository.remove(doctorToDelete);
@@ -145,7 +145,7 @@ public class AdminDoctorController implements ControllerPagination {
                 loadDataToTable();
             }
         } else {
-            PopBox.warningBox("Information", "Please select doctor to remove in table");
+            DialogBox.warningBox("Information", "Please select doctor to remove in table");
         }
 
 
@@ -175,7 +175,7 @@ public class AdminDoctorController implements ControllerPagination {
                 tabPane.getSelectionModel().select(createDoctorTab);
             });
         } else {
-            PopBox.warningBox("Information", "Please select doctor to edit in table");
+            DialogBox.warningBox("Information", "Please select doctor to edit in table");
         }
     }
 
