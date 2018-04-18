@@ -123,8 +123,9 @@ public class HomescreenController implements Initializable, ControllerPagination
                 helpers.SwitchScene("AdminDoctor",event);
                 break;
         }
-        PopBox.informationBox("Błędne dane","Podaj poprawne dane do logowanie");
-
+        if(!sprawdzenie) {
+            PopBox.informationBox("Błędne dane", "Podaj poprawne dane do logowanie");
+        }
 
     /*
     if (getString("login").equals(txtLogin.getText())) {
