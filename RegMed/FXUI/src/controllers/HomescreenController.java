@@ -5,6 +5,7 @@ import entities.Doctor;
 import entities.Patient;
 import entities.User;
 import helpers.ControllerPagination;
+import helpers.PopBox;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 
@@ -80,6 +81,8 @@ public class HomescreenController implements Initializable, ControllerPagination
                 if (u1.getForename().equals(txtLogin.getText()) && u1.getPassword().equals(tfPassword.getText())) {
                     sprawdzenie = true;
                     rola = "patient";
+
+
                     // String rol2 = u1.getClass().getName();
                     break;
                 }
@@ -120,6 +123,7 @@ public class HomescreenController implements Initializable, ControllerPagination
                 helpers.SwitchScene("AdminDoctor",event);
                 break;
         }
+        PopBox.informationBox("Błędne dane","Podaj poprawne dane do logowanie");
 
 
     /*
@@ -236,16 +240,16 @@ public class HomescreenController implements Initializable, ControllerPagination
     @FXML
     void Register(ActionEvent event) throws IOException {
            Stage stage;
-            Parent root = FXMLLoader.load(getClass().getResource("../views/Register.fxml"));
+            helpers.SwitchScene("Register",event);;
 
             stage = new Stage();
 
-    stage.setScene(new Scene(root));
+   // stage.setScene(new Scene(root));
         //helpers.SwitchScene("Register",event);
-            stage.setTitle("Register window");
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.initOwner(bRegister.getScene().getWindow());
-            stage.showAndWait();
+          //  stage.setTitle("Register window");
+            //stage.initModality(Modality.APPLICATION_MODAL);
+            //stage.initOwner(bRegister.getScene().getWindow());
+            //stage.showAndWait();
 
     }
 
