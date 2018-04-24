@@ -1,5 +1,6 @@
 import entities.Administrator;
 
+import java.lang.reflect.Field;
 import java.sql.*;
 import java.util.List;
 
@@ -48,16 +49,23 @@ public class DatabaseLocalConnection {
         if (!checkConnection()) {
             connect();
         }
-
         try {
             PreparedStatement ps = connection.prepareStatement(query);
             ResultSet rs = ps.executeQuery(query);
             Administrator admin = null;
-            if (rs.next()) {
+            while (rs.next()){
+                admin = new Administrator(
+                        rs.getInt("id_administrator"),
+                        rs.getInt("id_global"),
+                        rs.getString("first_name"),
+                        rs.getString("last_name"),
+                        rs.getString("PESEL"),
+                        rs.getString("email"),
+                        rs.getString("phone_number"),
+                        rs.getString("password"));
+                Field[] dupa = admin.getClass().getSuperclass().getDeclaredFields();
 
-                admin = rs.getObject(1, Administrator.class);
             }
-            closeConnection();
             return admin;
         } catch (SQLException e) {
             e.printStackTrace();
