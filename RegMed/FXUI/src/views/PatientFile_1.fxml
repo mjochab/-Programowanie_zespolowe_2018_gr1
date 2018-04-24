@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane fx:id="borderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="346.0" prefWidth="471.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.PatientFileController">
+    <top>
+        <Label maxWidth="471.0" text="PatientFile" BorderPane.alignment="CENTER">
+            <font>
+                <Font size="16.0" />
+            </font>
+        </Label>
+    </top>
+    <center>
+        <Pane prefHeight="359.0" prefWidth="471.0" BorderPane.alignment="CENTER">
+            <children>
+                <TableView fx:id="tableID" prefHeight="320.0" prefWidth="471.0">
+                    <columns>
+                        <TableColumn fx:id="id" prefWidth="75.0" text="Id" />
+                        <TableColumn fx:id="firstName" prefWidth="75.0" text="FirstName" />
+                        <TableColumn fx:id="lastName" prefWidth="75.0" text="LastName" />
+                    </columns>
+                    <columnResizePolicy>
+                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                    </columnResizePolicy>
+                </TableView>
+            </children>
+        </Pane>
+    </center>
+</BorderPane>

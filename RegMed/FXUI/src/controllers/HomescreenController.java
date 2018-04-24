@@ -5,7 +5,7 @@ import entities.Doctor;
 import entities.Patient;
 import entities.User;
 import helpers.ControllerPagination;
-import helpers.PopBox;
+import helpers.DialogBox;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 
@@ -124,7 +124,7 @@ public class HomescreenController implements Initializable, ControllerPagination
                 break;
         }
         if(!sprawdzenie) {
-            PopBox.informationBox("Błędne dane", "Podaj poprawne dane do logowanie");
+            DialogBox.informationBox("Błędne dane", "Podaj poprawne dane do logowanie");
         }
 
     /*

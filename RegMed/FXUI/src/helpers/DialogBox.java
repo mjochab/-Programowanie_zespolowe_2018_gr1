@@ -5,7 +5,7 @@ import javafx.scene.control.ButtonType;
 
 //http://code.makery.ch/blog/javafx-dialogs-official/
 
-public class PopBox {
+public class DialogBox {
 
     public static boolean choiceBox(String title, String headerText, String contentText) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, contentText,ButtonType.YES, ButtonType.NO);

@@ -76,15 +76,26 @@ public class DoctorEditController implements ControllerPagination{
 
     public void okButtonOnClick(ActionEvent event){
         HashMap<String, DoctorEditModel> hours = new HashMap<String, DoctorEditModel>();
-        hours.put("monday", new DoctorEditModel(mondayBox.isSelected(), mondayFromTextField.getText(), mondayToTextField.getText()));
-        hours.put("tuesday", new DoctorEditModel(tuesdayBox.isSelected(), tuesdayFromTextField.getText(), tuesdayToTextField.getText()));
-        hours.put("wednesday", new DoctorEditModel(wednesdayBox.isSelected(), wednesdayFromTextField.getText(), wednesdayToTextField.getText()));
-        hours.put("thursday", new DoctorEditModel(thursdayBox.isSelected(), thursdayFromTextField.getText(), thursdayToTextField.getText()));
-        hours.put("friday", new DoctorEditModel(fridayBox.isSelected(), fridayFromTextField.getText(), fridayToTextField.getText()));
-        System.out.println(ValidatorModel.isTime(hours.get("monday").getFrom()));
-        System.out.println(ValidatorModel.intervalValidation(intervalTextField.getText()));
+        if(ValidatorModel.doctorEditDayValidator(mondayBox.isSelected(),mondayFromTextField.getText(),mondayToTextField.getText())) {
+            hours.put("monday", new DoctorEditModel(mondayBox.isSelected(), mondayFromTextField.getText(), mondayToTextField.getText()));
+        }
+        if(ValidatorModel.doctorEditDayValidator(tuesdayBox.isSelected(),tuesdayFromTextField.getText(),tuesdayToTextField.getText())) {
+            hours.put("tuesday", new DoctorEditModel(tuesdayBox.isSelected(), tuesdayFromTextField.getText(), tuesdayToTextField.getText()));
+        }
+        if(ValidatorModel.doctorEditDayValidator(wednesdayBox.isSelected(),wednesdayFromTextField.getText(),wednesdayToTextField.getText())) {
+            hours.put("wednesday", new DoctorEditModel(wednesdayBox.isSelected(), wednesdayFromTextField.getText(), wednesdayToTextField.getText()));
+        }
+        if(ValidatorModel.doctorEditDayValidator(thursdayBox.isSelected(),thursdayFromTextField.getText(),thursdayToTextField.getText())) {
+            hours.put("thursday", new DoctorEditModel(thursdayBox.isSelected(), thursdayFromTextField.getText(), thursdayToTextField.getText()));
+        }
+        if(ValidatorModel.doctorEditDayValidator(fridayBox.isSelected(),fridayFromTextField.getText(),fridayToTextField.getText())) {
+            hours.put("friday", new DoctorEditModel(fridayBox.isSelected(), fridayFromTextField.getText(), fridayToTextField.getText()));
+        }
+        if(ValidatorModel.intervalValidation(intervalTextField.getText())){
+            System.out.println(intervalTextField.getText());
+        }
 
-        hours.forEach((k,v)-> System.out.println("day: " +k+" data: "+v.getFrom()+" "+v.getTo()+" "+v.getActive()));
+        hours.forEach((k,v)-> System.out.println("day: " +k+" hour: "+v.getFrom()+" "+v.getTo()+" "+v.getActive()));
 
     }
 

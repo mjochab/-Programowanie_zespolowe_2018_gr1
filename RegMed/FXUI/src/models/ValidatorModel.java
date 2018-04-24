@@ -42,4 +42,14 @@ public class ValidatorModel {
             return false;
         }
     }
+
+    public static boolean doctorEditDayValidator(Boolean isActive, String from, String to){
+        if(isActive){
+            if(isTime(from) && isTime(to)){
+                return true;
+            }
+
+        }
+        return false;
+    }
 }
