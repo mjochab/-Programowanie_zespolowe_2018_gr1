@@ -16,7 +16,7 @@ public class AdminHomeController implements ControllerPagination {
     }
 
     public void doctorsButtonClicked(ActionEvent event) throws IOException {
-        helpers.SwitchScene("AdminDoctor", event);
+        helpers.SwitchScene("DoctorMain", event);
     }
 
     public void administratorsButtonClicked(ActionEvent event) throws IOException {
