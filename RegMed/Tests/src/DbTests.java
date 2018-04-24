@@ -39,7 +39,7 @@ public class DbTests {
 
         assertTrue(admin != null);
 
-        System.out.println(String.format("%i %s %s %s", admin.getId(), admin.getForename(), admin.getName(), admin.getPesel()));
+        System.out.println(String.format("%d %s %s %s", admin.getId(), admin.getForename(), admin.getName(), admin.getPesel()));
     }
 
 }
