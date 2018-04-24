@@ -2,7 +2,7 @@ package controllers;
 
 import entities.Administrator;
 import helpers.ControllerPagination;
-import helpers.PopBox;
+import helpers.DialogBox;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -118,7 +118,7 @@ public class AdminAdministratorController implements Initializable, ControllerPa
         Administrator administratorToDelete = getSelectedAdministratorInTable();
 
         if (getSelectedAdministratorInTable() != null) {
-            if (PopBox.choiceBox("Remove confirmation", String.format("%s %s will be removed.",
+            if (DialogBox.choiceBox("Remove confirmation", String.format("%s %s will be removed.",
                     administratorToDelete.getForename(), administratorToDelete.getName()), "Are you sure?")) {
 
                 administratorRepository.remove(administratorToDelete);
@@ -126,7 +126,7 @@ public class AdminAdministratorController implements Initializable, ControllerPa
                 loadDataToTable();
             }
         } else {
-            PopBox.warningBox("Information", "Please select patient to remove in table");
+            DialogBox.warningBox("Information", "Please select patient to remove in table");
         }
     }
 
@@ -153,7 +153,7 @@ public class AdminAdministratorController implements Initializable, ControllerPa
                 tabPane.getSelectionModel().select(createAdministratorTab);
             });
         } else {
-            PopBox.warningBox("Information", "Please select administrator to edit in table");
+            DialogBox.warningBox("Information", "Please select administrator to edit in table");
         }
     }
 

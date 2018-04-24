@@ -29,13 +29,13 @@ public class ControllerHelpers {
         window.show();
     }
 
-
     public AnchorPane SwitchAnchor(String childView, ActionEvent event) throws IOException {
         Parent child = FXMLLoader.load(getClass().getResource("../views/" + childView + ".fxml"));
         AnchorPane anchor = new AnchorPane(child);
 
         return anchor;
     }
+
 
     public void getCurrentDateTime(Labeled dateLabel, Labeled timeLabel){
         Timeline clock = new Timeline( new KeyFrame(Duration.ZERO, e-> {
@@ -52,5 +52,6 @@ public class ControllerHelpers {
         clock.setCycleCount(Animation.INDEFINITE);
         clock.play();
     }
+
 
 }

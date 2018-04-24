@@ -14,10 +14,6 @@ import javafx.scene.layout.BorderPane;
 import java.io.IOException;
 import javafx.util.*;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 
 
 public class DoctorMainController implements ControllerPagination {
@@ -26,7 +22,9 @@ public class DoctorMainController implements ControllerPagination {
     Label
             nameLabel,
             dateLabel,
-            timeLabel;
+            timeLabel,
+            hourLabel,
+            minuteLabel;
 
     @FXML
     Button
@@ -37,19 +35,24 @@ public class DoctorMainController implements ControllerPagination {
 
     @FXML
     BorderPane
-            borderPane;
+            borderPane,
+            leftBorderPane,
+            file_2;
 
     @FXML
     AnchorPane anchorPane,
                 anchorEdit,
-                anchorReport;
+                anchorReport,
+                anchorAdmissionTable;
 
     @FXML public void initialize(){
-        helpers.getCurrentDateTime(dateLabel, timeLabel);
+        //helpers.getCurrentDateTime(dateLabel, timeLabel);
     }
 
     @FXML void switchAdmissionModule(ActionEvent event) throws IOException{
-        borderPane.setCenter(helpers.SwitchAnchor("DoctorEdit", event));
+        //borderPane.setCenter(helpers.SwitchAnchor("DoctorEdit", event));
+        setAllNotVisible();
+        file_2.setVisible(true);
     }
 
     @FXML void switchEdit(ActionEvent event) throws IOException{
@@ -67,9 +70,18 @@ public class DoctorMainController implements ControllerPagination {
         helpers.SwitchScene("AdminHome", event);
     }
 
+    @FXML void AdmissonModuleClicked(ActionEvent event) throws IOException{
+        //leftBorderPane.setBottom(helpers.SwitchAnchor("PatientFile_1",event));
+        //borderPane.setCenter(helpers.SwitchAnchor("PatientFile_2",event));
+        setAllNotVisible();
+        anchorAdmissionTable.setVisible(true);
+        file_2.setVisible(true);
+    }
+
     private void setAllNotVisible() {
         anchorReport.setVisible(false);
         anchorEdit.setVisible(false);
-
+        file_2.setVisible(false);
+        anchorAdmissionTable.setVisible(false);
     }
 }
