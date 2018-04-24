@@ -34,12 +34,12 @@ public class DbTests {
     @Test
     void is_possible_to_create_user_from_selected_data() throws SQLException {
         DatabaseLocalConnection db = new DatabaseLocalConnection();
-        ResultSet rs = db.selectQuery("select * from administrators where id_administrator = 1;");
+        Administrator admin = db.selectQuery("select * from administrators where id_administrator = 1;");
 
-        if (rs.next()) {
-             rs.getObject(1, Administrator.class);
-        }
 
+        assertTrue(admin != null);
+
+        System.out.println(String.format("%i %s %s %s", admin.getId(), admin.getForename(), admin.getName(), admin.getPesel()));
     }
 
 }

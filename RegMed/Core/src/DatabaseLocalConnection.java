@@ -1,3 +1,5 @@
+import entities.Administrator;
+
 import java.sql.*;
 import java.util.List;
 
@@ -42,7 +44,7 @@ public class DatabaseLocalConnection {
         }
     }
 
-    public ResultSet selectQuery(String query){
+    public Administrator selectQuery(String query){
         if (!checkConnection()) {
             connect();
         }
@@ -50,8 +52,13 @@ public class DatabaseLocalConnection {
         try {
             PreparedStatement ps = connection.prepareStatement(query);
             ResultSet rs = ps.executeQuery(query);
+            Administrator admin = null;
+            if (rs.next()) {
+
+                admin = rs.getObject(1, Administrator.class);
+            }
             closeConnection();
-            return rs;
+            return admin;
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
