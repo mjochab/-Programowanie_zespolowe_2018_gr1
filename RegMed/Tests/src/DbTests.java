@@ -10,6 +10,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class DbTests {
 
+
+    //Mockito
     @Test
     void connection_is_possible() throws SQLException {
         DatabaseLocalConnection db = new DatabaseLocalConnection();

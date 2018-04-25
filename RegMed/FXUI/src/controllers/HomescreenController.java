@@ -113,128 +113,20 @@ public class HomescreenController implements Initializable, ControllerPagination
 
         switch (rola) {
             case ("admin"):
-                helpers.SwitchScene("AdminAdministrator",event);
+                helpers.SwitchScene("AdminHome", event);
                 break;
             case ("patient"):
-                helpers.SwitchScene("AdminPatient",event);
+                //helpers.SwitchScene("AdminPatient", event);
+                DialogBox.warningBox("Warning!", "Pawel L. incomplete module");
 
                 break;
             case ("doctor"):
-                helpers.SwitchScene("AdminDoctor",event);
+                helpers.SwitchScene("DoctorMain", event);
                 break;
         }
-        if(!sprawdzenie) {
+        if (!sprawdzenie) {
             DialogBox.informationBox("Błędne dane", "Podaj poprawne dane do logowanie");
         }
-
-    /*
-    if (getString("login").equals(txtLogin.getText())) {
-        if (rs.getString("haslo").equals(tfPassword.getText())) {
-            sprawdzenie = true;
-            rola = "patient";
-            break;
-        }*/
-
-    /*
-    try {
-
-            Connection con = null;
-
-            PreparedStatement ps = null;
-
-
-
-
-
-            ResultSet rs = null;
-
-            boolean sprawdzenie = false;
-            String rola = "";
-
-
-            ps = con.prepareStatement("SELECT login,haslo FROM admin");
-            rs = ps.executeQuery();
-            while (rs.next()) {
-                if (rs.getString("login").equals(txtLogin.getText())) {
-                    if (rs.getString("haslo").equals(tfPassword.getText())) {
-                        sprawdzenie = true;
-                        rola = "admin";
-                        break;
-                    }
-                }
-            }
-
-
-            ps = con.prepareStatement("SELECT login,haslo FROM patient");
-            rs = ps.executeQuery();
-            while (rs.next()) {
-                if (rs.getString("login").equals(txtLogin.getText())) {
-                    if (rs.getString("haslo").equals(tfPassword.getText())) {
-                        sprawdzenie = true;
-                        rola = "patient";
-                        break;
-            }
-            }
-            }
-
-
-            ps = con.prepareStatement("SELECT login,haslo FROM doctor");
-            rs = ps.executeQuery();
-            while (rs.next()) {
-                if (rs.getString("login").equals(txtLogin.getText())) {
-                    if (rs.getString("haslo").equals(tfPassword.getText())) {
-                        sprawdzenie = true;
-                        rola = "doctor";
-                        break;
-            }
-            }
-            }
-
-
-            if (sprawdzenie) {
-            System.out.println("Logowanie przebiegło pomyślnie!");
-
-
-
-
-
-
-            Parent root = null;
-            switch (rola) {
-            case ("admin"):
-            root = FXMLLoader.load(LoginViewController.class.getResource("admin.fxml"));
-        break;
-        case ("patient"):
-        root = FXMLLoader.load(LoginViewController.class.getResource("patient.fxml"));
-        break;
-        case ("doctor"):
-        root = FXMLLoader.load(LoginViewController.class.getResource("doctor.fxml"));
-        break;
-        }
-        stage = new Stage();
-
-
-
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        bLogin.getScene().getWindow().hide();
-        stage.show();
-        txtLogin.setText(null);
-        tfPassword.setText(null);
-        //}
-        }
-
-
-
-        ps.close();
-        rs.close();
-        con.close();
-        } catch (SQLException ex) {
-        System.out.println("Błąd SQL!");
-        } catch (IOException ex) {
-        Logger.getLogger(getClass().getName()).log(Level.SEVERE, null, ex);
-        }
-*/
 
     }
 
@@ -244,14 +136,6 @@ public class HomescreenController implements Initializable, ControllerPagination
             helpers.SwitchScene("Register",event);;
 
             stage = new Stage();
-
-   // stage.setScene(new Scene(root));
-        //helpers.SwitchScene("Register",event);
-          //  stage.setTitle("Register window");
-            //stage.initModality(Modality.APPLICATION_MODAL);
-            //stage.initOwner(bRegister.getScene().getWindow());
-            //stage.showAndWait();
-
     }
 
     @FXML

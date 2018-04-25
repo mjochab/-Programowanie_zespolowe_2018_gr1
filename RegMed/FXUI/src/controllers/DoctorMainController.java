@@ -67,7 +67,7 @@ public class DoctorMainController implements ControllerPagination {
     }
 
     @FXML void logOut(ActionEvent event) throws IOException{
-        helpers.SwitchScene("AdminHome", event);
+        helpers.SwitchScene("Homescreen", event);
     }
 
     @FXML void AdmissonModuleClicked(ActionEvent event) throws IOException{
