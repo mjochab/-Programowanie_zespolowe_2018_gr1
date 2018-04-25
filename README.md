@@ -40,17 +40,6 @@ Medical Registration Application, wrote in javaFX
     <li>Password</li>
     <li>DB name</li>
 </ul>
-<h2>UML</h2>
-<h3>Use Case Diagram:</h3>
-<img src="uml/useCaseDiagram.JPG">
-<h3>Sequence Diagram:</h3>
-<img src="uml/Patient.png">
-<img src="uml/Medic.png">
-<img src="uml/Admin.png">
-<h3>Class Diagram:</h3>
-<img src="uml/Diagram_Class.PNG">
-<h3>State Diagram UML:<h3>
-<img src="uml/State_diagram.jpg">
 <hr/>
 <h1>Target and scope of system:</h1>
 <p>System will be used to register patient and keeping his medical documentation like history of health state, diseases and health benefits. During creating account patient must choose his first contact doctor. After create account and log in patient have possibility to choose day and hour of visit to the doctor.<br>
@@ -109,3 +98,17 @@ Users permissions:</p>
     <li>System must function in accordance with the teleinformatic network of the clinic</li>
     <li>System must be comprehensive, it must perform all the functions and activities required by the Employer</li>
 </ul>
+<hr>
+<h2>UML</h2>
+<h3>Use Case Diagram:</h3>
+<img src="uml/useCaseDiagram.JPG">
+<h3>Sequence Diagram:</h3>
+<img src="uml/Patient.png">
+<img src="uml/Medic.png">
+<img src="uml/Admin.png">
+<h3>Class Diagram:</h3>
+<img src="uml/Diagram_Class.PNG">
+<h3>State Diagram UML:</h3>
+<img src="uml/State_diagram.jpg">
+<h3>Database ERD Diagram:</h3>
+<img src="uml/erd.JPG">
