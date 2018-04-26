@@ -1,4 +1,4 @@
-package controllers;
+package controllers.doctor;
 
 import helpers.ControllerPagination;
 import javafx.animation.Animation;
@@ -67,7 +67,7 @@ public class DoctorMainController implements ControllerPagination {
     }
 
     @FXML void logOut(ActionEvent event) throws IOException{
-        helpers.SwitchScene("Homescreen", event);
+        helpers.SwitchScene("homescreen/Homescreen", event);
     }
 
     @FXML void AdmissonModuleClicked(ActionEvent event) throws IOException{

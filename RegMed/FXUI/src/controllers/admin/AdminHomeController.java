@@ -1,4 +1,4 @@
-package controllers;
+package controllers.admin;
 
 import helpers.ControllerPagination;
 import javafx.event.ActionEvent;
@@ -12,18 +12,18 @@ public class AdminHomeController implements ControllerPagination {
     //ControllerHelpers helpers = new ControllerHelpers();
 
     public void patientsButtonClicked(ActionEvent event) throws IOException {
-        helpers.SwitchScene("AdminPatient", event);
+        helpers.SwitchScene("admin/PatientAdministration", event);
     }
 
     public void doctorsButtonClicked(ActionEvent event) throws IOException {
-        helpers.SwitchScene("AdminDoctor", event);
+        helpers.SwitchScene("admin/DoctorAdministration", event);
     }
 
     public void administratorsButtonClicked(ActionEvent event) throws IOException {
-        helpers.SwitchScene("AdminAdministrator", event);
+        helpers.SwitchScene("admin/AdminAdministration", event);
     }
 
     public void doctorsModuleButtonClicked(ActionEvent event) throws IOException {
-        helpers.SwitchScene("DoctorMain", event);
+        helpers.SwitchScene("doctor/DoctorMain", event);
     }
 }

@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="655.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.DoctorEditController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="655.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.doctor.DoctorEditController">
    <children>
       <CheckBox fx:id="mondayBox" layoutX="146.0" layoutY="120.0" mnemonicParsing="false" onAction="#mondayClickHandler" />
       <CheckBox fx:id="tuesdayBox" layoutX="146.0" layoutY="150.0" mnemonicParsing="false" onAction="#tuesdayClickHandler" />

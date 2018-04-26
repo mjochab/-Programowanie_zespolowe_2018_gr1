@@ -7,19 +7,19 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane fx:id="borderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.DoctorMainController">
+<BorderPane fx:id="borderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.doctor.DoctorMainController">
     <center>
         <AnchorPane fx:id="anchorPane" prefHeight="678.0" prefWidth="830.0" BorderPane.alignment="CENTER">
-            <fx:include fx:id="file_2" source="PatientFile_2.fxml" visible="false"/>
+            <fx:include fx:id="file_2" source="_PatientFile_2.fxml" visible="false"/>
            <children>
             <AnchorPane fx:id="anchorEdit" prefHeight="678.0" prefWidth="855.0" visible="false">
                <children>
-                     <fx:include fx:id="a" source="DoctorEdit.fxml" />
+                     <fx:include fx:id="a" source="_DoctorEdit.fxml" />
                </children>
             </AnchorPane>
             <AnchorPane fx:id="anchorReport" prefHeight="677.0" prefWidth="853.0" visible="false">
                <children>
-                     <fx:include fx:id="b" source="DoctorReport.fxml" />
+                     <fx:include fx:id="b" source="_DoctorReport.fxml" />
                </children>
             </AnchorPane>
            </children>
@@ -118,7 +118,7 @@
          <center>
             <AnchorPane fx:id="anchorAdmissionTable" prefHeight="381.0" prefWidth="435.0" BorderPane.alignment="CENTER" visible="false">
                <children>
-                   <fx:include fx:id="c" source="PatientFile_1.fxml" />
+                   <fx:include fx:id="c" source="_PatientFile_1.fxml" />
                </children>
             </AnchorPane>
          </center>

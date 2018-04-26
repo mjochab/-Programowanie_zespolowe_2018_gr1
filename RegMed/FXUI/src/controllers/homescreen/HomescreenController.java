@@ -1,4 +1,4 @@
-package controllers;
+package controllers.homescreen;
 
 import entities.Administrator;
 import entities.Doctor;
@@ -113,7 +113,7 @@ public class HomescreenController implements Initializable, ControllerPagination
 
         switch (rola) {
             case ("admin"):
-                helpers.SwitchScene("AdminHome", event);
+                helpers.SwitchScene("admin/AdminHome", event);
                 break;
             case ("patient"):
                 //helpers.SwitchScene("AdminPatient", event);
@@ -121,7 +121,7 @@ public class HomescreenController implements Initializable, ControllerPagination
 
                 break;
             case ("doctor"):
-                helpers.SwitchScene("DoctorMain", event);
+                helpers.SwitchScene("doctor/DoctorMain", event);
                 break;
         }
         if (!sprawdzenie) {
@@ -133,7 +133,7 @@ public class HomescreenController implements Initializable, ControllerPagination
     @FXML
     void Register(ActionEvent event) throws IOException {
            Stage stage;
-            helpers.SwitchScene("Register",event);;
+            helpers.SwitchScene("homescreen/Register",event);;
 
             stage = new Stage();
     }

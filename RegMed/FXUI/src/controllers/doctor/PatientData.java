@@ -1,4 +1,4 @@
-package controllers;
+package controllers.doctor;
 
 
 import javafx.beans.property.SimpleIntegerProperty;

@@ -1,4 +1,4 @@
-package controllers;
+package controllers.doctor;
 
 import helpers.ControllerPagination;
 import javafx.event.ActionEvent;

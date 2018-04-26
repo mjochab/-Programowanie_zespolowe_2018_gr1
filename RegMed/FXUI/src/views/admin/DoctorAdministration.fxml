@@ -5,7 +5,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AdminDoctorController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.admin.DoctorAdministrationController">
    <children>
       <TextField fx:id="searchField" layoutX="14.0" layoutY="110.0" onKeyReleased="#searchDoctorsByPeselAndName" prefHeight="50.0" prefWidth="350.0">
          <font>
@@ -169,7 +169,7 @@
           </Tab>
             <Tab fx:id="editWorkingHoursTab" text="Edit working hours">
                 <!--HERE I AM-->
-                <fx:include source="DoctorEdit.fxml" />
+                <fx:include source="../doctor/_DoctorEdit.fxml" />
             </Tab>
         </tabs>
       </TabPane>

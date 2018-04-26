@@ -1,4 +1,4 @@
-package controllers;
+package controllers.homescreen;
 
 import helpers.ControllerPagination;
 import javafx.event.ActionEvent;
@@ -32,7 +32,7 @@ public class RegisterController implements Initializable, ControllerPagination {
         // Stage stage = (Stage) bBack.getScene().getWindow();
         try {
             //stage.close();
-            helpers.SwitchScene("Homescreen", event);
+            helpers.SwitchScene("homescreen/Homescreen", event);
 
         } catch (IOException ex) {
             Logger.getLogger(getClass().getName()).log(Level.SEVERE, null, ex);

@@ -1,4 +1,4 @@
-package controllers;
+package controllers.admin;
 
 import entities.Administrator;
 import helpers.ControllerPagination;
@@ -20,7 +20,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class AdminAdministratorController implements Initializable, ControllerPagination {
+public class AdminAdministrationController implements Initializable, ControllerPagination {
 
     @FXML
     private Button saveEditButton,
@@ -59,7 +59,7 @@ public class AdminAdministratorController implements Initializable, ControllerPa
     private FilteredList filteredList;
     private ObservableList tableData;
 
-    public AdminAdministratorController() {
+    public AdminAdministrationController() {
         this.administratorRepository = new AdministratorRepository();
     }
 
@@ -179,7 +179,7 @@ public class AdminAdministratorController implements Initializable, ControllerPa
 
     @FXML
     private void backButtonClicked(ActionEvent event) throws IOException {
-        helpers.SwitchScene("AdminHome", event);
+        helpers.SwitchScene("admin/AdminHome", event);
     }
 
 

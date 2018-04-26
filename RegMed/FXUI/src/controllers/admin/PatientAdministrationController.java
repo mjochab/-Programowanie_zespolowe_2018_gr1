@@ -1,4 +1,4 @@
-package controllers;
+package controllers.admin;
 
 import entities.Patient;
 import helpers.ControllerPagination;
@@ -19,7 +19,7 @@ import repositories.RepositoryInterface;
 import java.io.IOException;
 
 
-public class AdminPatientController implements ControllerPagination {
+public class PatientAdministrationController implements ControllerPagination {
 
     @FXML
     private Button saveEditButton,
@@ -61,7 +61,7 @@ public class AdminPatientController implements ControllerPagination {
 
     ObservableList<Patient> tableData;
 
-    public AdminPatientController() {
+    public PatientAdministrationController() {
         this.patientRepository = new PatientRepository();
     }
 
@@ -192,7 +192,7 @@ public class AdminPatientController implements ControllerPagination {
 
     @FXML
     private void backButtonClicked(ActionEvent event) throws IOException {
-        helpers.SwitchScene("AdminHome", event);
+        helpers.SwitchScene("admin/AdminHome", event);
     }
 
     private Patient createPatientForEditFromTextfields(Patient patient) {
