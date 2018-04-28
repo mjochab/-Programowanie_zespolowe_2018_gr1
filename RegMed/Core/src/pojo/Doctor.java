@@ -1,14 +1,22 @@
 package pojo;
 
+
 public class Doctor {
 
+    private String doctorId;
     private String firstName;
     private String lastName;
 
+    Address address;
 
-    public Doctor(String firstName, String lastName) {
-        this.firstName = firstName;
-        this.lastName = lastName;
+
+
+    public String getDoctorId() {
+        return doctorId;
+    }
+
+    public void setDoctorId(String doctorId) {
+        this.doctorId = doctorId;
     }
 
     public String getFirstName() {
@@ -25,5 +33,13 @@ public class Doctor {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
     }
 }

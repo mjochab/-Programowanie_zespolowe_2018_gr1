@@ -12,19 +12,7 @@ public class Patient {
     private int firstContactDoctorId;
     private String password;
 
-    public Patient(int id, int globalId, String firstName, String lastName, String pesel, int addressId,
-                   String email, String phoneNumber, int firstContactDoctorId, String password) {
-        this.id = id;
-        this.globalId = globalId;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.pesel = pesel;
-        this.addressId = addressId;
-        this.email = email;
-        this.phoneNumber = phoneNumber;
-        this.firstContactDoctorId = firstContactDoctorId;
-        this.password = password;
-    }
+
 
     public int getId() {
         return id;

@@ -1,6 +1,7 @@
 import mappers.DoctorMapper;
 import org.junit.jupiter.api.Disabled;
 import org.xml.sax.SAXException;
+import pojo.Address;
 import pojo.Doctor;
 import pojo.Patient;
 import mappers.PatientMapper;
@@ -83,10 +84,29 @@ public class MyBatisDbTests {
         dbConnection.openSession();
         Doctor doctor = dbConnection.getMapper().get(1);
 
-        System.out.println(doctor.getFirstName());
-        System.out.println(doctor.getLastName());
 
-        assertEquals("Gomółka", doctor.getLastName());
+        System.out.println(doctor.getFirstName()+" "+doctor.getLastName());
+
     }
+
+    @Test
+    void is_possible_to_get_doctor_with_address() {
+        MyBatisDbConnection<DoctorMapper> dbConnection = new MyBatisDbConnection<DoctorMapper>(DoctorMapper.class);
+        dbConnection.openSession();
+        Doctor doctor = dbConnection.getMapper().get(1);
+
+
+        System.out.println(doctor.getFirstName()+" "+doctor.getLastName());
+        System.out.println(String.format("%s %s %s %s",
+                doctor.getAddress().getCity(),
+                doctor.getAddress().getZip(),
+                doctor.getAddress().getStreet(),
+                String.valueOf(doctor.getAddress().getNumber())
+        ));
+
+        assertNotNull(doctor.getAddress().getZip());
+    }
+
+
 
 }
