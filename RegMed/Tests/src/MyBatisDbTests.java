@@ -1,7 +1,6 @@
+import database.MyBatisDbConnection;
 import mappers.DoctorMapper;
 import org.junit.jupiter.api.Disabled;
-import org.xml.sax.SAXException;
-import pojo.Address;
 import pojo.Doctor;
 import pojo.Patient;
 import mappers.PatientMapper;
@@ -11,16 +10,10 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.junit.jupiter.api.Test;
 
-import javax.xml.parsers.ParserConfigurationException;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.IOException;
 import java.io.Reader;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class MyBatisDbTests {
@@ -28,7 +21,7 @@ public class MyBatisDbTests {
     @Disabled
     @Test
     void is_possible_to_select_patient() throws IOException {
-        Reader reader = Resources.getResourceAsReader("SqlMapConfig.xml");
+        Reader reader = Resources.getResourceAsReader("database/SqlMapConfig.xml");
         SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
         SqlSession session = sqlSessionFactory.openSession();
         session.getConfiguration().addMapper(PatientMapper.class);
@@ -45,7 +38,7 @@ public class MyBatisDbTests {
 
     @Test
     void connection_method_will_connect_and_return_type_is_correct() {
-        MyBatisDbConnection<PatientMapper> dbConnection = new MyBatisDbConnection<PatientMapper>(PatientMapper.class);
+        MyBatisDbConnection<PatientMapper> dbConnection = new MyBatisDbConnection<>(PatientMapper.class);
         dbConnection.openSession();
         //PatientMapper mapper = dbConnection.getMapper();
 
@@ -57,13 +50,13 @@ public class MyBatisDbTests {
         System.out.println(result.getLastName());
         System.out.println(result.getEmail());
 
-        assertEquals("Janusz", result.getFirstName());
-        assertEquals(1, result.getGlobalId());
+        assertEquals("Krzysztof", result.getFirstName());
+        assertEquals(3, result.getGlobalId());
     }
 
     @Test
     void get_all_patients_returning_2_patients() {
-        MyBatisDbConnection<PatientMapper> dbConnection = new MyBatisDbConnection<PatientMapper>(PatientMapper.class);
+        MyBatisDbConnection<PatientMapper> dbConnection = new MyBatisDbConnection<>(PatientMapper.class);
         dbConnection.openSession();
 
         List<Patient> result = dbConnection.getMapper().getAll();
@@ -75,12 +68,12 @@ public class MyBatisDbTests {
         }
 
         assertTrue(result.size() == 2);
-        assertEquals("Sebastian", result.get(1).getFirstName());
+        assertEquals("Sebastian", result.get(0).getFirstName());
     }
 
     @Test
     void is_possible_to_get_doctor() {
-        MyBatisDbConnection<DoctorMapper> dbConnection = new MyBatisDbConnection<DoctorMapper>(DoctorMapper.class);
+        MyBatisDbConnection<DoctorMapper> dbConnection = new MyBatisDbConnection<>(DoctorMapper.class);
         dbConnection.openSession();
         Doctor doctor = dbConnection.getMapper().get(1);
 
@@ -91,7 +84,7 @@ public class MyBatisDbTests {
 
     @Test
     void is_possible_to_get_doctor_with_address() {
-        MyBatisDbConnection<DoctorMapper> dbConnection = new MyBatisDbConnection<DoctorMapper>(DoctorMapper.class);
+        MyBatisDbConnection<DoctorMapper> dbConnection = new MyBatisDbConnection<>(DoctorMapper.class);
         dbConnection.openSession();
         Doctor doctor = dbConnection.getMapper().get(1);
 

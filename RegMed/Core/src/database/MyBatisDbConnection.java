@@ -1,3 +1,5 @@
+package database;
+
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -24,7 +26,7 @@ public class MyBatisDbConnection<T> {
 
     private static Reader readFile() {
         try {
-            return Resources.getResourceAsReader("SqlMapConfig.xml");
+            return Resources.getResourceAsReader("database/SqlMapConfig.xml");
         } catch (IOException e) {
             e.printStackTrace();
             return null;

@@ -4,7 +4,7 @@ import java.util.Random;
 import java.util.UUID;
 
 public class Patient extends User {
-    private String address; //TODO: Address should be separated
+    private String address;
     //phone no
 
 

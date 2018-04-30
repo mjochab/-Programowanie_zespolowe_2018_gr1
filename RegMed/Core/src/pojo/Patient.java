@@ -1,25 +1,25 @@
 package pojo;
 
 public class Patient {
-    private int id;
+    private int patientId;
     private int globalId;
     private String firstName;
     private String lastName;
     private String pesel;
-    private int addressId;
     private String email;
     private String phoneNumber;
     private int firstContactDoctorId;
     private String password;
 
+    private Address address;
 
 
-    public int getId() {
-        return id;
+    public int getPatientId() {
+        return patientId;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setPatientId(int patientId) {
+        this.patientId = patientId;
     }
 
     public int getGlobalId() {
@@ -54,12 +54,12 @@ public class Patient {
         this.pesel = pesel;
     }
 
-    public int getAddressId() {
-        return addressId;
+    public Address getAddress() {
+        return address;
     }
 
-    public void setAddressId(int addressId) {
-        this.addressId = addressId;
+    public void setAddress(Address address) {
+        this.address = address;
     }
 
     public String getEmail() {

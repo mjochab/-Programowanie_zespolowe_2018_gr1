@@ -1,5 +1,6 @@
 package controllers.admin;
 
+import database.MyBatisDbConnection;
 import entities.Patient;
 import helpers.ControllerPagination;
 import helpers.DialogBox;
@@ -13,10 +14,14 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 import javafx.util.Callback;
+import mappers.PatientAdministrationMapper;
+import models.PatientAdministrationDTO;
 import repositories.PatientRepository;
 import repositories.RepositoryInterface;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class PatientAdministrationController implements ControllerPagination {
@@ -45,35 +50,48 @@ public class PatientAdministrationController implements ControllerPagination {
             createPatientTab;
 
     @FXML
-    private TableView<Patient> patientsTable;
+    private TableView<pojo.Patient> patientsTable;
     @FXML
-    private TableColumn<Patient, Integer> idColumn;
+    private TableColumn<pojo.Patient, Integer> idColumn,
+            firstContactDoctorIdColumn;
     @FXML
-    private TableColumn<Patient, String> forenameColumn,
+    private TableColumn<pojo.Patient, String> forenameColumn,
             nameColumn,
             peselColumn,
-            addressColumn;
+            addressColumn,
+            emailColumn;
+
 
     private RepositoryInterface<Patient> patientRepository;
-    //private PatientRepository patientRepository;
+    private PatientAdministrationDTO patientAdministrationDTO;
 
     private FilteredList filteredList;
 
-    ObservableList<Patient> tableData;
+    ObservableList<pojo.Patient> tableData;
 
     public PatientAdministrationController() {
         this.patientRepository = new PatientRepository();
+
+        patientAdministrationDTO = new PatientAdministrationDTO();
     }
 
     @FXML
     private void initialize() {
 
         //setup columns in the table
-        idColumn.setCellValueFactory(new PropertyValueFactory<Patient, Integer>("id"));
-        forenameColumn.setCellValueFactory(new PropertyValueFactory<Patient, String>("forename"));
-        nameColumn.setCellValueFactory(new PropertyValueFactory<Patient, String>("name"));
-        peselColumn.setCellValueFactory(new PropertyValueFactory<Patient, String>("pesel"));
-        addressColumn.setCellValueFactory(new PropertyValueFactory<Patient, String>("address"));
+        //idColumn.setCellValueFactory(new PropertyValueFactory<Patient, Integer>("id"));
+        //forenameColumn.setCellValueFactory(new PropertyValueFactory<Patient, String>("forename"));
+        //nameColumn.setCellValueFactory(new PropertyValueFactory<Patient, String>("name"));
+        //peselColumn.setCellValueFactory(new PropertyValueFactory<Patient, String>("pesel"));
+        //addressColumn.setCellValueFactory(new PropertyValueFactory<Patient, String>("address"));
+
+        idColumn.setCellValueFactory(new PropertyValueFactory<pojo.Patient, Integer>("patientId"));
+        forenameColumn.setCellValueFactory(new PropertyValueFactory<pojo.Patient, String>("firstName"));
+        nameColumn.setCellValueFactory(new PropertyValueFactory<pojo.Patient, String>("lastName"));
+        peselColumn.setCellValueFactory(new PropertyValueFactory<pojo.Patient, String>("pesel"));
+        addressColumn.setCellValueFactory(new PropertyValueFactory<pojo.Patient, String>("address"));
+        emailColumn.setCellValueFactory(new PropertyValueFactory<pojo.Patient, String>("email"));
+        firstContactDoctorIdColumn.setCellValueFactory(new PropertyValueFactory<pojo.Patient, Integer>("firstContactDoctorId"));
 
         //load data
         loadDataToTable();
@@ -89,7 +107,9 @@ public class PatientAdministrationController implements ControllerPagination {
         //if (tableData != null)
         //    tableData.removeAll();
 
-        tableData = FXCollections.observableArrayList(patientRepository.getAll());
+        //tableData = FXCollections.observableArrayList(patientRepository.getAll());
+        tableData = FXCollections.observableArrayList(patientAdministrationDTO.getAll());
+
         patientsTable.setItems(tableData);
         filteredList = new FilteredList(tableData, e->true);
         patientsTable.refresh();
@@ -128,45 +148,45 @@ public class PatientAdministrationController implements ControllerPagination {
 
     @FXML
     private void removePatientClicked(ActionEvent event) {
-        Patient patientToDelete = getSelectedPatientInTable();
-
-        if (getSelectedPatientInTable() != null) {
-            if ( DialogBox.choiceBox("Remove confirmation", String.format("%s %s will be removed.",
-                    patientToDelete.getForename(), patientToDelete.getName()), "Are you sure?") ) {
-
-                patientRepository.remove(patientToDelete);
-
-                loadDataToTable();
-            }
-        } else {
-            DialogBox.warningBox("Information", "Please select patient to remove in table");
-        }
+//        Patient patientToDelete = getSelectedPatientInTable();
+//
+//        if (getSelectedPatientInTable() != null) {
+//            if ( DialogBox.choiceBox("Remove confirmation", String.format("%s %s will be removed.",
+//                    patientToDelete.getForename(), patientToDelete.getName()), "Are you sure?") ) {
+//
+//                patientRepository.remove(patientToDelete);
+//
+//                loadDataToTable();
+//            }
+//        } else {
+//            DialogBox.warningBox("Information", "Please select patient to remove in table");
+//        }
     }
 
     @FXML
     private void editPatientClicked(ActionEvent event) {
-        if (getSelectedPatientInTable() != null) {
-
-            editTabDisable(false);
-            tabPane.getSelectionModel().select(editPatientTab);
-
-            Patient patientToEdit = getSelectedPatientInTable();
-            fillEditPatientFields(patientToEdit);
-
-            saveEditButton.setOnAction(e -> {
-                patientRepository.update(createPatientForEditFromTextfields(patientToEdit));
-                loadDataToTable();
-                editTabDisable(true);
-                tabPane.getSelectionModel().select(createPatientTab);
-            });
-
-            declineEditButton.setOnAction(e -> {
-                editTabDisable(true);
-                tabPane.getSelectionModel().select(createPatientTab);
-            });
-        } else {
-            DialogBox.warningBox("Information", "Please select patient to edit in table");
-        }
+//        if (getSelectedPatientInTable() != null) {
+//
+//            editTabDisable(false);
+//            tabPane.getSelectionModel().select(editPatientTab);
+//
+//            Patient patientToEdit = getSelectedPatientInTable();
+//            fillEditPatientFields(patientToEdit);
+//
+//            saveEditButton.setOnAction(e -> {
+//                patientRepository.update(createPatientForEditFromTextfields(patientToEdit));
+//                loadDataToTable();
+//                editTabDisable(true);
+//                tabPane.getSelectionModel().select(createPatientTab);
+//            });
+//
+//            declineEditButton.setOnAction(e -> {
+//                editTabDisable(true);
+//                tabPane.getSelectionModel().select(createPatientTab);
+//            });
+//        } else {
+//            DialogBox.warningBox("Information", "Please select patient to edit in table");
+//        }
     }
 
     @FXML
@@ -229,7 +249,7 @@ public class PatientAdministrationController implements ControllerPagination {
 
     //HELPER METHODS
 
-    private Patient getSelectedPatientInTable() {
+    private pojo.Patient getSelectedPatientInTable() {
         return patientsTable.getSelectionModel().getSelectedItem();
     }
 

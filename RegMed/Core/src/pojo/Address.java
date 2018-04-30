@@ -46,4 +46,8 @@ public class Address {
     public void setNumber(int number) {
         this.number = number;
     }
+
+    public String toString() {
+        return String.format("%s %s %s %s", zip, city, street, number);
+    }
 }
