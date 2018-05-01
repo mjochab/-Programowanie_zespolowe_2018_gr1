@@ -93,4 +93,18 @@ public class Patient {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    public String patientToString() {
+        return String.format("%s %s %s %s %s %s %s %s %s",
+                "patientId: " + getPatientId(),
+                "globalId: " + getGlobalId(),
+                "firstName: " + getFirstName(),
+                "lastName: " + getLastName(),
+                "pesel: " + getPesel(),
+                "email: " + getEmail(),
+                "phone: " + getPhoneNumber(),
+                "doctor: " + getFirstContactDoctorId(),
+                "address: " + getAddress().toString()
+        );
+    }
 }

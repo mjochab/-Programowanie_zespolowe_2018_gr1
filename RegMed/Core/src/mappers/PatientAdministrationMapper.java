@@ -28,7 +28,34 @@ public interface PatientAdministrationMapper {
     List<Patient> getAllPatientsDataToTable();
 
 
+    @Select("SELECT id_patient, first_name, last_name, PESEL, id_address," +
+            " email, phone_number,id_firstcontact_doctor FROM patients " +
+            "WHERE id_patient = #{patientId}")
+    @Results({
+            @Result(property = "patientId", column = "id_patient"),
+            @Result(property = "firstName", column = "first_name"),
+            @Result(property = "lastName", column = "last_name"),
+            @Result(property = "pesel", column = "PESEL"),
+            @Result(property = "address", column = "id_address",
+                    javaType = Address.class, one = @One(select = "selectAddress",
+                    fetchType = FetchType.EAGER)),
+            @Result(property = "email", column = "email"),
+            @Result(property = "phoneNumber", column = "phone_number"),
+            @Result(property = "firstContactDoctorId", column = "id_firstcontact_doctor")   //TODO: update db foreign key
+    })
+    Patient getPatient(int patientId);
 
+    @Insert("INSERT into patients(id_patient, first_name, last_name, PESEL, id_address, email, phone_number, " +
+            "id_firstcontact_doctor, password) VALUES (#{patientId}, #{firstName}, #{lastName}, #{pesel}, #{address.addressId}," +
+            "#{email}, #{phoneNumber}, #{firstContactDoctorId}, #{password})")
+    @Options(useGeneratedKeys = true, keyProperty = "patientId", keyColumn = "id_patient")
+    void addPatient(Patient patient);
+
+
+    @Insert("INSERT into addresses(id_address, city, zip_code, street, number) VALUES (" +
+            "#{addressId}, #{city}, #{zip}, #{street}, #{number})")
+    @Options(useGeneratedKeys = true, keyProperty = "addressId", keyColumn = "id_address")
+    void addAddressAsChild(Address address);
 
 
 
