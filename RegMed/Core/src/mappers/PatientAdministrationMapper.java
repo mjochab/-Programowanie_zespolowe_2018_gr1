@@ -57,6 +57,16 @@ public interface PatientAdministrationMapper {
     @Options(useGeneratedKeys = true, keyProperty = "addressId", keyColumn = "id_address")
     void addAddressAsChild(Address address);
 
+    @Update("UPDATE patients SET first_name=#{firstName}, last_name=#{lastName}, PESEL=#{pesel}, " +
+            "email=#{email}, phone_number=#{phoneNumber} WHERE id_patient=#{patientId}")
+    void updatePatient(Patient patient);
+
+    @Update("UPDATE addresses SET city=#{city}, zip_code=#{zip}, street=#{street}, number=#{number} " +
+            "WHERE id_address=#{addressId}")
+    void updatePatientAddress(Address address);
+
+    @Update("UPDATE patients SET id_firstcontact_doctor=#{newDoctorId} WHERE id_patient=#{patient.patientId}")
+    void updatePatientFirstcontactDoctor(@Param("patient") Patient patient,@Param("newDoctorId") int newDoctorId);
 
 
 

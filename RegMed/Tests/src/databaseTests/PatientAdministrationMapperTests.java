@@ -76,6 +76,66 @@ public class PatientAdministrationMapperTests {
         dbConnection.closeSession();
     }
 
+    @Disabled
+    @Test
+    void update_patient_test() {
+        MyBatisDbConnection<PatientAdministrationMapper> dbConnection
+                = new MyBatisDbConnection<>(PatientAdministrationMapper.class);
+        dbConnection.openSession();
+
+        Patient before = dbConnection.getMapper().getPatient(3);
+        Patient result = dbConnection.getMapper().getPatient(3);
+        result.setFirstName("firstName");
+        result.setLastName("lastName");
+        result.setPesel("11111111111");
+        result.setEmail("a@a.com");
+        result.setPhoneNumber("111222333");
+
+        dbConnection.getMapper().updatePatient(result);
+        dbConnection.commit();
+        dbConnection.closeSession();
+    }
+
+    @Disabled
+    @Test
+    void update_patient_address_test() {
+        MyBatisDbConnection<PatientAdministrationMapper> dbConnection
+                = new MyBatisDbConnection<>(PatientAdministrationMapper.class);
+        dbConnection.openSession();
+
+        Patient patient = dbConnection.getMapper().getPatient(3);
+        Address before = patient.getAddress();
+        Address result = patient.getAddress();
+        result.setCity("cityy");
+        result.setZip("11-112");
+        result.setStreet("streett");
+        result.setNumber(1234);
+
+        dbConnection.getMapper().updatePatientAddress(result);
+        dbConnection.commit();
+        dbConnection.closeSession();
+    }
+
+    @Disabled
+    @Test
+    void update_firstcontactDoctorId_test() {
+        MyBatisDbConnection<PatientAdministrationMapper> dbConnection
+                = new MyBatisDbConnection<>(PatientAdministrationMapper.class);
+        dbConnection.openSession();
+
+        Patient patient = dbConnection.getMapper().getPatient(3);
+        int before = patient.getFirstContactDoctorId();
+
+        dbConnection.getMapper().updatePatientFirstcontactDoctor(patient, 2);
+        int result = dbConnection.getMapper().getPatient(3).getFirstContactDoctorId();
+
+        dbConnection.commit();
+        dbConnection.closeSession();
+
+        System.out.println(result);
+        assertNotEquals(before, result);
+    }
+
 
 
 }
