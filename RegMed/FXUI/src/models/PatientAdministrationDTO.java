@@ -71,17 +71,20 @@ public class PatientAdministrationDTO {
     
     public void updateAddress(Patient patient, Address address) {
         dbConnection.openSession();
-        Address addressToUpdate = dbConnection.getMapper()
-                .getPatient(patient.getPatientId()).getAddress();
+        try {
+            Address addressToUpdate = dbConnection.getMapper()
+                    .getPatient(patient.getPatientId()).getAddress();
 
-        addressToUpdate.setCity(address.getCity());
-        addressToUpdate.setZip(address.getZip());
-        addressToUpdate.setStreet(address.getStreet());
-        addressToUpdate.setNumber(address.getNumber());
+            addressToUpdate.setCity(address.getCity());
+            addressToUpdate.setZip(address.getZip());
+            addressToUpdate.setStreet(address.getStreet());
+            addressToUpdate.setNumber(address.getNumber());
 
-        dbConnection.getMapper().updatePatientAddress(addressToUpdate);
-        dbConnection.commit();
-        dbConnection.closeSession();
+            dbConnection.getMapper().updatePatientAddress(addressToUpdate);
+            dbConnection.commit();
+        } finally {
+            dbConnection.closeSession();
+        }
     }
 
 }

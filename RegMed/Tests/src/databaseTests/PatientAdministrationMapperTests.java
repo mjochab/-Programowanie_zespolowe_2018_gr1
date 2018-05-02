@@ -145,12 +145,5 @@ public class PatientAdministrationMapperTests {
         dbConnection.closeSession();
     }
 
-    @Test
-    void two_statements_test() {
-        getAllPatientsDataToTable_returning_correct_patient_list();
-        getAllPatientsDataToTable_returning_correct_patient_list();
-    }
-
-
 
 }

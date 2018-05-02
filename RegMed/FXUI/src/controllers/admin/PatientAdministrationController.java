@@ -41,7 +41,14 @@ public class PatientAdministrationController implements ControllerPagination {
             forenameFieldAdd,
             nameFieldAdd,
             peselFieldAdd,
-            addressFieldAdd;
+            emailFieldAdd,
+            phoneFieldAdd,
+            cityFieldAdd,
+            zipFieldAdd,
+            streetFieldAdd,
+            numberFieldAdd,
+            doctorIdFieldAdd;   //TODO: change to dropdown with dload data from doctors
+
 
     @FXML
     private TabPane tabPane;
@@ -190,18 +197,18 @@ public class PatientAdministrationController implements ControllerPagination {
         pojo.Patient patientToAdd = new pojo.Patient();
         pojo.Address addressToAdd= new Address();
 
-        addressToAdd.setCity("city");
-        addressToAdd.setZip("zip");
-        addressToAdd.setStreet("street");
-        addressToAdd.setNumber(1);
+        addressToAdd.setCity(cityFieldAdd.getText());
+        addressToAdd.setZip(zipFieldAdd.getText());
+        addressToAdd.setStreet(streetFieldAdd.getText());
+        addressToAdd.setNumber(Integer.parseInt(numberFieldAdd.getText()));
 
         patientToAdd.setFirstName(forenameFieldAdd.getText());
         patientToAdd.setLastName(nameFieldAdd.getText());
         patientToAdd.setPesel(peselFieldAdd.getText());
         patientToAdd.setAddress(addressToAdd);
-        patientToAdd.setEmail("email@mail.com");
-        patientToAdd.setPhoneNumber("665554223");
-        patientToAdd.setFirstContactDoctorId(1);
+        patientToAdd.setEmail(emailFieldAdd.getText());
+        patientToAdd.setPhoneNumber(phoneFieldAdd.getText());
+        patientToAdd.setFirstContactDoctorId(Integer.parseInt(doctorIdFieldAdd.getText()));
         patientToAdd.setPassword(peselFieldAdd.getText());
 
         patientAdministrationDTO.add(patientToAdd);
@@ -245,7 +252,15 @@ public class PatientAdministrationController implements ControllerPagination {
         forenameFieldAdd.setText(null);
         nameFieldAdd.setText(null);
         peselFieldAdd.setText(null);
-        addressFieldAdd.setText(null);
+        emailFieldAdd.setText(null);
+        phoneFieldAdd.setText(null);
+
+        cityFieldAdd.setText(null);
+        zipFieldAdd.setText(null);
+        streetFieldAdd.setText(null);
+        numberFieldAdd.setText(null);
+
+        doctorIdFieldAdd.setText(null);
     }
 
 

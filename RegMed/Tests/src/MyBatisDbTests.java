@@ -51,7 +51,6 @@ public class MyBatisDbTests {
         System.out.println(result.getEmail());
 
         assertEquals("Krzysztof", result.getFirstName());
-        assertEquals(3, result.getGlobalId());
     }
 
     @Test

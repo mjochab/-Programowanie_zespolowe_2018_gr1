@@ -2,7 +2,6 @@ package pojo;
 
 public class Patient {
     private int patientId;
-    private int globalId;
     private String firstName;
     private String lastName;
     private String pesel;
@@ -22,13 +21,6 @@ public class Patient {
         this.patientId = patientId;
     }
 
-    public int getGlobalId() {
-        return globalId;
-    }
-
-    public void setGlobalId(int globalId) {
-        this.globalId = globalId;
-    }
 
     public String getFirstName() {
         return firstName;
@@ -95,9 +87,8 @@ public class Patient {
     }
 
     public String patientToString() {
-        return String.format("%s %s %s %s %s %s %s %s %s",
+        return String.format("%s %s %s %s %s %s %s %s",
                 "patientId: " + getPatientId(),
-                "globalId: " + getGlobalId(),
                 "firstName: " + getFirstName(),
                 "lastName: " + getLastName(),
                 "pesel: " + getPesel(),
