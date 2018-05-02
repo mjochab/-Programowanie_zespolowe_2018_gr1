@@ -27,7 +27,7 @@ public class PatientAdministrationMapperTests {
             System.out.println(patient.getAddress().toString());
         }
 
-        assertTrue(result.size() == 3);
+        assertTrue(result.size() == 2);
     }
 
 
@@ -134,6 +134,20 @@ public class PatientAdministrationMapperTests {
 
         System.out.println(result);
         assertNotEquals(before, result);
+    }
+
+    @Disabled
+    @Test
+    void delete_patient_test() {
+        MyBatisDbConnection<PatientAdministrationMapper> dbConnection
+                = new MyBatisDbConnection<>(PatientAdministrationMapper.class);
+        dbConnection.openSession();
+
+        dbConnection.getMapper().deletePatient(2);
+        dbConnection.commit();
+        dbConnection.closeSession();
+
+
     }
 
 
