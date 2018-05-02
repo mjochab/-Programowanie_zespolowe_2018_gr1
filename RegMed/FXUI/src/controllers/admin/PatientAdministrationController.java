@@ -169,8 +169,8 @@ public class PatientAdministrationController implements ControllerPagination {
 
             saveEditButton.setOnAction(e -> {
                 //patientRepository.update(createPatientForEditFromTextfields(patientToEdit));
+                patientAdministrationDTO.update(createPatientForEditFromTextfields(patientToEdit));
 
-                patientAdministrationDTO.update(patientToEdit);
                 loadDataToTable();
                 editTabDisable(true);
                 tabPane.getSelectionModel().select(createPatientTab);
@@ -220,16 +220,16 @@ public class PatientAdministrationController implements ControllerPagination {
         helpers.SwitchScene("admin/AdminHome", event);
     }
 
-    private Patient createPatientForEditFromTextfields(Patient patient) {
+    private pojo.Patient createPatientForEditFromTextfields(pojo.Patient patient) {
         //(int id, String forename, String name, String password, String pesel, String address)
-        Patient patientToReturn = new Patient(
-                patient.getId(),
-                forenameField.getText(),
-                nameField.getText(),
-                patient.getPassword(),
-                peselField.getText(),
-                addressField.getText()
-        );
+        pojo.Patient patientToReturn = patient;
+
+        patientToReturn.setFirstName(forenameField.getText());
+        patientToReturn.setLastName(nameField.getText());
+        patientToReturn.setPesel(peselField.getText());
+        patientToReturn.setEmail(patient.getEmail());
+        patientToReturn.setPhoneNumber(patient.getPhoneNumber());
+
         return patientToReturn;
     }
 
