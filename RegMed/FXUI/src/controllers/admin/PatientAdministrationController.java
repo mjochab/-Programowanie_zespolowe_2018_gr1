@@ -16,6 +16,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.util.Callback;
 import mappers.PatientAdministrationMapper;
 import models.PatientAdministrationDTO;
+import pojo.Address;
 import repositories.PatientRepository;
 import repositories.RepositoryInterface;
 
@@ -77,13 +78,6 @@ public class PatientAdministrationController implements ControllerPagination {
 
     @FXML
     private void initialize() {
-
-        //setup columns in the table
-        //idColumn.setCellValueFactory(new PropertyValueFactory<Patient, Integer>("id"));
-        //forenameColumn.setCellValueFactory(new PropertyValueFactory<Patient, String>("forename"));
-        //nameColumn.setCellValueFactory(new PropertyValueFactory<Patient, String>("name"));
-        //peselColumn.setCellValueFactory(new PropertyValueFactory<Patient, String>("pesel"));
-        //addressColumn.setCellValueFactory(new PropertyValueFactory<Patient, String>("address"));
 
         idColumn.setCellValueFactory(new PropertyValueFactory<pojo.Patient, Integer>("patientId"));
         forenameColumn.setCellValueFactory(new PropertyValueFactory<pojo.Patient, String>("firstName"));
@@ -165,41 +159,52 @@ public class PatientAdministrationController implements ControllerPagination {
 
     @FXML
     private void editPatientClicked(ActionEvent event) {
-//        if (getSelectedPatientInTable() != null) {
-//
-//            editTabDisable(false);
-//            tabPane.getSelectionModel().select(editPatientTab);
-//
-//            Patient patientToEdit = getSelectedPatientInTable();
-//            fillEditPatientFields(patientToEdit);
-//
-//            saveEditButton.setOnAction(e -> {
-//                patientRepository.update(createPatientForEditFromTextfields(patientToEdit));
-//                loadDataToTable();
-//                editTabDisable(true);
-//                tabPane.getSelectionModel().select(createPatientTab);
-//            });
-//
-//            declineEditButton.setOnAction(e -> {
-//                editTabDisable(true);
-//                tabPane.getSelectionModel().select(createPatientTab);
-//            });
-//        } else {
-//            DialogBox.warningBox("Information", "Please select patient to edit in table");
-//        }
+        if (getSelectedPatientInTable() != null) {
+
+            editTabDisable(false);
+            tabPane.getSelectionModel().select(editPatientTab);
+
+            pojo.Patient patientToEdit = getSelectedPatientInTable();
+            fillEditPatientFields(patientToEdit);
+
+            saveEditButton.setOnAction(e -> {
+                //patientRepository.update(createPatientForEditFromTextfields(patientToEdit));
+
+                patientAdministrationDTO.update(patientToEdit);
+                loadDataToTable();
+                editTabDisable(true);
+                tabPane.getSelectionModel().select(createPatientTab);
+            });
+
+            declineEditButton.setOnAction(e -> {
+                editTabDisable(true);
+                tabPane.getSelectionModel().select(createPatientTab);
+            });
+        } else {
+            DialogBox.warningBox("Information", "Please select patient to edit in table");
+        }
     }
 
     @FXML
     private void createPatientClicked(ActionEvent event) {
-        Patient patientToAdd = new Patient(
-                patientRepository.getNewMaxId(),
-                forenameFieldAdd.getText(),
-                nameFieldAdd.getText(),
-                nameFieldAdd.getText(), //name as password
-                peselFieldAdd.getText(),
-                addressFieldAdd.getText()
-        );
-        patientRepository.add(patientToAdd);
+        pojo.Patient patientToAdd = new pojo.Patient();
+        pojo.Address addressToAdd= new Address();
+
+        addressToAdd.setCity("city");
+        addressToAdd.setZip("zip");
+        addressToAdd.setStreet("street");
+        addressToAdd.setNumber(1);
+
+        patientToAdd.setFirstName(forenameFieldAdd.getText());
+        patientToAdd.setLastName(nameFieldAdd.getText());
+        patientToAdd.setPesel(peselFieldAdd.getText());
+        patientToAdd.setAddress(addressToAdd);
+        patientToAdd.setEmail("email@mail.com");
+        patientToAdd.setPhoneNumber("665554223");
+        patientToAdd.setFirstContactDoctorId(1);
+        patientToAdd.setPassword(peselFieldAdd.getText());
+
+        patientAdministrationDTO.add(patientToAdd);
 
         loadDataToTable();
         clearAddPatientFields();
@@ -229,11 +234,11 @@ public class PatientAdministrationController implements ControllerPagination {
     }
 
 
-    private void fillEditPatientFields(Patient patient) {
+    private void fillEditPatientFields(pojo.Patient patient) {
         peselField.setText(patient.getPesel());
-        forenameField.setText(patient.getForename());
-        nameField.setText(patient.getName());
-        addressField.setText(patient.getAddress());
+        forenameField.setText(patient.getFirstName());
+        nameField.setText(patient.getLastName());
+        addressField.setText(patient.getAddress().toString());
     }
 
     private void clearAddPatientFields() {

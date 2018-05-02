@@ -55,7 +55,7 @@ public interface PatientAdministrationMapper {
     @Insert("INSERT into addresses(id_address, city, zip_code, street, number) VALUES (" +
             "#{addressId}, #{city}, #{zip}, #{street}, #{number})")
     @Options(useGeneratedKeys = true, keyProperty = "addressId", keyColumn = "id_address")
-    void addAddressAsChild(Address address);
+    void addPatientAddressAsChild(Address address);
 
     @Update("UPDATE patients SET first_name=#{firstName}, last_name=#{lastName}, PESEL=#{pesel}, " +
             "email=#{email}, phone_number=#{phoneNumber} WHERE id_patient=#{patientId}")

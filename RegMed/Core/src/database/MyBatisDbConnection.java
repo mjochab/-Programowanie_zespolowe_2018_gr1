@@ -13,14 +13,13 @@ public class MyBatisDbConnection<T> {
     private SqlSession session;
     private Class<T> dataSourceProviderType;
     private T mapper;
+    private SqlSessionFactory sqlSessionFactory;
 
 
     public MyBatisDbConnection(Class<T> type) {
         config = readFile();
         this.dataSourceProviderType = type;
-        SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(config);
-        sqlSessionFactory.openSession();
-        session = sqlSessionFactory.openSession();
+        sqlSessionFactory = new SqlSessionFactoryBuilder().build(config);
     }
 
 
@@ -35,7 +34,10 @@ public class MyBatisDbConnection<T> {
 
 
     public void openSession() {
+
+        session = sqlSessionFactory.openSession();
         session.getConfiguration().addMapper(dataSourceProviderType.getClass());
+        //session.getConfiguration().setLazyLoadingEnabled(false);
         mapper = session.getMapper(dataSourceProviderType);
     }
 

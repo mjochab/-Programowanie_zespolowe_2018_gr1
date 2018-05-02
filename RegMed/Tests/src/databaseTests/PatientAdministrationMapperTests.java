@@ -15,11 +15,11 @@ import java.util.List;
 
 public class PatientAdministrationMapperTests {
 
+    MyBatisDbConnection<PatientAdministrationMapper> dbConnection
+            = new MyBatisDbConnection<>(PatientAdministrationMapper.class);
+
     @Test
     void getAllPatientsDataToTable_returning_correct_patient_list() {
-        MyBatisDbConnection<PatientAdministrationMapper> dbConnection
-                = new MyBatisDbConnection<>(PatientAdministrationMapper.class);
-
         dbConnection.openSession();
         List<Patient> result = new ArrayList<>(dbConnection.getMapper().getAllPatientsDataToTable());
 
@@ -27,15 +27,12 @@ public class PatientAdministrationMapperTests {
             System.out.println(patient.getAddress().toString());
         }
 
-        assertTrue(result.size() == 2);
+        assertTrue(result.size() == 3);
     }
 
 
     @Test
     void getPatient_returning_single_patient_with_id_2() {
-        MyBatisDbConnection<PatientAdministrationMapper> dbConnection
-                = new MyBatisDbConnection<>(PatientAdministrationMapper.class);
-
         dbConnection.openSession();
         Patient result = dbConnection.getMapper().getPatient(2);
 
@@ -70,7 +67,7 @@ public class PatientAdministrationMapperTests {
         p.setPassword("password");
 
 
-        dbConnection.getMapper().addAddressAsChild(p.getAddress());
+        dbConnection.getMapper().addPatientAddressAsChild(p.getAddress());
         dbConnection.getMapper().addPatient(p);
         dbConnection.commit();
         dbConnection.closeSession();
@@ -146,8 +143,12 @@ public class PatientAdministrationMapperTests {
         dbConnection.getMapper().deletePatient(2);
         dbConnection.commit();
         dbConnection.closeSession();
+    }
 
-
+    @Test
+    void two_statements_test() {
+        getAllPatientsDataToTable_returning_correct_patient_list();
+        getAllPatientsDataToTable_returning_correct_patient_list();
     }
 
 

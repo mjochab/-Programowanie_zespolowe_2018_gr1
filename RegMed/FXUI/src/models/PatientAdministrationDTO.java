@@ -2,6 +2,7 @@ package models;
 
 import database.MyBatisDbConnection;
 import mappers.PatientAdministrationMapper;
+import pojo.Address;
 import pojo.Patient;
 
 import java.util.ArrayList;
@@ -18,9 +19,69 @@ public class PatientAdministrationDTO {
 
     public ArrayList<Patient> getAll() {
         dbConnection.openSession();
-        ArrayList<Patient> listToReturn = new ArrayList<>(dbConnection.getMapper().getAllPatientsDataToTable());
+        try {
+            ArrayList<Patient> listToReturn = new ArrayList<>(dbConnection.getMapper().getAllPatientsDataToTable());
+            return listToReturn;
+        } finally {
+            dbConnection.closeSession();
+        }
+    }
+
+    public Patient get(int patientId) {
+        dbConnection.openSession();
+        try {
+            Patient patientToReturn = dbConnection.getMapper().getPatient(patientId);
+            return patientToReturn;
+        }finally {
+            dbConnection.closeSession();
+        }
+    }
+
+    public void add(Patient patient) {
+        dbConnection.openSession();
+        try {
+            dbConnection.getMapper().addPatientAddressAsChild(patient.getAddress());
+            dbConnection.getMapper().addPatient(patient);
+            dbConnection.commit();
+        }finally {
+            dbConnection.closeSession();
+        }
+    }
+    
+    public void update(Patient patient) {
+        dbConnection.openSession();
+        try {
+            Patient patientToUpdate = dbConnection.getMapper().getPatient(patient.getPatientId());
+
+            patientToUpdate.setFirstName(patient.getFirstName());
+            patientToUpdate.setLastName(patient.getLastName());
+            patientToUpdate.setPesel(patient.getPesel());
+            patientToUpdate.setEmail(patient.getEmail());
+            patientToUpdate.setPhoneNumber(patient.getPhoneNumber());
+
+            dbConnection.getMapper().updatePatient(patientToUpdate);
+            dbConnection.commit();
+        } finally {
+            dbConnection.closeSession();
+        }
+
+
+
+    }
+    
+    public void updateAddress(Patient patient, Address address) {
+        dbConnection.openSession();
+        Address addressToUpdate = dbConnection.getMapper()
+                .getPatient(patient.getPatientId()).getAddress();
+
+        addressToUpdate.setCity(address.getCity());
+        addressToUpdate.setZip(address.getZip());
+        addressToUpdate.setStreet(address.getStreet());
+        addressToUpdate.setNumber(address.getNumber());
+
+        dbConnection.getMapper().updatePatientAddress(addressToUpdate);
+        dbConnection.commit();
         dbConnection.closeSession();
-        return listToReturn;
     }
 
 }
