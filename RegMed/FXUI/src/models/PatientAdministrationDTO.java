@@ -51,7 +51,8 @@ public class PatientAdministrationDTO {
     public void update(Patient patient) {
         dbConnection.openSession();
         try {
-            Patient patientToUpdate = dbConnection.getMapper().getPatient(patient.getPatientId());
+            Patient patientToUpdate = dbConnection.getMapper()
+                    .getPatient(patient.getPatientId());
 
             patientToUpdate.setFirstName(patient.getFirstName());
             patientToUpdate.setLastName(patient.getLastName());
@@ -65,15 +66,12 @@ public class PatientAdministrationDTO {
             dbConnection.closeSession();
         }
 
-
-
     }
     
-    public void updateAddress(Patient patient, Address address) {
+    public void updateAddress(Address address) {
         dbConnection.openSession();
         try {
-            Address addressToUpdate = dbConnection.getMapper()
-                    .getPatient(patient.getPatientId()).getAddress();
+            Address addressToUpdate = address;
 
             addressToUpdate.setCity(address.getCity());
             addressToUpdate.setZip(address.getZip());
@@ -81,6 +79,18 @@ public class PatientAdministrationDTO {
             addressToUpdate.setNumber(address.getNumber());
 
             dbConnection.getMapper().updatePatientAddress(addressToUpdate);
+            dbConnection.commit();
+        } finally {
+            dbConnection.closeSession();
+        }
+    }
+
+    public void updateFirstcontactDoctorId(Patient patient, int doctorId) {
+        dbConnection.openSession();
+        try {
+            Patient patientToUpdate = patient;
+
+            dbConnection.getMapper().updatePatientFirstcontactDoctor(patientToUpdate, doctorId);
             dbConnection.commit();
         } finally {
             dbConnection.closeSession();
