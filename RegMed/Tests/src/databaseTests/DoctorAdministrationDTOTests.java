@@ -1,5 +1,7 @@
 package databaseTests;
 
+import database.MyBatisDbConnection;
+import mappers.DoctorAdministrationMapper;
 import models.DoctorAdministrationDTO;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -9,6 +11,7 @@ import pojo.Address;
 import pojo.Doctor;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class DoctorAdministrationDTOTests {
 
@@ -32,6 +35,7 @@ public class DoctorAdministrationDTOTests {
 
         assertEquals("78281732398", result.getPesel());
         assertEquals("Joanna", result.getFirstName());
+        assertNotNull(result.getPhoneNumber());
     }
 
     @Disabled
@@ -124,6 +128,17 @@ public class DoctorAdministrationDTOTests {
         int lastDoctorIndex = doctorAdministrationDTO.getAll()
                 .get(doctorAdministrationDTO.getAll().size()-1).getDoctorId();
         doctorAdministrationDTO.delete(lastDoctorIndex);
+    }
+
+    @Test
+    void mapper_getAll_test() {
+        MyBatisDbConnection<DoctorAdministrationMapper> dbConnection
+                = new MyBatisDbConnection<>(DoctorAdministrationMapper.class);
+        dbConnection.openSession();
+        ArrayList<Doctor> result = new ArrayList<>(dbConnection.getMapper().getAllDoctorsToTable());
+        dbConnection.closeSession();
+
+        assertNotNull(result.get(1).getPhoneNumber());
     }
 
 }

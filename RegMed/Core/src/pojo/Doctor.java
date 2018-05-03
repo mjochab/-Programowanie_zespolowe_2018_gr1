@@ -70,14 +70,6 @@ public class Doctor {
         this.specializationId = specializationId;
     }
 
-    public Address getAddress() {
-        return address;
-    }
-
-    public void setAddress(Address address) {
-        this.address = address;
-    }
-
     public String getPassword() {
         return password;
     }
@@ -86,6 +78,13 @@ public class Doctor {
         this.password = password;
     }
 
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
 
     public String doctorToString() {
         return String.format("%s %s %s %s %s %s %s %s",

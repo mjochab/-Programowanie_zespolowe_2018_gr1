@@ -10,8 +10,8 @@ import java.util.List;
 @Mapper
 public interface DoctorAdministrationMapper {
 
-    @Select("SELECT id_doctor, first_name, last_name, PESEL, id_address, email, phone_number " +
-            "id_specialization FROM doctors;")
+    @Select("select id_doctor, first_name, last_name, PESEL, id_address, email, phone_number, " +
+            "id_specialization from doctors")
     @Results({
             @Result(property = "doctorId", column = "id_doctor"),
             @Result(property = "firstName", column = "first_name"),
@@ -26,9 +26,8 @@ public interface DoctorAdministrationMapper {
     })
     List<Doctor> getAllDoctorsToTable();
 
-
-    @Select("SELECT id_doctor, first_name, last_name, PESEL, id_address, email, phone_number " +
-            "id_specialization FROM doctors WHERE id_doctor=#{doctorId};")
+    @Select("select id_doctor, first_name, last_name, PESEL, id_address, email, phone_number, " +
+            "id_specialization from doctors where id_doctor=#{doctorId}")
     @Results({
             @Result(property = "doctorId", column = "id_doctor"),
             @Result(property = "firstName", column = "first_name"),
