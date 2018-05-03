@@ -3,18 +3,17 @@ package mappers;
 import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.mapping.FetchType;
 import pojo.Address;
-import pojo.Patient;
+import pojo.Doctor;
 
 import java.util.List;
 
 @Mapper
-public interface PatientAdministrationMapper {
+public interface DoctorAdministrationMapper {
 
-
-    @Select("SELECT id_patient, first_name, last_name, PESEL, id_address," +
-            " email, phone_number,id_firstcontact_doctor FROM patients;")
+    @Select("SELECT id_doctor, first_name, last_name, PESEL, id_address, email, phone_number " +
+            "id_specialization FROM doctors;")
     @Results({
-            @Result(property = "patientId", column = "id_patient"),
+            @Result(property = "doctorId", column = "id_doctor"),
             @Result(property = "firstName", column = "first_name"),
             @Result(property = "lastName", column = "last_name"),
             @Result(property = "pesel", column = "PESEL"),
@@ -23,16 +22,15 @@ public interface PatientAdministrationMapper {
                     fetchType = FetchType.EAGER)),
             @Result(property = "email", column = "email"),
             @Result(property = "phoneNumber", column = "phone_number"),
-            @Result(property = "firstContactDoctorId", column = "id_firstcontact_doctor")   //TODO: update db foreign key
+            @Result(property = "specializationId", column = "id_specialization")
     })
-    List<Patient> getAllPatientsDataToTable();
+    List<Doctor> getAllDoctorsToTable();
 
 
-    @Select("SELECT id_patient, first_name, last_name, PESEL, id_address," +
-            " email, phone_number,id_firstcontact_doctor FROM patients " +
-            "WHERE id_patient = #{patientId}")
+    @Select("SELECT id_doctor, first_name, last_name, PESEL, id_address, email, phone_number " +
+            "id_specialization FROM doctors WHERE id_doctor=#{doctorId};")
     @Results({
-            @Result(property = "patientId", column = "id_patient"),
+            @Result(property = "doctorId", column = "id_doctor"),
             @Result(property = "firstName", column = "first_name"),
             @Result(property = "lastName", column = "last_name"),
             @Result(property = "pesel", column = "PESEL"),
@@ -41,45 +39,37 @@ public interface PatientAdministrationMapper {
                     fetchType = FetchType.EAGER)),
             @Result(property = "email", column = "email"),
             @Result(property = "phoneNumber", column = "phone_number"),
-            @Result(property = "firstContactDoctorId", column = "id_firstcontact_doctor")   //TODO: update db foreign key
+            @Result(property = "specializationId", column = "id_specialization")
     })
-    Patient getPatient(int patientId);
+    Doctor getDoctor(int doctorId);
 
-    @Insert("INSERT into patients(id_patient, first_name, last_name, PESEL, id_address, email, phone_number, " +
-            "id_firstcontact_doctor, password) VALUES (#{patientId}, #{firstName}, #{lastName}, #{pesel}, #{address.addressId}," +
-            "#{email}, #{phoneNumber}, #{firstContactDoctorId}, #{password})")
-    @Options(useGeneratedKeys = true, keyProperty = "patientId", keyColumn = "id_patient")
-    void addPatient(Patient patient);
 
+    @Insert("INSERT into doctors(id_doctor, first_name, last_name, PESEL, id_address, email, phone_number, " +
+            "id_specialization, password) VALUES (#{doctorId}, #{firstName}, #{lastName}, #{pesel}, #{address.addressId}, " +
+            "#{email}, #{phoneNumber}, #{specializationId}, #{password})")
+    @Options(useGeneratedKeys = true, keyProperty = "doctorId", keyColumn = "id_doctor")
+    void addDoctor(Doctor doctor);
 
     @Insert("INSERT into addresses(id_address, city, zip_code, street, number) VALUES (" +
             "#{addressId}, #{city}, #{zip}, #{street}, #{number})")
     @Options(useGeneratedKeys = true, keyProperty = "addressId", keyColumn = "id_address")
-    void addPatientAddressAsChild(Address address);
+    void addDoctorAddressAsChild(Address address);
 
-    @Update("UPDATE patients SET first_name=#{firstName}, last_name=#{lastName}, PESEL=#{pesel}, " +
-            "email=#{email}, phone_number=#{phoneNumber} WHERE id_patient=#{patientId}")
-    void updatePatient(Patient patient);
+    @Update("UPDATE doctors SET first_name=#{firstName}, last_name=#{lastName}, PESEL=#{pesel}, " +
+            "email=#{email}, phone_number=#{phoneNumber} WHERE id_doctor=#{doctorId}")
+    void updateDoctor(Doctor doctor);
 
     @Update("UPDATE addresses SET city=#{city}, zip_code=#{zip}, street=#{street}, number=#{number} " +
             "WHERE id_address=#{addressId}")
-    void updatePatientAddress(Address address);
+    void updateDoctorAddress(Address address);
 
-    @Update("UPDATE patients SET id_firstcontact_doctor=#{newDoctorId} WHERE id_patient=#{patient.patientId}")
-    void updatePatientFirstcontactDoctor(@Param("patient") Patient patient,
-                                         @Param("newDoctorId") int newDoctorId);
-
-    @Delete("DELETE from patients WHERE id_patient=#{patientId}")
-    void deletePatient(int patientId);
-
-    @Delete("DELETE from addresses WHERE id_address=#{addressId}")
-    void deleteAddress(int addressId);
+    @Update("UPDATE doctors SET id_specialization=#{specializationId} WHERE id_doctor=#{doctor.doctorId}")
+    void updateDoctorSpecialization(@Param("doctor") Doctor doctor,
+                                    @Param("specializationId") int specializationId);
 
 
-
-
-
-
+    @Delete("DELETE from doctors WHERE id_doctor=#{doctorId};")
+    void deleteDoctor(int doctorId);
 
 
 
