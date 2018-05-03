@@ -1,7 +1,6 @@
 package controllers.admin;
 
 import database.MyBatisDbConnection;
-import entities.Patient;
 import helpers.ControllerPagination;
 import helpers.DialogBox;
 import javafx.collections.FXCollections;
@@ -17,6 +16,7 @@ import javafx.util.Callback;
 import mappers.PatientAdministrationMapper;
 import models.PatientAdministrationDTO;
 import pojo.Address;
+import pojo.Patient;
 import repositories.PatientRepository;
 import repositories.RepositoryInterface;
 
@@ -44,6 +44,7 @@ public class PatientAdministrationController implements ControllerPagination {
             streetField,
             numberField,
             doctorIdField,
+
             forenameFieldAdd,
             nameFieldAdd,
             peselFieldAdd,
@@ -64,41 +65,38 @@ public class PatientAdministrationController implements ControllerPagination {
             createPatientTab;
 
     @FXML
-    private TableView<pojo.Patient> patientsTable;
+    private TableView<Patient> patientsTable;
     @FXML
-    private TableColumn<pojo.Patient, Integer> idColumn,
+    private TableColumn<Patient, Integer> idColumn,
             firstContactDoctorIdColumn;
     @FXML
-    private TableColumn<pojo.Patient, String> forenameColumn,
+    private TableColumn<Patient, String> forenameColumn,
             nameColumn,
             peselColumn,
             addressColumn,
             emailColumn;
 
-
-    private RepositoryInterface<Patient> patientRepository;
+    
     private PatientAdministrationDTO patientAdministrationDTO;
 
     private FilteredList filteredList;
 
-    ObservableList<pojo.Patient> tableData;
+    ObservableList<Patient> tableData;
 
     public PatientAdministrationController() {
-        this.patientRepository = new PatientRepository();
-
         patientAdministrationDTO = new PatientAdministrationDTO();
     }
 
     @FXML
     private void initialize() {
 
-        idColumn.setCellValueFactory(new PropertyValueFactory<pojo.Patient, Integer>("patientId"));
-        forenameColumn.setCellValueFactory(new PropertyValueFactory<pojo.Patient, String>("firstName"));
-        nameColumn.setCellValueFactory(new PropertyValueFactory<pojo.Patient, String>("lastName"));
-        peselColumn.setCellValueFactory(new PropertyValueFactory<pojo.Patient, String>("pesel"));
-        addressColumn.setCellValueFactory(new PropertyValueFactory<pojo.Patient, String>("address"));
-        emailColumn.setCellValueFactory(new PropertyValueFactory<pojo.Patient, String>("email"));
-        firstContactDoctorIdColumn.setCellValueFactory(new PropertyValueFactory<pojo.Patient, Integer>("firstContactDoctorId"));
+        idColumn.setCellValueFactory(new PropertyValueFactory<Patient, Integer>("patientId"));
+        forenameColumn.setCellValueFactory(new PropertyValueFactory<Patient, String>("firstName"));
+        nameColumn.setCellValueFactory(new PropertyValueFactory<Patient, String>("lastName"));
+        peselColumn.setCellValueFactory(new PropertyValueFactory<Patient, String>("pesel"));
+        addressColumn.setCellValueFactory(new PropertyValueFactory<Patient, String>("address"));
+        emailColumn.setCellValueFactory(new PropertyValueFactory<Patient, String>("email"));
+        firstContactDoctorIdColumn.setCellValueFactory(new PropertyValueFactory<Patient, Integer>("firstContactDoctorId"));
 
         loadDataToTable();
 
@@ -135,7 +133,7 @@ public class PatientAdministrationController implements ControllerPagination {
             if (newValue.isEmpty() || newValue == null) {
                 return true;
             }
-            else if (patient.getName().toLowerCase().contains(newValue.toLowerCase())) {
+            else if (patient.getLastName().toLowerCase().contains(newValue.toLowerCase())) {
                 return true;
             }
             else if (patient.getPesel().contains(newValue)) {
@@ -176,7 +174,7 @@ public class PatientAdministrationController implements ControllerPagination {
             editTabDisable(false);
             tabPane.getSelectionModel().select(editPatientTab);
 
-            pojo.Patient patientToEdit = getSelectedPatientInTable();
+            Patient patientToEdit = getSelectedPatientInTable();
             fillEditPatientFields(patientToEdit);
             fillEditPatientAddressFields(patientToEdit.getAddress());
 
@@ -201,8 +199,8 @@ public class PatientAdministrationController implements ControllerPagination {
 
     @FXML
     private void createPatientClicked(ActionEvent event) {
-        pojo.Patient patientToAdd = new pojo.Patient();
-        pojo.Address addressToAdd= new Address();
+        Patient patientToAdd = new Patient();
+        Address addressToAdd= new Address();
 
         addressToAdd.setCity(cityFieldAdd.getText());
         addressToAdd.setZip(zipFieldAdd.getText());
@@ -216,7 +214,7 @@ public class PatientAdministrationController implements ControllerPagination {
         patientToAdd.setEmail(emailFieldAdd.getText());
         patientToAdd.setPhoneNumber(phoneFieldAdd.getText());
         patientToAdd.setFirstContactDoctorId(Integer.parseInt(doctorIdFieldAdd.getText()));
-        patientToAdd.setPassword(peselFieldAdd.getText());
+        patientToAdd.setPassword(nameFieldAdd.getText());
 
         patientAdministrationDTO.add(patientToAdd);
 
@@ -234,20 +232,20 @@ public class PatientAdministrationController implements ControllerPagination {
         helpers.SwitchScene("admin/AdminHome", event);
     }
 
-    private pojo.Patient createPatientForEditFromTextfields(pojo.Patient patient) {
-        pojo.Patient patientToReturn = patient;
+    private Patient createPatientForEditFromTextfields(Patient patient) {
+        Patient patientToReturn = patient;
 
         patientToReturn.setFirstName(forenameField.getText());
         patientToReturn.setLastName(nameField.getText());
         patientToReturn.setPesel(peselField.getText());
-        patientToReturn.setEmail(patient.getEmail());
-        patientToReturn.setPhoneNumber(patient.getPhoneNumber());
-        patientToReturn.setFirstContactDoctorId(patient.getFirstContactDoctorId());
+        patientToReturn.setEmail(emailField.getText());
+        patientToReturn.setPhoneNumber(phoneField.getText());
+        patientToReturn.setFirstContactDoctorId(Integer.parseInt(doctorIdField.getText()));
         return patientToReturn;
     }
 
-    private pojo.Address createAddressForEditFromTexfields(pojo.Address address) {
-        pojo.Address addressToReturn = address;
+    private Address createAddressForEditFromTexfields(Address address) {
+        Address addressToReturn = address;
 
         addressToReturn.setCity(cityField.getText());
         addressToReturn.setZip(zipField.getText());
@@ -259,7 +257,7 @@ public class PatientAdministrationController implements ControllerPagination {
 
 
 
-    private void fillEditPatientFields(pojo.Patient patient) {
+    private void fillEditPatientFields(Patient patient) {
         forenameField.setText(patient.getFirstName());
         nameField.setText(patient.getLastName());
         peselField.setText(patient.getPesel());
@@ -268,7 +266,7 @@ public class PatientAdministrationController implements ControllerPagination {
         doctorIdField.setText(String.valueOf(patient.getFirstContactDoctorId()));
     }
 
-    private void fillEditPatientAddressFields(pojo.Address address) {
+    private void fillEditPatientAddressFields(Address address) {
         cityField.setText(address.getCity());
         zipField.setText(address.getZip());
         streetField.setText(address.getStreet());
@@ -296,7 +294,7 @@ public class PatientAdministrationController implements ControllerPagination {
 
     //HELPER METHODS
 
-    private pojo.Patient getSelectedPatientInTable() {
+    private Patient getSelectedPatientInTable() {
         return patientsTable.getSelectionModel().getSelectedItem();
     }
 
