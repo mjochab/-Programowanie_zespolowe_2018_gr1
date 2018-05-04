@@ -1,6 +1,6 @@
 package controllers.admin;
 
-import entities.Administrator;
+import pojo.Administrator;
 import helpers.ControllerPagination;
 import helpers.DialogBox;
 import javafx.collections.FXCollections;
@@ -13,6 +13,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
+import models.AdminAdministrationDTO;
 import repositories.AdministratorRepository;
 import repositories.RepositoryInterface;
 
@@ -32,11 +33,14 @@ public class AdminAdministrationController implements Initializable, ControllerP
             peselField,
             forenameField,
             nameField,
-            addressField,
+            emailField,
+            phoneNumberField,
+
             forenameFieldAdd,
             nameFieldAdd,
             peselFieldAdd,
-            addressFieldAdd;
+            emailFieldAdd,
+            phoneNumberFieldAdd;
 
     @FXML
     private TabPane tabPane;
@@ -52,15 +56,17 @@ public class AdminAdministrationController implements Initializable, ControllerP
     @FXML
     private TableColumn<Administrator, String> forenameColumn,
             nameColumn,
-            peselColumn;
+            peselColumn,
+            emailColumn,
+            phoneNumberColumn;
 
 
-    private RepositoryInterface administratorRepository;
+    private AdminAdministrationDTO adminAdministrationDTO;
     private FilteredList filteredList;
     private ObservableList tableData;
 
     public AdminAdministrationController() {
-        this.administratorRepository = new AdministratorRepository();
+        this.adminAdministrationDTO = new AdminAdministrationDTO();
     }
 
 
@@ -73,14 +79,16 @@ public class AdminAdministrationController implements Initializable, ControllerP
     }
 
     private void setupColumnsInTheTable() {
-        idColumn.setCellValueFactory(new PropertyValueFactory<Administrator, Integer>("id"));
-        forenameColumn.setCellValueFactory(new PropertyValueFactory<Administrator, String>("forename"));
-        nameColumn.setCellValueFactory(new PropertyValueFactory<Administrator, String>("name"));
+        idColumn.setCellValueFactory(new PropertyValueFactory<Administrator, Integer>("adminId"));
+        forenameColumn.setCellValueFactory(new PropertyValueFactory<Administrator, String>("firstName"));
+        nameColumn.setCellValueFactory(new PropertyValueFactory<Administrator, String>("lastName"));
         peselColumn.setCellValueFactory(new PropertyValueFactory<Administrator, String>("pesel"));
+        emailColumn.setCellValueFactory(new PropertyValueFactory<Administrator, String>("email"));
+        phoneNumberColumn.setCellValueFactory(new PropertyValueFactory<Administrator, String>("phoneNumber"));
     }
 
     private void loadDataToTable() {
-        tableData = FXCollections.observableArrayList(administratorRepository.getAll());
+        tableData = FXCollections.observableArrayList(adminAdministrationDTO.getAll());
         administratorsTable.setItems(tableData);
         filteredList = new FilteredList(tableData, e->true);
         administratorsTable.refresh();
@@ -97,7 +105,7 @@ public class AdminAdministrationController implements Initializable, ControllerP
             filteredList.setPredicate((java.util.function.Predicate<? super Administrator>) (Administrator administrator) ->{
                 if (newValue.isEmpty() || newValue == null) {
                     return true;
-                } else if (administrator.getName().toLowerCase().contains(newValue.toLowerCase())) {
+                } else if (administrator.getFirstName().toLowerCase().contains(newValue.toLowerCase())) {
                     return true;
                 } else if (administrator.getPesel().contains(newValue)) {
                     return true;
@@ -119,9 +127,9 @@ public class AdminAdministrationController implements Initializable, ControllerP
 
         if (getSelectedAdministratorInTable() != null) {
             if (DialogBox.choiceBox("Remove confirmation", String.format("%s %s will be removed.",
-                    administratorToDelete.getForename(), administratorToDelete.getName()), "Are you sure?")) {
+                    administratorToDelete.getFirstName(), administratorToDelete.getLastName()), "Are you sure?")) {
 
-                administratorRepository.remove(administratorToDelete);
+                adminAdministrationDTO.delete(administratorToDelete.getAdminId());
 
                 loadDataToTable();
             }
@@ -142,7 +150,7 @@ public class AdminAdministrationController implements Initializable, ControllerP
             fillEditAdministratorFields(administratorToEdit);
 
             saveEditButton.setOnAction(e -> {
-                administratorRepository.update(createAdministratorForEditFromTextfields(administratorToEdit));
+                adminAdministrationDTO.update(createAdministratorForEditFromTextfields(administratorToEdit));
                 loadDataToTable();
                 editTabDisable(true);
                 tabPane.getSelectionModel().select(createAdministratorTab);
@@ -159,14 +167,15 @@ public class AdminAdministrationController implements Initializable, ControllerP
 
     @FXML
     private void createAdministratorClicked(ActionEvent event) {
-        Administrator administratorToAdd = new Administrator(
-                administratorRepository.getNewMaxId(),
-                forenameFieldAdd.getText(),
-                nameFieldAdd.getText(),
-                nameFieldAdd.getText(), //name as password
-                peselFieldAdd.getText()
-        );
-        administratorRepository.add(administratorToAdd);
+        Administrator administratorToAdd = new Administrator();
+        administratorToAdd.setFirstName(forenameFieldAdd.getText());
+        administratorToAdd.setLastName(nameFieldAdd.getText());
+        administratorToAdd.setPesel(peselFieldAdd.getText());
+        administratorToAdd.setEmail(emailFieldAdd.getText());
+        administratorToAdd.setPhoneNumber(phoneNumberFieldAdd.getText());
+        administratorToAdd.setPassword(nameFieldAdd.getText());
+
+        adminAdministrationDTO.add(administratorToAdd);
 
         loadDataToTable();
         clearAddAdministratorFields();
@@ -187,18 +196,20 @@ public class AdminAdministrationController implements Initializable, ControllerP
 
     private void fillEditAdministratorFields(Administrator administrator) {
         peselField.setText(administrator.getPesel());
-        forenameField.setText(administrator.getForename());
-        nameField.setText(administrator.getName());
+        forenameField.setText(administrator.getFirstName());
+        nameField.setText(administrator.getLastName());
+        emailField.setText(administrator.getEmail());
+        phoneNumberField.setText(administrator.getPhoneNumber());
     }
 
     private Administrator createAdministratorForEditFromTextfields(Administrator administrator) {
-        Administrator administratorToReturn = new Administrator(
-                administrator.getId(),
-                forenameField.getText(),
-                nameField.getText(),
-                administrator.getPassword(),
-                peselField.getText()
-        );
+        Administrator administratorToReturn = administrator;
+        administratorToReturn.setFirstName(forenameField.getText());
+        administratorToReturn.setLastName(nameField.getText());
+        administratorToReturn.setPesel(peselField.getText());
+        administratorToReturn.setEmail(emailField.getText());
+        administratorToReturn.setPhoneNumber(phoneNumberField.getText());
+
         return administratorToReturn;
     }
 
@@ -206,6 +217,8 @@ public class AdminAdministrationController implements Initializable, ControllerP
         forenameFieldAdd.setText(null);
         nameFieldAdd.setText(null);
         peselFieldAdd.setText(null);
+        emailFieldAdd.setText(null);
+        phoneNumberFieldAdd.setText(null);
     }
 
 
