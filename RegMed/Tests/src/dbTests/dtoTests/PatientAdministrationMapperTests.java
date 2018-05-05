@@ -1,4 +1,4 @@
-package databaseTests;
+package dbTests.dtoTests;
 
 import database.MyBatisDbConnection;
 import mappers.PatientAdministrationMapper;

@@ -17,8 +17,6 @@
       </environment>
    </environments>
     <mappers>
-        <mapper class="mappers.PatientMapper"/>
-        <mapper class="mappers.DoctorMapper" />
         <mapper class="mappers.PatientAdministrationMapper" />
         <mapper class="mappers.DoctorAdministrationMapper" />
         <mapper class="mappers.AdminAdministrationMapper" />

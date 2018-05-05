@@ -1,6 +1,5 @@
 package controllers.admin;
 
-import database.MyBatisDbConnection;
 import helpers.ControllerPagination;
 import helpers.DialogBox;
 import javafx.collections.FXCollections;
@@ -12,17 +11,11 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
-import javafx.util.Callback;
-import mappers.PatientAdministrationMapper;
-import models.PatientAdministrationDTO;
+import dto.PatientAdministrationDTO;
 import pojo.Address;
 import pojo.Patient;
-import repositories.PatientRepository;
-import repositories.RepositoryInterface;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 
 public class PatientAdministrationController implements ControllerPagination {

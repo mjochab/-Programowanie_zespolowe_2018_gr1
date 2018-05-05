@@ -1,8 +1,8 @@
-package databaseTests;
+package dbTests.dtoTests;
 
 import database.MyBatisDbConnection;
 import mappers.DoctorAdministrationMapper;
-import models.DoctorAdministrationDTO;
+import dto.DoctorAdministrationDTO;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
@@ -11,7 +11,6 @@ import pojo.Address;
 import pojo.Doctor;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class DoctorAdministrationDTOTests {
 

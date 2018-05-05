@@ -1,4 +1,4 @@
-package models;
+package dto;
 
 import database.MyBatisDbConnection;
 import mappers.DoctorAdministrationMapper;

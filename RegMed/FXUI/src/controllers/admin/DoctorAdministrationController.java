@@ -1,7 +1,6 @@
 package controllers.admin;
 
-import models.DoctorAdministrationDTO;
-import models.PatientAdministrationDTO;
+import dto.DoctorAdministrationDTO;
 import pojo.Address;
 import pojo.Doctor;
 import helpers.ControllerPagination;
@@ -15,8 +14,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
-import repositories.DoctorRepository;
-import repositories.RepositoryInterface;
 
 import java.io.IOException;
 import java.util.function.Predicate;

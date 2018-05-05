@@ -1,6 +1,6 @@
-package databaseTests;
+package dbTests.dtoTests;
 
-import models.AdminAdministrationDTO;
+import dto.AdminAdministrationDTO;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import pojo.Administrator;
@@ -8,8 +8,6 @@ import pojo.Administrator;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 
 public class AdminAdministrationDTOTests {

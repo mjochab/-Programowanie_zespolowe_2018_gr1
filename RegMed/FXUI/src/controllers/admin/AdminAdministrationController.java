@@ -13,9 +13,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
-import models.AdminAdministrationDTO;
-import repositories.AdministratorRepository;
-import repositories.RepositoryInterface;
+import dto.AdminAdministrationDTO;
 
 import java.io.IOException;
 import java.net.URL;
