@@ -1,6 +1,8 @@
 package controllers.admin;
 
-import entities.Doctor;
+import dto.DoctorAdministrationDTO;
+import pojo.Address;
+import pojo.Doctor;
 import helpers.ControllerPagination;
 import helpers.DialogBox;
 import javafx.collections.FXCollections;
@@ -12,8 +14,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
-import repositories.DoctorRepository;
-import repositories.RepositoryInterface;
 
 import java.io.IOException;
 import java.util.function.Predicate;
@@ -30,12 +30,23 @@ public class DoctorAdministrationController implements ControllerPagination {
             peselField,
             forenameField,
             nameField,
-            addressField,
+            emailField,
+            phoneField,
+            cityField,
+            zipField,
+            streetField,
+            numberField,
             specializationField,
+
             forenameFieldAdd,
             nameFieldAdd,
             peselFieldAdd,
-            addressFieldAdd,
+            emailFieldAdd,
+            phoneFieldAdd,
+            cityFieldAdd,
+            zipFieldAdd,
+            streetFieldAdd,
+            numberFieldAdd,
             specializationFieldAdd;
 
     @FXML
@@ -48,37 +59,41 @@ public class DoctorAdministrationController implements ControllerPagination {
     @FXML
     private TableView<Doctor> doctorsTable;
     @FXML
-    private TableColumn<Doctor, Integer> idColumn;
+    private TableColumn<Doctor, Integer> idColumn,
+            specializationColumn;
     @FXML
     private TableColumn<Doctor, String> forenameColumn,
             nameColumn,
             peselColumn,
-            addressColumn,
-            specializationColumn;
+            emailColumn,
+            phoneNumberColumn,
+            addressColumn;
 
     @FXML
     private Tab editWorkingHoursTab;
 
-    private RepositoryInterface doctorRepository;
+    private DoctorAdministrationDTO doctorAdministrationDTO;
 
     private FilteredList filteredList;
 
     ObservableList<Doctor> tableData;
 
     public DoctorAdministrationController() {
-        this.doctorRepository = new DoctorRepository();
+        this.doctorAdministrationDTO = new DoctorAdministrationDTO();
     }
 
     @FXML
     private void initialize() {
 
         //setup columns in the table
-        idColumn.setCellValueFactory(new PropertyValueFactory<Doctor, Integer>("id"));
-        forenameColumn.setCellValueFactory(new PropertyValueFactory<Doctor, String>("forename"));
-        nameColumn.setCellValueFactory(new PropertyValueFactory<Doctor, String>("name"));
+        idColumn.setCellValueFactory(new PropertyValueFactory<Doctor, Integer>("doctorId"));
+        forenameColumn.setCellValueFactory(new PropertyValueFactory<Doctor, String>("firstName"));
+        nameColumn.setCellValueFactory(new PropertyValueFactory<Doctor, String>("lastName"));
         peselColumn.setCellValueFactory(new PropertyValueFactory<Doctor, String>("pesel"));
+        emailColumn.setCellValueFactory(new PropertyValueFactory<Doctor, String>("email"));
+        phoneNumberColumn.setCellValueFactory(new PropertyValueFactory<Doctor, String>("phoneNumber"));
         addressColumn.setCellValueFactory(new PropertyValueFactory<Doctor, String>("address"));
-        specializationColumn.setCellValueFactory(new PropertyValueFactory<Doctor, String>("specialization"));
+        specializationColumn.setCellValueFactory(new PropertyValueFactory<Doctor, Integer>("specializationId"));
 
         //load data
         loadDataToTable();
@@ -94,13 +109,10 @@ public class DoctorAdministrationController implements ControllerPagination {
         //if (tableData != null)
         //    tableData.removeAll();
 
-        tableData = FXCollections.observableArrayList(doctorRepository.getAll());
+        tableData = FXCollections.observableArrayList(doctorAdministrationDTO.getAll());
         doctorsTable.setItems(tableData);
         filteredList = new FilteredList(tableData, e->true);
         doctorsTable.refresh();
-
-        String s = "aaa";
-
     }
 
 
@@ -111,7 +123,7 @@ public class DoctorAdministrationController implements ControllerPagination {
                 if (newValue.isEmpty() || newValue == null) {
                     return true;
                 }
-                else if (doctor.getName().toLowerCase().contains(newValue.toLowerCase())) {
+                else if (doctor.getLastName().toLowerCase().contains(newValue.toLowerCase())) {
                     return true;
                 }
                 else if (doctor.getPesel().contains(newValue)) {
@@ -138,17 +150,14 @@ public class DoctorAdministrationController implements ControllerPagination {
 
         if(getSelectedDoctorInTable() != null) {
             if ( DialogBox.choiceBox("Remove confirmation", String.format("%s %s will be removed.",
-                    doctorToDelete.getForename(), doctorToDelete.getName()), "Are you sure?") ) {
+                    doctorToDelete.getFirstName(), doctorToDelete.getLastName()), "Are you sure?") ) {
 
-                doctorRepository.remove(doctorToDelete);
-
+                doctorAdministrationDTO.delete(getSelectedDoctorInTable().getDoctorId());
                 loadDataToTable();
             }
         } else {
             DialogBox.warningBox("Information", "Please select doctor to remove in table");
         }
-
-
     }
 
     @FXML
@@ -159,11 +168,15 @@ public class DoctorAdministrationController implements ControllerPagination {
             tabPane.getSelectionModel().select(editDoctorTab);
 
             Doctor doctorToEdit = getSelectedDoctorInTable();
-
             fillEditDoctorFields(doctorToEdit);
+            fillEditDoctorAddressFields(doctorToEdit.getAddress());
 
             saveEditButton.setOnAction(e -> {
-                doctorRepository.update(createDoctorForEditFromTextfields(doctorToEdit));
+                doctorAdministrationDTO.update(createDoctorForEditFromTextfields(doctorToEdit));
+                doctorAdministrationDTO.updateAddress(
+                        createAddressForEditFromTexfields(doctorToEdit.getAddress()));
+                doctorAdministrationDTO.updateSpecialization(
+                        doctorToEdit, Integer.parseInt(specializationField.getText()));
 
                 loadDataToTable();
                 editTabDisable(true);
@@ -181,16 +194,24 @@ public class DoctorAdministrationController implements ControllerPagination {
 
     @FXML
     private void createDoctorClicked(ActionEvent event) {
-        Doctor doctorToAdd = new Doctor(
-                doctorRepository.getNewMaxId(),
-                forenameFieldAdd.getText(),
-                nameFieldAdd.getText(),
-                nameFieldAdd.getText(), //name as password
-                peselFieldAdd.getText(),
-                addressFieldAdd.getText(),
-                specializationFieldAdd.getText()
-        );
-        doctorRepository.add(doctorToAdd);
+        Doctor doctorToAdd = new Doctor();
+        Address addressToAdd = new Address();
+
+        addressToAdd.setCity(cityFieldAdd.getText());
+        addressToAdd.setZip(zipFieldAdd.getText());
+        addressToAdd.setStreet(streetFieldAdd.getText());
+        addressToAdd.setNumber(Integer.parseInt(numberFieldAdd.getText()));
+
+        doctorToAdd.setFirstName(forenameFieldAdd.getText());
+        doctorToAdd.setLastName(nameFieldAdd.getText());
+        doctorToAdd.setPesel(peselFieldAdd.getText());
+        doctorToAdd.setAddress(addressToAdd);
+        doctorToAdd.setEmail(emailFieldAdd.getText());
+        doctorToAdd.setPhoneNumber(phoneFieldAdd.getText());
+        doctorToAdd.setSpecializationId(Integer.parseInt(specializationFieldAdd.getText()));
+        doctorToAdd.setPassword(nameFieldAdd.getText());
+
+        doctorAdministrationDTO.add(doctorToAdd);
 
         loadDataToTable();
         clearAddDoctorFields();
@@ -207,33 +228,56 @@ public class DoctorAdministrationController implements ControllerPagination {
     }
 
     private Doctor createDoctorForEditFromTextfields(Doctor doctor) {
-        //(int id, String forename, String name, String password, String pesel, String address)
-        Doctor doctorToReturn = new Doctor(
-                doctor.getId(),
-                forenameField.getText(),
-                nameField.getText(),
-                doctor.getPassword(),
-                peselField.getText(),
-                addressField.getText(),
-                specializationField.getText()
-        );
-        return doctorToReturn;
+        doctor.setFirstName(forenameField.getText());
+        doctor.setLastName(nameField.getText());
+        doctor.setPesel(peselField.getText());
+        doctor.setEmail(emailField.getText());
+        doctor.setPhoneNumber(phoneField.getText());
+        doctor.setSpecializationId(Integer.parseInt(specializationField.getText()));
+        return doctor;
+    }
+
+    private Address createAddressForEditFromTexfields(Address address) {
+        Address addressToReturn = address;
+
+        addressToReturn.setCity(cityField.getText());
+        addressToReturn.setZip(zipField.getText());
+        addressToReturn.setStreet(streetField.getText());
+        addressToReturn.setNumber(Integer.parseInt(String.valueOf(numberField.getText())));
+
+        return addressToReturn;
     }
 
 
     private void fillEditDoctorFields(Doctor doctor) {
         peselField.setText(doctor.getPesel());
-        forenameField.setText(doctor.getForename());
-        nameField.setText(doctor.getName());
-        addressField.setText(doctor.getAddress());
-        specializationField.setText(doctor.getSpecialization());
+        forenameField.setText(doctor.getFirstName());
+        nameField.setText(doctor.getLastName());
+        peselField.setText(doctor.getPesel());
+        emailField.setText(doctor.getEmail());
+        phoneField.setText(doctor.getPhoneNumber());
+        specializationField.setText(String.valueOf(doctor.getSpecializationId()));
+    }
+
+    private void fillEditDoctorAddressFields(Address address) {
+        cityField.setText(address.getCity());
+        zipField.setText(address.getZip());
+        streetField.setText(address.getStreet());
+        numberField.setText(String.valueOf(address.getNumber()));
     }
 
     private void clearAddDoctorFields() {
         forenameFieldAdd.setText(null);
         nameFieldAdd.setText(null);
         peselFieldAdd.setText(null);
-        addressFieldAdd.setText(null);
+        emailFieldAdd.setText(null);
+        phoneFieldAdd.setText(null);
+
+        cityFieldAdd.setText(null);
+        zipFieldAdd.setText(null);
+        streetFieldAdd.setText(null);
+        numberFieldAdd.setText(null);
+
         specializationFieldAdd.setText(null);
     }
 

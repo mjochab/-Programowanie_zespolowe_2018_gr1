@@ -1,3 +1,6 @@
+package dbTests;
+
+import database.DatabaseLocalConnection;
 import entities.Administrator;
 import entities.Patient;
 import org.junit.jupiter.api.Test;

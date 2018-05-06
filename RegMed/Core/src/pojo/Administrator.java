@@ -1,26 +1,23 @@
 package pojo;
 
-public class Patient {
-    private int patientId;
+public class Administrator {
+    private int adminId;
     private String firstName;
     private String lastName;
     private String pesel;
     private String email;
     private String phoneNumber;
-    private int firstContactDoctorId;
     private String password;
 
-    private Address address;
 
 
-    public int getPatientId() {
-        return patientId;
+    public int getAdminId() {
+        return adminId;
     }
 
-    public void setPatientId(int patientId) {
-        this.patientId = patientId;
+    public void setAdminId(int adminId) {
+        this.adminId = adminId;
     }
-
 
     public String getFirstName() {
         return firstName;
@@ -46,14 +43,6 @@ public class Patient {
         this.pesel = pesel;
     }
 
-    public Address getAddress() {
-        return address;
-    }
-
-    public void setAddress(Address address) {
-        this.address = address;
-    }
-
     public String getEmail() {
         return email;
     }
@@ -70,14 +59,6 @@ public class Patient {
         this.phoneNumber = phoneNumber;
     }
 
-    public int getFirstContactDoctorId() {
-        return firstContactDoctorId;
-    }
-
-    public void setFirstContactDoctorId(int firstContactDoctorId) {
-        this.firstContactDoctorId = firstContactDoctorId;
-    }
-
     public String getPassword() {
         return password;
     }
@@ -86,16 +67,14 @@ public class Patient {
         this.password = password;
     }
 
-    public String patientToString() {
-        return String.format("%s %s %s %s %s %s %s %s",
-                "patientId: " + getPatientId(),
+    public String administratorToString() {
+        return String.format("%s %s %s %s %s %s",
+                "adminId: " + getAdminId(),
                 "firstName: " + getFirstName(),
                 "lastName: " + getLastName(),
                 "pesel: " + getPesel(),
                 "email: " + getEmail(),
-                "phone: " + getPhoneNumber(),
-                "doctor: " + getFirstContactDoctorId(),
-                "address: " + getAddress().toString()
+                "phone: " + getPhoneNumber()
         );
     }
 }

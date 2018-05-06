@@ -1,26 +1,26 @@
 package pojo;
 
-public class Patient {
-    private int patientId;
+
+public class Doctor {
+
+    private int doctorId;
     private String firstName;
     private String lastName;
     private String pesel;
     private String email;
     private String phoneNumber;
-    private int firstContactDoctorId;
+    private int specializationId;  //TODO: convert to foreign key
     private String password;
 
     private Address address;
 
-
-    public int getPatientId() {
-        return patientId;
+    public int getDoctorId() {
+        return doctorId;
     }
 
-    public void setPatientId(int patientId) {
-        this.patientId = patientId;
+    public void setDoctorId(int doctorId) {
+        this.doctorId = doctorId;
     }
-
 
     public String getFirstName() {
         return firstName;
@@ -46,14 +46,6 @@ public class Patient {
         this.pesel = pesel;
     }
 
-    public Address getAddress() {
-        return address;
-    }
-
-    public void setAddress(Address address) {
-        this.address = address;
-    }
-
     public String getEmail() {
         return email;
     }
@@ -70,12 +62,12 @@ public class Patient {
         this.phoneNumber = phoneNumber;
     }
 
-    public int getFirstContactDoctorId() {
-        return firstContactDoctorId;
+    public int getSpecializationId() {
+        return specializationId;
     }
 
-    public void setFirstContactDoctorId(int firstContactDoctorId) {
-        this.firstContactDoctorId = firstContactDoctorId;
+    public void setSpecializationId(int specializationId) {
+        this.specializationId = specializationId;
     }
 
     public String getPassword() {
@@ -86,16 +78,25 @@ public class Patient {
         this.password = password;
     }
 
-    public String patientToString() {
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
+
+    public String doctorToString() {
         return String.format("%s %s %s %s %s %s %s %s",
-                "patientId: " + getPatientId(),
+                "patientId: " + getDoctorId(),
                 "firstName: " + getFirstName(),
                 "lastName: " + getLastName(),
                 "pesel: " + getPesel(),
                 "email: " + getEmail(),
                 "phone: " + getPhoneNumber(),
-                "doctor: " + getFirstContactDoctorId(),
+                "doctor: " + getSpecializationId(),
                 "address: " + getAddress().toString()
         );
     }
+
 }
