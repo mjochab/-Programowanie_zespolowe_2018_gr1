@@ -1,6 +1,6 @@
 package pojo;
 
-public class User {
+public abstract class User {
     protected int id;
     private String firstName;
     private String lastName;

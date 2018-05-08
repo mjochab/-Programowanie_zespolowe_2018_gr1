@@ -1,5 +1,6 @@
 package controllers.admin;
 
+import exceptions.ValidationException;
 import pojo.Administrator;
 import helpers.ControllerPagination;
 import helpers.DialogBox;
@@ -173,10 +174,15 @@ public class AdminAdministrationController implements Initializable, ControllerP
         administratorToAdd.setPhoneNumber(phoneNumberFieldAdd.getText());
         administratorToAdd.setPassword(nameFieldAdd.getText());
 
-        adminAdministrationDTO.add(administratorToAdd);
+        try {
+            adminAdministrationDTO.add(administratorToAdd);
 
-        loadDataToTable();
-        clearAddAdministratorFields();
+            loadDataToTable();
+            clearAddAdministratorFields();
+        } catch (ValidationException ex) {
+            DialogBox.validationErrorBox("Wrong administrator data", ex.getMessage());
+        }
+
     }
 
     @FXML

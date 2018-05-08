@@ -1,6 +1,7 @@
 package dto;
 
 import database.MyBatisDbConnection;
+import exceptions.ValidationException;
 import mappers.AdminAdministrationMapper;
 import pojo.Administrator;
 
@@ -32,7 +33,9 @@ public class AdminAdministrationDTO {
         }
     }
 
-    public void add(Administrator administrator) {
+    public void add(Administrator administrator) throws ValidationException {
+        validateAdmin(administrator);
+
         dbConnection.openSession();
         try {
             dbConnection.getMapper().addAdministrator(administrator);
@@ -70,6 +73,14 @@ public class AdminAdministrationDTO {
         } finally {
             dbConnection.closeSession();
         }
+    }
+
+    private boolean validateAdmin(Administrator admin) throws ValidationException{
+        if (!AdministrationValidators.userValidation(admin)) {
+            throw new ValidationException(AdministrationValidators.userValidationErrors(admin));
+        }
+
+        return true;
     }
 
 }
