@@ -52,7 +52,7 @@ public class PatientAdministrationDTO {
         dbConnection.openSession();
         try {
             Patient patientToUpdate = dbConnection.getMapper()
-                    .getPatient(patient.getPatientId());
+                    .getPatient(patient.getId());
 
             patientToUpdate.setFirstName(patient.getFirstName());
             patientToUpdate.setLastName(patient.getLastName());

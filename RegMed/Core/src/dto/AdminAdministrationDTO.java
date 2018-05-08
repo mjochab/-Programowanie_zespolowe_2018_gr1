@@ -47,7 +47,7 @@ public class AdminAdministrationDTO {
         dbConnection.openSession();
         try {
             Administrator adminToUpdate = dbConnection.getMapper()
-                    .getAdministrator(administrator.getAdminId());
+                    .getAdministrator(administrator.getId());
 
             adminToUpdate.setFirstName(administrator.getFirstName());
             adminToUpdate.setLastName(administrator.getLastName());

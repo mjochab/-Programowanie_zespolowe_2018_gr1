@@ -14,7 +14,7 @@ public interface PatientAdministrationMapper {
     @Select("SELECT id_patient, first_name, last_name, PESEL, id_address," +
             " email, phone_number,id_firstcontact_doctor FROM patients;")
     @Results({
-            @Result(property = "patientId", column = "id_patient"),
+            @Result(property = "id", column = "id_patient"),
             @Result(property = "firstName", column = "first_name"),
             @Result(property = "lastName", column = "last_name"),
             @Result(property = "pesel", column = "PESEL"),
@@ -32,7 +32,7 @@ public interface PatientAdministrationMapper {
             " email, phone_number,id_firstcontact_doctor FROM patients " +
             "WHERE id_patient = #{patientId}")
     @Results({
-            @Result(property = "patientId", column = "id_patient"),
+            @Result(property = "id", column = "id_patient"),
             @Result(property = "firstName", column = "first_name"),
             @Result(property = "lastName", column = "last_name"),
             @Result(property = "pesel", column = "PESEL"),
@@ -45,10 +45,10 @@ public interface PatientAdministrationMapper {
     })
     Patient getPatient(int patientId);
 
-    @Insert("INSERT into patients(id_patient, first_name, last_name, PESEL, id_address, email, phone_number, " +
-            "id_firstcontact_doctor, password) VALUES (#{patientId}, #{firstName}, #{lastName}, #{pesel}, #{address.addressId}," +
+    @Insert("INSERT into patients(id, first_name, last_name, PESEL, id_address, email, phone_number, " +
+            "id_firstcontact_doctor, password) VALUES (#{id}, #{firstName}, #{lastName}, #{pesel}, #{address.addressId}," +
             "#{email}, #{phoneNumber}, #{firstContactDoctorId}, #{password})")
-    @Options(useGeneratedKeys = true, keyProperty = "patientId", keyColumn = "id_patient")
+    @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id_patient")
     void addPatient(Patient patient);
 
 
@@ -58,14 +58,14 @@ public interface PatientAdministrationMapper {
     void addPatientAddressAsChild(Address address);
 
     @Update("UPDATE patients SET first_name=#{firstName}, last_name=#{lastName}, PESEL=#{pesel}, " +
-            "email=#{email}, phone_number=#{phoneNumber} WHERE id_patient=#{patientId}")
+            "email=#{email}, phone_number=#{phoneNumber} WHERE id_patient=#{id}")
     void updatePatient(Patient patient);
 
     @Update("UPDATE addresses SET city=#{city}, zip_code=#{zip}, street=#{street}, number=#{number} " +
             "WHERE id_address=#{addressId}")
     void updatePatientAddress(Address address);
 
-    @Update("UPDATE patients SET id_firstcontact_doctor=#{newDoctorId} WHERE id_patient=#{patient.patientId}")
+    @Update("UPDATE patients SET id_firstcontact_doctor=#{newDoctorId} WHERE id_patient=#{patient.id}")
     void updatePatientFirstcontactDoctor(@Param("patient") Patient patient,
                                          @Param("newDoctorId") int newDoctorId);
 

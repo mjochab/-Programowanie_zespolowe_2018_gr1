@@ -13,7 +13,7 @@ public interface AdminAdministrationMapper {
     @Select("select id_administrator, first_name, last_name, PESEL, email, phone_number " +
             "from administrators")
     @Results({
-            @Result(property = "adminId", column = "id_administrator"),
+            @Result(property = "id", column = "id_administrator"),
             @Result(property = "firstName", column = "first_name"),
             @Result(property = "lastName", column = "last_name"),
             @Result(property = "pesel", column = "PESEL"),
@@ -25,7 +25,7 @@ public interface AdminAdministrationMapper {
     @Select("select id_administrator, first_name, last_name, PESEL, email, phone_number " +
             "from administrators where id_administrator=#{adminId}")
     @Results({
-            @Result(property = "adminId", column = "id_administrator"),
+            @Result(property = "id", column = "id_administrator"),
             @Result(property = "firstName", column = "first_name"),
             @Result(property = "lastName", column = "last_name"),
             @Result(property = "pesel", column = "PESEL"),
@@ -36,14 +36,14 @@ public interface AdminAdministrationMapper {
 
 
     @Insert("insert into administrators(id_administrator, first_name, last_name, PESEL, email, " +
-            "phone_number, password) VALUES (#{adminId}, #{firstName}, #{lastName}, #{pesel}, #{email}, " +
+            "phone_number, password) VALUES (#{id}, #{firstName}, #{lastName}, #{pesel}, #{email}, " +
             "#{phoneNumber}, #{password})")
-    @Options(useGeneratedKeys = true, keyProperty = "adminId", keyColumn = "id_administrator")
+    @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id_administrator")
     void addAdministrator(Administrator administrator);
 
 
     @Update("update administrators set first_name=#{firstName}, last_name=#{lastName}, PESEL=#{pesel}, " +
-            "email=#{email}, phone_number=#{phoneNumber} WHERE id_administrator=#{adminId}")
+            "email=#{email}, phone_number=#{phoneNumber} WHERE id_administrator=#{id}")
     void updateAdministrator(Administrator administrator);
 
 

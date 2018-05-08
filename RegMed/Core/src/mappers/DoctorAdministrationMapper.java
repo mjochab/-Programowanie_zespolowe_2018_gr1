@@ -13,7 +13,7 @@ public interface DoctorAdministrationMapper {
     @Select("select id_doctor, first_name, last_name, PESEL, id_address, email, phone_number, " +
             "id_specialization from doctors")
     @Results({
-            @Result(property = "doctorId", column = "id_doctor"),
+            @Result(property = "id", column = "id_doctor"),
             @Result(property = "firstName", column = "first_name"),
             @Result(property = "lastName", column = "last_name"),
             @Result(property = "pesel", column = "PESEL"),
@@ -29,7 +29,7 @@ public interface DoctorAdministrationMapper {
     @Select("select id_doctor, first_name, last_name, PESEL, id_address, email, phone_number, " +
             "id_specialization from doctors where id_doctor=#{doctorId}")
     @Results({
-            @Result(property = "doctorId", column = "id_doctor"),
+            @Result(property = "id", column = "id_doctor"),
             @Result(property = "firstName", column = "first_name"),
             @Result(property = "lastName", column = "last_name"),
             @Result(property = "pesel", column = "PESEL"),
@@ -44,9 +44,9 @@ public interface DoctorAdministrationMapper {
 
 
     @Insert("INSERT into doctors(id_doctor, first_name, last_name, PESEL, id_address, email, phone_number, " +
-            "id_specialization, password) VALUES (#{doctorId}, #{firstName}, #{lastName}, #{pesel}, #{address.addressId}, " +
+            "id_specialization, password) VALUES (#{id}, #{firstName}, #{lastName}, #{pesel}, #{address.addressId}, " +
             "#{email}, #{phoneNumber}, #{specializationId}, #{password})")
-    @Options(useGeneratedKeys = true, keyProperty = "doctorId", keyColumn = "id_doctor")
+    @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id_doctor")
     void addDoctor(Doctor doctor);
 
     @Insert("INSERT into addresses(id_address, city, zip_code, street, number) VALUES (" +
@@ -55,14 +55,14 @@ public interface DoctorAdministrationMapper {
     void addDoctorAddressAsChild(Address address);
 
     @Update("UPDATE doctors SET first_name=#{firstName}, last_name=#{lastName}, PESEL=#{pesel}, " +
-            "email=#{email}, phone_number=#{phoneNumber} WHERE id_doctor=#{doctorId}")
+            "email=#{email}, phone_number=#{phoneNumber} WHERE id_doctor=#{id}")
     void updateDoctor(Doctor doctor);
 
     @Update("UPDATE addresses SET city=#{city}, zip_code=#{zip}, street=#{street}, number=#{number} " +
             "WHERE id_address=#{addressId}")
     void updateDoctorAddress(Address address);
 
-    @Update("UPDATE doctors SET id_specialization=#{specializationId} WHERE id_doctor=#{doctor.doctorId}")
+    @Update("UPDATE doctors SET id_specialization=#{specializationId} WHERE id_doctor=#{doctor.id}")
     void updateDoctorSpecialization(@Param("doctor") Doctor doctor,
                                     @Param("specializationId") int specializationId);
 

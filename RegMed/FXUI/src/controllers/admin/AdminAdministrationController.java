@@ -77,7 +77,7 @@ public class AdminAdministrationController implements Initializable, ControllerP
     }
 
     private void setupColumnsInTheTable() {
-        idColumn.setCellValueFactory(new PropertyValueFactory<Administrator, Integer>("adminId"));
+        idColumn.setCellValueFactory(new PropertyValueFactory<Administrator, Integer>("id"));
         forenameColumn.setCellValueFactory(new PropertyValueFactory<Administrator, String>("firstName"));
         nameColumn.setCellValueFactory(new PropertyValueFactory<Administrator, String>("lastName"));
         peselColumn.setCellValueFactory(new PropertyValueFactory<Administrator, String>("pesel"));
@@ -127,7 +127,7 @@ public class AdminAdministrationController implements Initializable, ControllerP
             if (DialogBox.choiceBox("Remove confirmation", String.format("%s %s will be removed.",
                     administratorToDelete.getFirstName(), administratorToDelete.getLastName()), "Are you sure?")) {
 
-                adminAdministrationDTO.delete(administratorToDelete.getAdminId());
+                adminAdministrationDTO.delete(administratorToDelete.getId());
 
                 loadDataToTable();
             }

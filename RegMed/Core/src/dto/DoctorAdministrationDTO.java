@@ -52,7 +52,7 @@ public class DoctorAdministrationDTO {
         dbConnection.openSession();
         try {
             Doctor doctorToUpdate = dbConnection.getMapper()
-                    .getDoctor(doctor.getDoctorId());
+                    .getDoctor(doctor.getId());
 
             doctorToUpdate.setFirstName(doctor.getFirstName());
             doctorToUpdate.setLastName(doctor.getLastName());

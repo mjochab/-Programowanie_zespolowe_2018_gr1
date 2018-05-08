@@ -88,7 +88,7 @@ public class DoctorAdministrationController implements ControllerPagination {
     private void initialize() {
 
         //setup columns in the table
-        idColumn.setCellValueFactory(new PropertyValueFactory<Doctor, Integer>("doctorId"));
+        idColumn.setCellValueFactory(new PropertyValueFactory<Doctor, Integer>("id"));
         forenameColumn.setCellValueFactory(new PropertyValueFactory<Doctor, String>("firstName"));
         nameColumn.setCellValueFactory(new PropertyValueFactory<Doctor, String>("lastName"));
         peselColumn.setCellValueFactory(new PropertyValueFactory<Doctor, String>("pesel"));
@@ -154,7 +154,7 @@ public class DoctorAdministrationController implements ControllerPagination {
             if ( DialogBox.choiceBox("Remove confirmation", String.format("%s %s will be removed.",
                     doctorToDelete.getFirstName(), doctorToDelete.getLastName()), "Are you sure?") ) {
 
-                doctorAdministrationDTO.delete(getSelectedDoctorInTable().getDoctorId());
+                doctorAdministrationDTO.delete(getSelectedDoctorInTable().getId());
                 loadDataToTable();
             }
         } else {

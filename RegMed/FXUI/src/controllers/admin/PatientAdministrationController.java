@@ -83,7 +83,7 @@ public class PatientAdministrationController implements ControllerPagination {
     @FXML
     private void initialize() {
 
-        idColumn.setCellValueFactory(new PropertyValueFactory<Patient, Integer>("patientId"));
+        idColumn.setCellValueFactory(new PropertyValueFactory<Patient, Integer>("id"));
         forenameColumn.setCellValueFactory(new PropertyValueFactory<Patient, String>("firstName"));
         nameColumn.setCellValueFactory(new PropertyValueFactory<Patient, String>("lastName"));
         peselColumn.setCellValueFactory(new PropertyValueFactory<Patient, String>("pesel"));
