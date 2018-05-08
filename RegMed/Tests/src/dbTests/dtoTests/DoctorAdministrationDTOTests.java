@@ -1,6 +1,7 @@
 package dbTests.dtoTests;
 
 import database.MyBatisDbConnection;
+import exceptions.ValidationException;
 import mappers.DoctorAdministrationMapper;
 import dto.DoctorAdministrationDTO;
 import org.junit.jupiter.api.Disabled;
@@ -39,7 +40,7 @@ public class DoctorAdministrationDTOTests {
 
     @Disabled
     @Test
-    void add_test() {
+    void add_test() throws ValidationException {
         Address address = new Address();
         address.setCity("Poznan");
         address.setZip("23-231");
@@ -105,7 +106,7 @@ public class DoctorAdministrationDTOTests {
 
     @Disabled
     @Test
-    void delete_doctor_test() {
+    void delete_doctor_test() throws ValidationException {
         Address address = new Address();
         address.setCity("Bstrzyna");
         address.setZip("23-221");

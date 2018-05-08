@@ -33,4 +33,12 @@ public class DialogBox {
         alert.setContentText(contentText);
         alert.showAndWait();
     }
+
+    public static void validationErrorBox(String headerText, String contentText) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Validation error!");
+        alert.setHeaderText(headerText);
+        alert.setContentText(contentText);
+        alert.showAndWait();
+    }
 }

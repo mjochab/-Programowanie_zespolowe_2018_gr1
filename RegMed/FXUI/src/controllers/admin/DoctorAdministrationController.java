@@ -1,6 +1,7 @@
 package controllers.admin;
 
 import dto.DoctorAdministrationDTO;
+import exceptions.ValidationException;
 import pojo.Address;
 import pojo.Doctor;
 import helpers.ControllerPagination;
@@ -16,6 +17,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.function.Predicate;
 
 public class DoctorAdministrationController implements ControllerPagination {
@@ -196,25 +198,42 @@ public class DoctorAdministrationController implements ControllerPagination {
     private void createDoctorClicked(ActionEvent event) {
         Doctor doctorToAdd = new Doctor();
         Address addressToAdd = new Address();
+        try {
+            addressToAdd.setCity(cityFieldAdd.getText());
+            addressToAdd.setZip(zipFieldAdd.getText());
+            addressToAdd.setStreet(streetFieldAdd.getText());
+            if (numberFieldAdd.getText().isEmpty()) {
+                throw new ValidationException("Missing address number");
+            } else {
+                addressToAdd.setNumber(Integer.parseInt(numberFieldAdd.getText()));
+            }
 
-        addressToAdd.setCity(cityFieldAdd.getText());
-        addressToAdd.setZip(zipFieldAdd.getText());
-        addressToAdd.setStreet(streetFieldAdd.getText());
-        addressToAdd.setNumber(Integer.parseInt(numberFieldAdd.getText()));
+            doctorToAdd.setFirstName(forenameFieldAdd.getText());
+            doctorToAdd.setLastName(nameFieldAdd.getText());
+            doctorToAdd.setPesel(peselFieldAdd.getText());
+            doctorToAdd.setAddress(addressToAdd);
+            doctorToAdd.setEmail(emailFieldAdd.getText().toLowerCase());
+            doctorToAdd.setPhoneNumber(phoneFieldAdd.getText());
+            if (specializationFieldAdd.getText().isEmpty()) {
+                throw new ValidationException("Missing specialization id");
+            } else {
+                doctorToAdd.setSpecializationId(Integer.parseInt(specializationFieldAdd.getText()));
+            }
 
-        doctorToAdd.setFirstName(forenameFieldAdd.getText());
-        doctorToAdd.setLastName(nameFieldAdd.getText());
-        doctorToAdd.setPesel(peselFieldAdd.getText());
-        doctorToAdd.setAddress(addressToAdd);
-        doctorToAdd.setEmail(emailFieldAdd.getText());
-        doctorToAdd.setPhoneNumber(phoneFieldAdd.getText());
-        doctorToAdd.setSpecializationId(Integer.parseInt(specializationFieldAdd.getText()));
-        doctorToAdd.setPassword(nameFieldAdd.getText());
+            doctorToAdd.setPassword(nameFieldAdd.getText());
 
-        doctorAdministrationDTO.add(doctorToAdd);
 
-        loadDataToTable();
-        clearAddDoctorFields();
+            doctorAdministrationDTO.add(doctorToAdd);
+            loadDataToTable();
+            //clearAddDoctorFields();
+        }
+        catch (ValidationException ex) {
+            DialogBox.validationErrorBox("Wrong doctor data", ex.getMessage());
+        }
+
+
+
+
     }
 
     @FXML
