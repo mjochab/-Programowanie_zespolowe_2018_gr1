@@ -106,8 +106,8 @@ public class DoctorAdministrationDTO {
 
 
     private boolean validateDoctor(Doctor doctor) throws ValidationException {
-        if (!AdministrationValidators.doctorValidation(doctor)) {
-            throw new ValidationException(AdministrationValidators.doctorValidationErrors(doctor));
+        if (!AdministrationValidators.userValidation(doctor)) {
+            throw new ValidationException(AdministrationValidators.userValidationErrors(doctor));
         }
 
         return true;

@@ -4,6 +4,7 @@ import exceptions.ValidationException;
 import pojo.Address;
 import pojo.Doctor;
 import pojo.Patient;
+import pojo.User;
 
 import java.util.ArrayList;
 import java.util.Dictionary;
@@ -14,45 +15,45 @@ import java.util.regex.Pattern;
 public class AdministrationValidators {
 
 
-    public static boolean doctorValidation(Doctor doctor) throws ValidationException {
+    
+    public static boolean userValidation(User user) {
         if (
-                !nameCheck(doctor.getFirstName()) ||
-                !nameCheck(doctor.getLastName()) ||
-                !peselCheck(doctor.getPesel()) ||
-                !emailCheck(doctor.getEmail()) ||
-                !phoneCheck(doctor.getPhoneNumber())
+                !nameCheck(user.getFirstName()) ||
+                        !nameCheck(user.getLastName()) ||
+                        !peselCheck(user.getPesel()) ||
+                        !emailCheck(user.getEmail()) ||
+                        !phoneCheck(user.getPhoneNumber())
                 ) {
             return false;
         } else
             return true;
     }
 
-    public static String doctorValidationErrors(Doctor doctor) throws ValidationException {
+
+    public static String userValidationErrors(User user) throws ValidationException {
         String errors = "";
 
-        if (!nameCheck(doctor.getFirstName())) {
-            errors += "First name - wrong name format: " + doctor.getFirstName() + "\n";
+        if (!nameCheck(user.getFirstName())) {
+            errors += "First name - wrong name format: " + user.getFirstName() + "\n";
         }
 
-        if (!nameCheck(doctor.getLastName())) {
+        if (!nameCheck(user.getLastName())) {
             errors += "Last name - wrong name format.\n";
         }
 
-        if (!peselCheck(doctor.getPesel())) {
-            errors += String.format("Pesel must have 11 digits: %s (%s)\n", doctor.getPesel(),
-                    doctor.getPesel().length());
+        if (!peselCheck(user.getPesel())) {
+            errors += String.format("Pesel must have 11 digits: %s (%s)\n", user.getPesel(),
+                    user.getPesel().length());
         }
 
-        if (!emailCheck(doctor.getEmail())) {
-            errors += "Wrong email format: " + doctor.getEmail() + "\n";
+        if (!emailCheck(user.getEmail())) {
+            errors += "Wrong email format: " + user.getEmail() + "\n";
         }
 
-        if (!phoneCheck(doctor.getPhoneNumber())) {
-            errors += String.format("Phone number must have 9 digits: %s (%s)\n", doctor.getPhoneNumber(),
-                    doctor.getPhoneNumber().length());
+        if (!phoneCheck(user.getPhoneNumber())) {
+            errors += String.format("Phone number must have 9 digits: %s (%s)\n", user.getPhoneNumber(),
+                    user.getPhoneNumber().length());
         }
-
-
 
         return errors;
     }
