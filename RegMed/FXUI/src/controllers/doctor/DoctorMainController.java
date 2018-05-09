@@ -1,5 +1,6 @@
 package controllers.doctor;
 
+import dto.DoctorModuleDTO;
 import helpers.ControllerPagination;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
@@ -45,8 +46,14 @@ public class DoctorMainController implements ControllerPagination {
                 anchorReport,
                 anchorAdmissionTable;
 
+    private DoctorModuleDTO doctorModuleDTO;
+
+    public DoctorMainController() {
+        this.doctorModuleDTO = new DoctorModuleDTO();
+    }
+
     @FXML public void initialize(){
-        //helpers.getCurrentDateTime(dateLabel, timeLabel);
+       //nameLabel.setText(doctorModuleDTO.get(1).getFirstName());
     }
 
     @FXML void switchAdmissionModule(ActionEvent event) throws IOException{
@@ -58,6 +65,7 @@ public class DoctorMainController implements ControllerPagination {
     @FXML void switchEdit(ActionEvent event) throws IOException{
         setAllNotVisible();
         anchorEdit.setVisible(true);
+
     }
 
     @FXML void switchReport(ActionEvent event) throws IOException{

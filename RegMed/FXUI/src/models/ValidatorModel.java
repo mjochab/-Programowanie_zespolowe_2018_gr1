@@ -6,7 +6,9 @@ public class ValidatorModel {
 
     public static boolean isTime(String time) {
         if (Pattern.matches("\\d\\d:\\d\\d", time) ||
-                Pattern.matches("\\d:\\d\\d", time)) {
+                Pattern.matches("\\d:\\d\\d", time) ||
+                    Pattern.matches("\\d:\\d\\d:\\d\\d", time)||
+                        Pattern.matches("\\d\\d:\\d\\d:\\d\\d", time)){
 
             String hours[] = time.split(":");
             int hour = Integer.parseInt(hours[0]);
