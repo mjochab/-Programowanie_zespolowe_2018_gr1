@@ -1,22 +1,19 @@
 package pojo;
 
-public class Patient extends User {
 
-    private int firstContactDoctorId;
+public class Doctor extends User{
 
+    private int specializationId;  //TODO: convert to foreign key
     private Address address;
 
 
 
-
-
-
-    public int getFirstContactDoctorId() {
-        return firstContactDoctorId;
+    public int getSpecializationId() {
+        return specializationId;
     }
 
-    public void setFirstContactDoctorId(int firstContactDoctorId) {
-        this.firstContactDoctorId = firstContactDoctorId;
+    public void setSpecializationId(int specializationId) {
+        this.specializationId = specializationId;
     }
 
     public Address getAddress() {
@@ -27,7 +24,7 @@ public class Patient extends User {
         this.address = address;
     }
 
-    public String patientToString() {
+    public String doctorToString() {
         return String.format("%s %s %s %s %s %s %s %s",
                 "patientId: " + getId(),
                 "firstName: " + getFirstName(),
@@ -35,8 +32,9 @@ public class Patient extends User {
                 "pesel: " + getPesel(),
                 "email: " + getEmail(),
                 "phone: " + getPhoneNumber(),
-                "doctor: " + getFirstContactDoctorId(),
+                "doctor: " + getSpecializationId(),
                 "address: " + getAddress().toString()
         );
     }
+
 }

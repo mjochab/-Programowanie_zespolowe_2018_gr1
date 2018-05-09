@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.homescreen.RegisterController">
+   <children>
+      <TextField layoutX="212.0" layoutY="35.0" />
+      <TextField layoutX="212.0" layoutY="69.0" />
+      <TextField layoutX="212.0" layoutY="103.0" />
+      <TextField layoutX="212.0" layoutY="137.0" />
+      <TextField layoutX="212.0" layoutY="169.0" />
+      <TextField layoutX="212.0" layoutY="200.0" />
+      <TextField layoutX="212.0" layoutY="233.0" />
+      <PasswordField layoutX="212.0" layoutY="270.0" />
+      <PasswordField layoutX="212.0" layoutY="309.0" />
+      <Label layoutX="138.0" layoutY="39.0" text="Name" />
+      <Label layoutX="138.0" layoutY="73.0" text="Subname" />
+      <Label layoutX="138.0" layoutY="107.0" text="Pesel" />
+      <Label layoutX="138.0" layoutY="141.0" text="City" />
+      <Label layoutX="138.0" layoutY="173.0" text="Street" />
+      <Label layoutX="138.0" layoutY="204.0" text="Postal Code" />
+      <Label layoutX="138.0" layoutY="237.0" text="E-mail" />
+      <Label layoutX="138.0" layoutY="270.0" text="Password" />
+      <Label layoutX="138.0" layoutY="313.0" text="Password" />
+      <Label layoutX="248.0" layoutY="6.0" text="REGISTER" />
+      <Button layoutX="202.0" layoutY="349.0" mnemonicParsing="false" text="Register" />
+      <Button fx:id="bBack" layoutX="309.0" layoutY="349.0" mnemonicParsing="false" onAction="#Exit" text="Back" />
+   </children>
+</AnchorPane>
