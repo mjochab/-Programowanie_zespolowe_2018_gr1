@@ -1,6 +1,9 @@
 package controllers.doctor;
 
+import dto.DoctorModuleDTO;
 import helpers.ControllerPagination;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -9,8 +12,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import models.DoctorEditModel;
 import models.ValidatorModel;
+import pojo.DoctorWorkingDays;
 
 import java.io.IOException;
+import java.sql.Time;
 import java.util.HashMap;
 
 public class DoctorEditController implements ControllerPagination{
@@ -48,6 +53,22 @@ public class DoctorEditController implements ControllerPagination{
     @FXML
     BorderPane
             borderPane;
+
+    private DoctorModuleDTO doctorModuleDTO;
+
+    ObservableList<DoctorWorkingDays> tableData;
+    HashMap<String, DoctorWorkingDays> days = new HashMap<String, DoctorWorkingDays>();
+
+    public DoctorEditController(){
+        this.doctorModuleDTO = new DoctorModuleDTO();
+        getDaysIfExist();
+        tableDataToHashMap(tableData);
+    }
+
+    @FXML
+    private void initialize() {
+    fillHours();
+    }
 
     public void mondayClickHandler(ActionEvent event) {
         mondayFromTextField.setDisable(!mondayBox.isSelected());
@@ -96,7 +117,71 @@ public class DoctorEditController implements ControllerPagination{
         }
 
         hours.forEach((k,v)-> System.out.println("day: " +k+" hour: "+v.getFrom()+" "+v.getTo()+" "+v.getActive()));
+        hours.forEach((k, v) -> insertWorkingDays(k, v.getFrom(), v.getTo(), intervalTextField.getText()));
 
+    }
+
+    public void insertWorkingDays(String day, String hourFrom, String hourTo, String hourInterval){
+        DoctorWorkingDays dayToAdd = new DoctorWorkingDays();
+        dayToAdd.setDoctorId(1);
+        dayToAdd.setDay(day);
+        dayToAdd.setHourFrom(hourFrom);
+        dayToAdd.setHourTo(hourTo);
+        dayToAdd.setHourInterval(hourInterval);
+        doctorModuleDTO.add(dayToAdd);
+    }
+
+    public void getDaysIfExist(){
+        tableData = FXCollections.observableArrayList(doctorModuleDTO.getDoctorWorkingDays(1));
+    }
+
+    public void tableDataToHashMap(ObservableList<DoctorWorkingDays> tableData){
+        for (DoctorWorkingDays day:tableData) {
+            days.put(day.getDay(), day);
+        }
+    }
+
+    public void fillHours(){
+        if(days.get("monday")!=null) {
+            mondayBox.setSelected(true);
+            mondayFromTextField.setDisable(false);
+            mondayToTextField.setDisable(false);
+            mondayFromTextField.setText(days.get("monday").getHourFrom());
+            mondayToTextField.setText(days.get("monday").getHourTo());
+            intervalTextField.setText(days.get("monday").getHourInterval());
+        }
+        if(days.get("tuesday")!=null) {
+            tuesdayBox.setSelected(true);
+            tuesdayFromTextField.setDisable(false);
+            tuesdayToTextField.setDisable(false);
+            tuesdayFromTextField.setText(days.get("tuesday").getHourFrom());
+            tuesdayToTextField.setText(days.get("tuesday").getHourTo());
+            intervalTextField.setText(days.get("tuesday").getHourInterval());
+        }
+        if(days.get("wednesday")!=null) {
+            wednesdayBox.setSelected(true);
+            wednesdayFromTextField.setDisable(false);
+            wednesdayToTextField.setDisable(false);
+            wednesdayFromTextField.setText(days.get("wednesday").getHourFrom());
+            wednesdayToTextField.setText(days.get("wednesday").getHourTo());
+            intervalTextField.setText(days.get("wednesday").getHourInterval());
+        }
+        if(days.get("thursday")!=null) {
+            thursdayBox.setSelected(true);
+            thursdayFromTextField.setDisable(false);
+            thursdayToTextField.setDisable(false);
+            thursdayFromTextField.setText(days.get("thursday").getHourFrom());
+            thursdayToTextField.setText(days.get("thursday").getHourTo());
+            intervalTextField.setText(days.get("thursday").getHourInterval());
+        }
+        if(days.get("friday")!=null) {
+            fridayBox.setSelected(true);
+            fridayFromTextField.setDisable(false);
+            fridayToTextField.setDisable(false);
+            fridayFromTextField.setText(days.get("friday").getHourFrom());
+            fridayToTextField.setText(days.get("friday").getHourTo());
+            intervalTextField.setText(days.get("friday").getHourInterval());
+        }
     }
 
     public void cancelButtonOnClick(ActionEvent event) throws IOException {

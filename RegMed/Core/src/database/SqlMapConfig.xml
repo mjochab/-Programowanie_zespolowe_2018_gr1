@@ -20,5 +20,6 @@
         <mapper class="mappers.PatientAdministrationMapper" />
         <mapper class="mappers.DoctorAdministrationMapper" />
         <mapper class="mappers.AdminAdministrationMapper" />
+        <mapper class="mappers.DoctorModuleMapper" />
     </mappers>
 </configuration>
