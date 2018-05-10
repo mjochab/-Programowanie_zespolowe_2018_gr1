@@ -116,9 +116,7 @@ public class HomescreenController implements Initializable, ControllerPagination
                 helpers.SwitchScene("admin/AdminHome", event);
                 break;
             case ("patient"):
-                //helpers.SwitchScene("AdminPatient", event);
-                DialogBox.warningBox("Warning!", "Pawel L. incomplete module");
-
+                helpers.SwitchScene("patient/PatientHome", event);
                 break;
             case ("doctor"):
                 helpers.SwitchScene("doctor/DoctorMain", event);
