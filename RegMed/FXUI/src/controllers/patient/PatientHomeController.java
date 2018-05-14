@@ -2,11 +2,13 @@ package controllers.patient;
 
 import dto.PatientModuleDTO;
 import helpers.ControllerPagination;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import pojo.Patient;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -27,8 +29,8 @@ public class PatientHomeController implements Initializable, ControllerPaginatio
         numberLabel,
         zipLabel;
 
-
     PatientModuleDTO patientModuleDTO;
+
 
 
     public PatientHomeController() {
@@ -40,6 +42,23 @@ public class PatientHomeController implements Initializable, ControllerPaginatio
     public void initialize(URL location, ResourceBundle resources) {
         setPatientData();
     }
+
+
+
+    @FXML
+    private void registerClicked(ActionEvent event) throws IOException {
+        helpers.SwitchScene("patient/Registration", event);
+    }
+
+    @FXML
+    private void historyClicked(ActionEvent event) throws IOException {
+        helpers.SwitchScene("patient/History", event);
+    }
+
+
+
+
+
 
 
     private void setPatientData() {

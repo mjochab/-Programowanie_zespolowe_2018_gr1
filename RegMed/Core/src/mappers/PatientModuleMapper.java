@@ -2,9 +2,7 @@ package mappers;
 
 import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.mapping.FetchType;
-import pojo.Address;
-import pojo.Doctor;
-import pojo.Patient;
+import pojo.*;
 
 @Mapper
 public interface PatientModuleMapper {
@@ -30,8 +28,17 @@ public interface PatientModuleMapper {
     Patient getPatient(int patientId);
 
 
+    @Insert("Insert into singlevisits(id_single_visit, id_admission_day, visit_hour, id_patient) " +
+            "values (#{id}, #{admissionDay.id}, #{visitHour}, #{patient.id})")
+    void insertIntoSingleVisits(SingleVisit singleVisit);
 
+    @Insert("Insert into admissiondays(id_admission_day, id_doctor_working_day, date) " +
+            "values (#{id}, #{doctorWorkingDay.id}, #{date})")
+    void insertIntoAdmissionDays(AdmissionDay admissionDay);
 
+    @Insert("INSERT into doctorworkingdays(id_doctor_working_day, id_doctor, day, hour_from, hour_to, hour_interval) " +
+            "VALUES (#{doctorWorkingDayId}, #{doctorId}, #{day}, #{hourFrom}, #{hourTo}, #{hourInterval})")
+    void insertIntoDoctorWorkingDays(DoctorWorkingDays doctorWorkingDay);
 
 
 

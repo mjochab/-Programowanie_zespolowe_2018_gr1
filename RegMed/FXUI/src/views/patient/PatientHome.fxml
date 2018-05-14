@@ -8,7 +8,6 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-
 <AnchorPane prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.patient.PatientHomeController">
    <children>
       <VBox layoutX="14.0" layoutY="32.0" prefHeight="379.0" prefWidth="210.0" spacing="5.0">
@@ -85,5 +84,15 @@
             <Insets />
          </opaqueInsets>
       </VBox>
+      <Button layoutX="356.0" layoutY="57.0" mnemonicParsing="false" onAction="#registerClicked" prefHeight="580.0" prefWidth="359.0" text="Register &#10;to &#10;doctor" textAlignment="CENTER">
+         <font>
+            <Font size="48.0" />
+         </font>
+      </Button>
+      <Button layoutX="735.0" layoutY="57.0" mnemonicParsing="false" onAction="#historyClicked" prefHeight="580.0" prefWidth="359.0" text="History" textAlignment="CENTER">
+         <font>
+            <Font size="48.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>
