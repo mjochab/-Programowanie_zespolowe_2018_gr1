@@ -1,6 +1,7 @@
 package dbTests.dtoTests;
 
 import dto.AdminAdministrationDTO;
+import exceptions.ValidationException;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import pojo.Administrator;
@@ -32,9 +33,9 @@ public class AdminAdministrationDTOTests {
 
     @Disabled
     @Test
-    void add_test() {
+    void add_test() throws ValidationException {
         Administrator adminToAdd = new Administrator();
-        adminToAdd.setAdminId(0);
+        //adminToAdd.getId(0);
         adminToAdd.setFirstName("admin");
         adminToAdd.setLastName("adminLastName");
         adminToAdd.setPesel("12345678910");
