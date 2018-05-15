@@ -2,9 +2,7 @@ package dto;
 
 import database.MyBatisDbConnection;
 import mappers.PatientModuleMapper;
-import pojo.AdmissionDay;
-import pojo.Patient;
-import pojo.SingleVisit;
+import pojo.*;
 
 import java.sql.Time;
 import java.time.LocalDate;
@@ -32,6 +30,24 @@ public class PatientModuleDTO {
         }
     }
 
+    public List<DoctorWorkingDays> getDoctorWorkingDays(int doctorId) {
+        db.openSession();
+        try {
+            return new ArrayList<>(db.getMapper().getDoctorWorkingDays(doctorId));
+        } finally {
+            db.closeSession();
+        }
+    }
+
+    public List<Doctor> getAllDoctors() {
+        db.openSession();
+        try {
+            return new ArrayList<>(db.getMapper().getAllDoctors());
+        } finally {
+            db.closeSession();
+        }
+    }
+
 
     public List<AdmissionDay> getAllAdmissionDays() {
         List<AdmissionDay> admissionDays = new ArrayList<>();
@@ -42,7 +58,7 @@ public class PatientModuleDTO {
 
         AdmissionDay day2 = new AdmissionDay();
         day2.setId(2);
-        day2.setDate(LocalDate.of(2018,06,26));
+        day2.setDate(LocalDate.of(2018,05,20));
 
         admissionDays.add(day1);
         admissionDays.add(day2);
@@ -50,7 +66,18 @@ public class PatientModuleDTO {
         return admissionDays;
     }
 
+    public AdmissionDay getAdmissionDayByDate(LocalDate date) {
+        List<AdmissionDay> admissionDays = new ArrayList<>(getAllAdmissionDays());
+        AdmissionDay admissionDay = new AdmissionDay();
 
+        for (AdmissionDay a : admissionDays) {
+            if (a.getDate().equals(date)) {
+                admissionDay = a;
+            }
+        }
+
+        return admissionDay;
+    }
 
 
 
@@ -67,6 +94,9 @@ public class PatientModuleDTO {
         v1.setId(1);
         v1.setAdmissionDay(admissionDays.get(0));
         v1.setVisitHour(LocalTime.of(10,00));
+        Patient p = new Patient();
+        p.setFirstName("FurstNamePatient");
+        v1.setPatient(p);
         visits.add(v1);
 
         SingleVisit v2 = new SingleVisit();
@@ -88,6 +118,8 @@ public class PatientModuleDTO {
         }
         return visits2;
     }
+
+
 
     public List<SingleVisit> getBusyVisits(AdmissionDay admissionDay) {
         List<SingleVisit> allVisits = getAllVisits(admissionDay);

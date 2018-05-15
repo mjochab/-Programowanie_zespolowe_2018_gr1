@@ -43,7 +43,12 @@ public class SingleVisit {
 
 
     public String visitHourToString() {
-        return String.format("%d:%d", visitHour.getHour(), visitHour.getMinute());
+        //return String.format("%d:%d", visitHour.getHour(), visitHour.getMinute());
+        if (patient != null) {
+            return String.format("%d:%d  -  Term is not free", visitHour.getHour(), visitHour.getMinute());
+        } else {
+            return String.format("%d:%d  -  Term is free", visitHour.getHour(), visitHour.getMinute());
+        }
     }
 
 

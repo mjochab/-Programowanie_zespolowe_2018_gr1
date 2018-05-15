@@ -3,6 +3,9 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
@@ -13,7 +16,18 @@
             <Font size="24.0" />
          </font>
       </Button>
-      <DatePicker fx:id="visitDatePicker" layoutX="349.0" layoutY="274.0" />
-      <ChoiceBox fx:id="visitHourPicker" layoutX="542.0" layoutY="274.0" prefWidth="150.0" />
+      <DatePicker fx:id="visitDatePicker" layoutX="454.0" layoutY="65.0" />
+      <ChoiceBox fx:id="visitHourPicker" layoutX="647.0" layoutY="65.0" prefWidth="150.0" />
+      <ChoiceBox fx:id="specializationChoiceBox" layoutX="43.0" layoutY="40.0" prefWidth="150.0" />
+      <ChoiceBox fx:id="doctorChoiceBox" layoutX="43.0" layoutY="116.0" prefWidth="150.0" />
+      <TableView fx:id="doctorWorkingDaysTable" layoutX="43.0" layoutY="309.0" prefHeight="361.0" prefWidth="295.0">
+        <columns>
+          <TableColumn fx:id="dayColumn" prefWidth="75.0" text="Day" />
+          <TableColumn fx:id="admissionHoursFromColumn" prefWidth="71.0" text="From" />
+            <TableColumn fx:id="admissionHoursToColumn" prefWidth="64.0" text="To" />
+        </columns>
+      </TableView>
+      <ListView fx:id="hoursList" layoutX="908.0" layoutY="116.0" prefHeight="504.0" prefWidth="319.0" />
+      <Button layoutX="805.0" layoutY="65.0" mnemonicParsing="false" onAction="#findButtonClicked" text="Button" />
    </children>
 </AnchorPane>
