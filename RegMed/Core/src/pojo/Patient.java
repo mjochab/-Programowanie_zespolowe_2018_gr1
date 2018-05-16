@@ -6,7 +6,7 @@ public class Patient extends User {
 
     private Address address;
 
-
+    private Doctor firstContactDoctor;
 
 
 
@@ -25,6 +25,14 @@ public class Patient extends User {
 
     public void setAddress(Address address) {
         this.address = address;
+    }
+
+    public Doctor getFirstContactDoctor() {
+        return firstContactDoctor;
+    }
+
+    public void setFirstContactDoctor(Doctor firstContactDoctor) {
+        this.firstContactDoctor = firstContactDoctor;
     }
 
     public String patientToString() {
