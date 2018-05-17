@@ -16,6 +16,14 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 //DB MUST BE REMOVED FROM SERVER BEFORE TESTS
 
+/**
+ * Abstract class using for integration testing controllers/dto or real database.
+ * This class, before each test, creating new database, then running test method,
+ * and dropping database at the end.
+ * To use, just in inherit it.
+ *
+ * @author Szymon P
+ */
 public abstract class DatabaseTestingAbstractClass {
 
     private static final String XML_PATH = "../../regmedtests _no_id_factory.sql";
@@ -23,6 +31,15 @@ public abstract class DatabaseTestingAbstractClass {
     private static final String DB_PASSWORD = "";
     private static final String DB_NAME = "regmedtests";    //You shouldn't change it.
 
+    /**
+     * Creating new database.
+     *
+     * @throws ClassNotFoundException when jdbc driver will be not found.
+     * @throws SQLException             when some SQL error will happen.
+     * @throws FileNotFoundException    when myBatis configuration file
+     *                                  will not be found.
+     */
+    //TODO: drop database if throws error msg contain' info about bd exists
     @BeforeEach
     public void createDb() throws ClassNotFoundException, SQLException, FileNotFoundException {
         String url = "jdbc:mysql://localhost:3306/";
@@ -39,7 +56,15 @@ public abstract class DatabaseTestingAbstractClass {
         setDbSqlFile();
     }
 
-
+    /**
+     * Inserting sql script file into database.
+     *
+     * @throws ClassNotFoundException   when jdbc driver will be not found.
+     * @throws SQLException             when some SQL error will happen.
+     * @throws FileNotFoundException    when myBatis configuration file or sql file
+     *                                  using for creating and populating database
+     *                                  will not be found.
+     */
     public void setDbSqlFile() throws ClassNotFoundException, SQLException, FileNotFoundException {
         String url = String.format("jdbc:mysql://localhost:3306/%s", DB_NAME);
         String user = DB_LOGIN;
@@ -52,7 +77,14 @@ public abstract class DatabaseTestingAbstractClass {
         runner.runScript(new BufferedReader(new FileReader(XML_PATH)));
     }
 
-
+    /**
+     *Dropping database after each test.
+     *
+     * @throws ClassNotFoundException when jdbc driver will be not found.
+     * @throws SQLException             when some SQL error will happen.
+     * @throws FileNotFoundException    when myBatis configuration file
+     *                                  will not be found.
+     */
     @AfterEach
     public void dropDb() throws ClassNotFoundException, SQLException, FileNotFoundException {
         String url = String.format("jdbc:mysql://localhost:3306/%s", DB_NAME);

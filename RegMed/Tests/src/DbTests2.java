@@ -1,4 +1,5 @@
 import dto.AdminAdministrationDTO;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import pojo.Administrator;
 
@@ -11,6 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class DbTests2 extends DatabaseTestingAbstractClass {
 
     AdminAdministrationDTO dto = new AdminAdministrationDTO();
+    @Disabled
     @Test
     void test() {
         dto.delete(1);
@@ -19,6 +21,7 @@ public class DbTests2 extends DatabaseTestingAbstractClass {
         assertTrue(result.size() == 0);
     }
 
+    @Disabled
     @Test
     void test2() {
         Administrator result = dto.get(1);
@@ -26,5 +29,7 @@ public class DbTests2 extends DatabaseTestingAbstractClass {
         assertEquals("Jan", result.getFirstName());
         assertEquals("Kowalski", result.getLastName());
     }
+
+    //TODO: class converting dto -> they should use different db name -> reflexion
 
 }

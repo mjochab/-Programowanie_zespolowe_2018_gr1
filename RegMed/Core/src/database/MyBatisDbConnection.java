@@ -7,7 +7,14 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import java.io.IOException;
 import java.io.Reader;
 
+/**
+ * Using for connection with database.
+ *
+ * @param <T>   mapper type using in connection.
+ * @author      Szymon P
+ */
 public class MyBatisDbConnection<T> {
+
 
     private Reader config;
     private SqlSession session;
@@ -15,14 +22,21 @@ public class MyBatisDbConnection<T> {
     private T mapper;
     private SqlSessionFactory sqlSessionFactory;
 
-
+    /**
+     * Creating connection with database
+     * @param type mapper type using in connection
+     */
     public MyBatisDbConnection(Class<T> type) {
         config = readFile();
         this.dataSourceProviderType = type;
         sqlSessionFactory = new SqlSessionFactoryBuilder().build(config);
     }
 
-
+    /**
+     * Reading xml file with database configuration.
+     *
+     * @return reader containing xml configuration file.
+     */
     private static Reader readFile() {
         try {
             return Resources.getResourceAsReader("database/SqlMapConfig.xml");
@@ -32,7 +46,9 @@ public class MyBatisDbConnection<T> {
         }
     }
 
-
+    /**
+     * Creating session connected with database.
+     */
     public void openSession() {
 
         session = sqlSessionFactory.openSession();
@@ -41,14 +57,25 @@ public class MyBatisDbConnection<T> {
         mapper = session.getMapper(dataSourceProviderType);
     }
 
+    /**
+     * Getting mapper, which is using to invoke methods from mapped interface
+     *
+     * @return Mapper using to induce method using for work with database, declared in mapper included in constructor.
+     */
     public T getMapper() {
         return mapper;
     }
 
+    /**
+     * Committing data to database.
+     */
     public void commit() {
         session.commit();
     }
 
+    /**
+     * Closing session with database.
+     */
     public void closeSession() {
         session.close();
     }

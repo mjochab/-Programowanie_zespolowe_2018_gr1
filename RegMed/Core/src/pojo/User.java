@@ -1,5 +1,11 @@
 package pojo;
 
+/**
+ * Plain Old Java Object abstract class, using by specialized inherited classes,
+ * for storing different user types data.
+ *
+ * @author Szymon P
+ */
 public abstract class User {
     protected int id;
     private String firstName;

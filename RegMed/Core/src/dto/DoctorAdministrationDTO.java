@@ -8,6 +8,13 @@ import pojo.Doctor;
 
 import java.util.ArrayList;
 
+/**
+ * Holding methods using to operate on DoctorAdministration mapper. These methods are using MyBatisDbConnection class,
+ * which holding mapped methods using to operate on database.
+ * Class in methods make sure if the connection is always closed.
+ *
+ * @author Szymon P
+ */
 public class DoctorAdministrationDTO {
 
     private MyBatisDbConnection<DoctorAdministrationMapper> dbConnection;

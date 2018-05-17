@@ -1,11 +1,30 @@
 package pojo;
 
+/**
+ * Plain Old Java Object class, using inherited user class and adding specially fields for patient.
+ *
+ * @see pojo.User
+ * @author Szymon P
+ *
+ */
 public class Patient extends User {
 
     private int firstContactDoctorId;
 
+    /**
+     * Address must be stored as object, not as integer id.
+     * It is necesarry for EagerLoading address data for patient using mapper.
+     *
+     * @see mappers.PatientAdministrationMapper
+     */
     private Address address;
 
+    /**
+     * Address must be stored as object, not as integer id.
+     * It is necessary for EagerLoading firstContactDoctor data for patient using mapper.
+     *
+     * @see mappers.PatientAdministrationMapper
+     */
     private Doctor firstContactDoctor;
 
 

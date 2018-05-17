@@ -17,7 +17,15 @@ import pojo.Patient;
 
 import java.io.IOException;
 
-
+/**
+ * Patients administration.
+ * Containing crud operations and governing fxml form behavior (inserting values
+ * into textfields etc).
+ *
+ * @see     helpers.ControllerPagination is using to hold helpers, mostly for
+ *          changing pages.
+ * @author  Szymon P
+ */
 public class PatientAdministrationController implements ControllerPagination {
 
     @FXML
@@ -25,8 +33,7 @@ public class PatientAdministrationController implements ControllerPagination {
             declineEditButton;
 
     @FXML
-    private TextField idField,
-            searchField,
+    private TextField searchField,
             peselField,
             forenameField,
             nameField,
@@ -80,9 +87,20 @@ public class PatientAdministrationController implements ControllerPagination {
         patientAdministrationDTO = new PatientAdministrationDTO();
     }
 
+
     @FXML
     private void initialize() {
+        setupColumnsInTheTable();
+        loadDataToTable();
 
+        filteredList = new FilteredList(tableData, e->true);    //list using to filter data
+        editTabDisable(true);
+    }
+
+    /**
+     * Setting factory relation between values in table and pojo class(es).
+     */
+    private void setupColumnsInTheTable() {
         idColumn.setCellValueFactory(new PropertyValueFactory<Patient, Integer>("id"));
         forenameColumn.setCellValueFactory(new PropertyValueFactory<Patient, String>("firstName"));
         nameColumn.setCellValueFactory(new PropertyValueFactory<Patient, String>("lastName"));
@@ -90,15 +108,12 @@ public class PatientAdministrationController implements ControllerPagination {
         addressColumn.setCellValueFactory(new PropertyValueFactory<Patient, String>("address"));
         emailColumn.setCellValueFactory(new PropertyValueFactory<Patient, String>("email"));
         firstContactDoctorIdColumn.setCellValueFactory(new PropertyValueFactory<Patient, Integer>("firstContactDoctorId"));
-
-        loadDataToTable();
-
-        filteredList = new FilteredList(tableData, e->true);    //list using to filter data
-
-
-        editTabDisable(true);
     }
 
+    /**
+     * Loading/refreshing data in table. Also applying filteredList on table
+     * from method searchPatientsByPeselAndName.
+     */
     private void loadDataToTable() {
 
         //if (tableData != null)
@@ -117,10 +132,11 @@ public class PatientAdministrationController implements ControllerPagination {
     //--ACTION_METHODS--
 
 
-
-
+    /**
+     * Filtering patients in table using pasel number or name.
+     */
     @FXML
-    private void searchPatientsByPeselAndName(KeyEvent event) {
+    private void filterPatientsByPeselAndName() {
         searchField.textProperty().addListener(((observable, oldValue, newValue) -> {
         filteredList.setPredicate((java.util.function.Predicate<? super Patient>) (Patient patient)->{
             if (newValue.isEmpty() || newValue == null) {
@@ -142,9 +158,12 @@ public class PatientAdministrationController implements ControllerPagination {
         patientsTable.setItems(sort);
     }
 
-
+    /**
+     * Removing selected in table patient from database.
+     */
     @FXML
-    private void removePatientClicked(ActionEvent event) {
+    private void removePatientClicked() {
+        //TODO: remove patient
 //        Patient patientToDelete = getSelectedPatientInTable();
 //
 //        if (getSelectedPatientInTable() != null) {
@@ -160,8 +179,15 @@ public class PatientAdministrationController implements ControllerPagination {
 //        }
     }
 
+    /**
+     * Editing selected patient and saving into database.
+     * Downloading selected in table patient from database and setting to him
+     * values specified in textfields, which are getting from methods depending
+     * for getting data and parse it to Patient object.
+     * If any value is not selected in table, showing warning.
+     */
     @FXML
-    private void editPatientClicked(ActionEvent event) {
+    private void editPatientClicked() {
         if (getSelectedPatientInTable() != null) {
 
             editTabDisable(false);
@@ -190,8 +216,11 @@ public class PatientAdministrationController implements ControllerPagination {
         }
     }
 
+    /**
+     * Creating patient from values in textfields, and saving him to database.
+     */
     @FXML
-    private void createPatientClicked(ActionEvent event) {
+    private void createPatientClicked() {
         Patient patientToAdd = new Patient();
         Address addressToAdd= new Address();
 
@@ -215,16 +244,34 @@ public class PatientAdministrationController implements ControllerPagination {
         clearAddPatientFields();
     }
 
+    /**
+     * Action for invoke method responsible for clearing textfields using in
+     * creating patient process.
+     */
     @FXML
-    private void clearPatientClickedAdd(ActionEvent event) {
+    private void clearPatientClickedAdd() {
         clearAddPatientFields();
     }
 
+    /**
+     * Switching scene back to admin default screen after login.
+     *
+     * @param event         using by pagination helper for get current scene.
+     *                      It is necessary to switch from one scene to another.
+     * @see helpers.ControllerHelpers
+     * @throws IOException  throwing when fxml file wasn't found
+     */
     @FXML
     private void backButtonClicked(ActionEvent event) throws IOException {
         helpers.SwitchScene("admin/AdminHome", event);
     }
 
+    /**
+     * Creating patient from textfields used to change values.
+     * @param patient   old patient version (containing his id), which will be
+     *                  override.
+     * @return          patient, which will be updated in database.
+     */
     private Patient createPatientForEditFromTextfields(Patient patient) {
         Patient patientToReturn = patient;
 
@@ -237,6 +284,12 @@ public class PatientAdministrationController implements ControllerPagination {
         return patientToReturn;
     }
 
+    /**
+     * Creating address from textfields, which will be saved with an override
+     * patient in database.
+     * @param address   old address (containing unique id), which will be override.
+     * @return          address, which will be updated in database.
+     */
     private Address createAddressForEditFromTexfields(Address address) {
         Address addressToReturn = address;
 
@@ -249,7 +302,11 @@ public class PatientAdministrationController implements ControllerPagination {
     }
 
 
-
+    /**
+     * Filling containing before-update patient version textfields.
+     *
+     * @param patient which data will be set to textfields.
+     */
     private void fillEditPatientFields(Patient patient) {
         forenameField.setText(patient.getFirstName());
         nameField.setText(patient.getLastName());
@@ -259,6 +316,10 @@ public class PatientAdministrationController implements ControllerPagination {
         doctorIdField.setText(String.valueOf(patient.getFirstContactDoctorId()));
     }
 
+    /**
+     * Filling containing before-update address version textfields.
+     * @param address which data will be set to textfields.
+     */
     private void fillEditPatientAddressFields(Address address) {
         cityField.setText(address.getCity());
         zipField.setText(address.getZip());
@@ -266,6 +327,9 @@ public class PatientAdministrationController implements ControllerPagination {
         numberField.setText(String.valueOf(address.getNumber()));
     }
 
+    /**
+     * Clearing all textfields responsible for store patient to create data.
+     */
     private void clearAddPatientFields() {
         forenameFieldAdd.setText(null);
         nameFieldAdd.setText(null);
@@ -287,10 +351,20 @@ public class PatientAdministrationController implements ControllerPagination {
 
     //HELPER METHODS
 
+    /**
+     * Getting patient, which is currently selected in table.
+     *
+     * @return selected in table patient.
+     */
     private Patient getSelectedPatientInTable() {
         return patientsTable.getSelectionModel().getSelectedItem();
     }
 
+    /**
+     * Setting edit tab in tabPane enabled or disabled.
+     *
+     * @param bool true if you want disable edit patient tab
+     */
     private void editTabDisable(boolean bool) {
         editPatientTab.setDisable(bool);
     }
