@@ -12,8 +12,6 @@ import java.util.List;
 
 public class DoctorModuleDTO {
     private MyBatisDbConnection<DoctorModuleMapper> dbConnection;
-    ArrayList<DoctorWorkingDays> tableData;
-
 
     public DoctorModuleDTO() {
         this.dbConnection = new MyBatisDbConnection<>(DoctorModuleMapper.class);

@@ -7,16 +7,9 @@ public class ToHtmlParser {
      * @param patientData
      * @param patientHistory - 1st string -> date of visit, 2nd -> patient history write while that visit
      */
-    public String patietFile(String[] patientData, HashMap<String, String> patientHistory) throws WrongDataException {
+    public String patietFile(ToHtmlPatient patient, ToHtmlDoctor doctor, HashMap<String, String> patientHistory){
         String result = "";
-
-        if (patientData == null || patientData.length != 10) {
-            throw new WrongDataException("Wrong patient input data");
-        }
-        if (patientHistory.isEmpty() || patientHistory == null) {
-            throw new WrongDataException("Wrong patient history data");
-        }
-        result += createPatientDataHtml(patientData) + createPatientHistoryHtml(patientHistory);
+        result += createPatientDataHtml(patient, doctor) + createPatientHistoryHtml(patientHistory);
 
         return result;
     }
@@ -27,14 +20,14 @@ public class ToHtmlParser {
      * @param patientData
      * @return
      */
-    private String createPatientDataHtml(String[] patientData) {
+    private String createPatientDataHtml(ToHtmlPatient patient, ToHtmlDoctor doctor) {
         String result;
 
-        String h1 = String.format("<h1>%s %s</h1>", patientData[0], patientData[1]),
-                h2 = String.format("<h2>%s</h2>", patientData[2]),
-                h3 = String.format("<h3>%s %s <br>%s %s</h3>", patientData[3], patientData[4], patientData[5], patientData[6]),
-                h4 = String.format("<h4>%s</h4>", patientData[7]),
-                h5 = String.format("<h5>%s %s</h5><br><hr>", patientData[8], patientData[9]);
+        String h1 = String.format("<h1>%s %s</h1>", patient.getFirstName(), patient.getLastName()),
+                h2 = String.format("<h2>%s</h2>", patient.getPesel()),
+                h3 = String.format("<h3>%s %s <br>%s %s</h3>", patient.getZipCode(), patient.getCity(), patient.getStreet(), patient.getNumber()),
+                h4 = String.format("<h4>%s</h4>", patient.getPhoneNumber()),
+                h5 = String.format("<h5>%s %s</h5><br><hr>", doctor.getFirstName(), doctor.getLastName());
         result = h1 + h2 + h3 + h4 + h5;
 
         return result;

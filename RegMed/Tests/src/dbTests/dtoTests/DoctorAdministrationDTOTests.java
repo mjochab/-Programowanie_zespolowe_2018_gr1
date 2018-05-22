@@ -47,7 +47,7 @@ public class DoctorAdministrationDTOTests {
         address.setNumber(23);
 
         Doctor doctor = new Doctor();
-        doctor.setDoctorId(0);
+        doctor.setId(0);
         doctor.setFirstName("Alojzy");
         doctor.setLastName("Stasiewicz");
         doctor.setPesel("91821922813");
@@ -113,7 +113,7 @@ public class DoctorAdministrationDTOTests {
         address.setNumber(3);
 
         Doctor doctor = new Doctor();
-        doctor.setDoctorId(0);
+        doctor.setId(0);
         doctor.setFirstName("Katarzyna");
         doctor.setLastName("Rak");
         doctor.setPesel("93728137212");
@@ -125,7 +125,7 @@ public class DoctorAdministrationDTOTests {
 
         doctorAdministrationDTO.add(doctor);
         int lastDoctorIndex = doctorAdministrationDTO.getAll()
-                .get(doctorAdministrationDTO.getAll().size()-1).getDoctorId();
+                .get(doctorAdministrationDTO.getAll().size()-1).getId();
         doctorAdministrationDTO.delete(lastDoctorIndex);
     }
 
