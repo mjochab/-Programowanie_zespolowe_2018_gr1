@@ -2,6 +2,7 @@ import dto.AdminAdministrationDTO;
 import org.apache.ibatis.jdbc.ScriptRunner;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import pojo.Administrator;
 
@@ -29,7 +30,7 @@ public abstract class DatabaseTestingAbstractClass {
     private static final String XML_PATH = "../../regmedtests _no_id_factory.sql";
     private static final String DB_LOGIN = "root";
     private static final String DB_PASSWORD = "";
-    private static final String DB_NAME = "regmedtests";    //You shouldn't change it.
+    private static final String DB_NAME = "regmedIntegrationTests";    //You shouldn't change it.
 
     /**
      * Creating new database.
@@ -85,6 +86,8 @@ public abstract class DatabaseTestingAbstractClass {
      * @throws FileNotFoundException    when myBatis configuration file
      *                                  will not be found.
      */
+
+
     @AfterEach
     public void dropDb() throws ClassNotFoundException, SQLException, FileNotFoundException {
         String url = String.format("jdbc:mysql://localhost:3306/%s", DB_NAME);
@@ -97,8 +100,6 @@ public abstract class DatabaseTestingAbstractClass {
 
         statement = connection.createStatement();
         statement.executeUpdate("DROP DATABASE " + DB_NAME);
-
-
     }
 
 

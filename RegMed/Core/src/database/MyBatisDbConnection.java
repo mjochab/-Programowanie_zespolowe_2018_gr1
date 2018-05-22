@@ -27,7 +27,20 @@ public class MyBatisDbConnection<T> {
      * @param type mapper type using in connection
      */
     public MyBatisDbConnection(Class<T> type) {
-        config = readFile();
+        config = readFile("database/SqlMapConfig.xml");
+        this.dataSourceProviderType = type;
+        sqlSessionFactory = new SqlSessionFactoryBuilder().build(config);
+    }
+
+    /**
+     * Creating connection with database
+     *
+     * @param type              mapper type using in connection
+     * @param sqlMapConfigFile  path to configuration file containing
+     *                          database and mappers information.
+     */
+    public MyBatisDbConnection(Class<T> type, String sqlMapConfigFile) {
+        config = readFile(sqlMapConfigFile);
         this.dataSourceProviderType = type;
         sqlSessionFactory = new SqlSessionFactoryBuilder().build(config);
     }
@@ -35,11 +48,12 @@ public class MyBatisDbConnection<T> {
     /**
      * Reading xml file with database configuration.
      *
-     * @return reader containing xml configuration file.
+     * @param src       path to configuration file.
+     * @return reader   containing xml configuration file.
      */
-    private static Reader readFile() {
+    private static Reader readFile(String src) {
         try {
-            return Resources.getResourceAsReader("database/SqlMapConfig.xml");
+            return Resources.getResourceAsReader(src);
         } catch (IOException e) {
             e.printStackTrace();
             return null;
@@ -79,4 +93,5 @@ public class MyBatisDbConnection<T> {
     public void closeSession() {
         session.close();
     }
+    
 }
