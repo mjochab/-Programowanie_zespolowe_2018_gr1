@@ -1,44 +1,148 @@
 package controllers.homescreen;
 
-import helpers.ControllerPagination;
-import javafx.event.ActionEvent;
-import javafx.fxml.Initializable;
-import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.stage.Stage;
 
+
+import dto.DoctorAdministrationDTO;
+import dto.PatientAdministrationDTO;
+import helpers.ControllerPagination;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.scene.control.*;
+import javafx.util.Callback;
+import models.ValidatorModel;
+import pojo.Address;
+import pojo.Doctor;
+import pojo.Patient;
+
+import javax.xml.validation.Validator;
 import java.io.IOException;
 import java.net.URL;
-import java.sql.SQLException;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.fxml.Initializable;
+import java.util.ResourceBundle;
 
 public class RegisterController implements Initializable, ControllerPagination {
 
+    @FXML
+    private TextField tfCity;
+
+    @FXML
+    private TextField tfPostalCode;
+
+    @FXML
+    private PasswordField tfPassword2;
+
+    @FXML
+    private PasswordField tfPassword1;
+
+    @FXML
+    private TextField tfName;
+
+    @FXML
+    private TextField tfSurname;
+
+    @FXML
+    private TextField tfEmail;
+
+    @FXML
+    private TextField tfPesel;
+
+    @FXML
+    private TextField tfStreet;
+    @FXML
+    private ComboBox<Doctor> cbDoctor;
+
+    @FXML
+    private TextField tfNumber;
+
+    @FXML
+    private TextField tfPhone;
 
     @FXML
     private Button bBack;
 
+    private ObservableList<Doctor> dataDoctors;
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-
-    }
 
 
     @FXML
-    void Exit(ActionEvent event) {
+    void register(ActionEvent event) {
+
+        if (ValidatorModel.containsOnlyLetters(tfCity.getText()) && ValidatorModel.containsOnlyLetters(tfName.getText()) && ValidatorModel.containsOnlyLetters(tfSurname.getText()) && ValidatorModel.peselValidator(tfPesel.getText()) && ValidatorModel.postalCodeValidator(tfPostalCode.getText()) && ValidatorModel.emailValidator(tfEmail.getText())) {
+            if (tfPassword1.getText().equals(tfPassword2.getText())) {
+                if (ValidatorModel.containsOnlyLetters(tfStreet.getText()) && ValidatorModel.containsOnlyNumbers(tfNumber.getText())) {
+                    PatientAdministrationDTO newPatient = new PatientAdministrationDTO();
+                    Patient p = new Patient();
+                    p.setEmail(tfEmail.getText());
+                    p.setFirstName(tfName.getText());
+                    p.setLastName(tfSurname.getText());
+                    p.setPassword(tfPassword1.getText());
+                    p.setPesel(tfPesel.getText());
+                    p.setPhoneNumber(tfPhone.getText());
+                    Address ad = new Address();
+                    ad.setCity(tfCity.getText());
+                    ad.setStreet(tfStreet.getText());
+                    ad.setZip(tfPostalCode.getText());
+                    ad.setNumber(Integer.parseInt(tfNumber.getText()));
+                    p.setAddress(ad);
+                    p.setFirstContactDoctorId(cbDoctor.getSelectionModel().getSelectedItem().getDoctorId());
+                    newPatient.add(p);
+
+                }
+            }
+        }
+    }
+
+    @FXML
+    void exit(ActionEvent event) {
         // Stage stage = (Stage) bBack.getScene().getWindow();
         try {
             //stage.close();
-            helpers.SwitchScene("homescreen/Homescreen", event);
+            ControllerPagination.helpers.SwitchScene("homescreen/Homescreen", event);
 
         } catch (IOException ex) {
             Logger.getLogger(getClass().getName()).log(Level.SEVERE, null, ex);
         }
 
     }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        DoctorAdministrationDTO dadto = new DoctorAdministrationDTO();
+
+        dataDoctors = FXCollections.observableArrayList();
+
+
+        dataDoctors.addAll(dadto.getAll());
+        cbDoctor.setItems(dataDoctors);
+
+
+        cbDoctor.setCellFactory(new Callback<ListView<Doctor>,ListCell<Doctor>>(){
+                            @Override
+                            public ListCell<Doctor> call(ListView<Doctor> l){
+                                return new ListCell<Doctor>(){
+                                    @Override
+                                    protected void updateItem(Doctor item, boolean empty) {
+                                        super.updateItem(item, empty);
+                                        if (item != null) {
+                                            setText(item.getFirstName() + " " + item.getLastName());
+                                        }
+                    }
+                } ;
+            }
+        });
+
+
+    }
 }
+
+
+
+
+
 
 

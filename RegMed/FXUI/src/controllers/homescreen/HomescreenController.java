@@ -1,5 +1,8 @@
 package controllers.homescreen;
 
+import dto.AdminAdministrationDTO;
+import dto.DoctorAdministrationDTO;
+import dto.PatientAdministrationDTO;
 import entities.Administrator;
 import entities.Doctor;
 import entities.Patient;
@@ -14,6 +17,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Modality;
@@ -26,6 +30,7 @@ import repositories.PatientRepository;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -52,6 +57,7 @@ public class HomescreenController implements Initializable, ControllerPagination
     @FXML
     private Button bRegister;
 
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
@@ -65,20 +71,32 @@ public class HomescreenController implements Initializable, ControllerPagination
         boolean sprawdzenie = false;
         String rola = "";
 
-        PatientRepository ur = new PatientRepository();
-        List<Patient> listaU = ur.getAll();
+        //PatientRepository ur = new PatientRepository();
+        //List<Patient> listaU = ur.getAll();
 
-        DoctorRepository dr = new DoctorRepository();
-        List<Doctor> listaD = dr.getAll();
+        PatientAdministrationDTO patientLogin = new PatientAdministrationDTO();
+        ArrayList<pojo.Patient> listaU = patientLogin.getAll();
 
-        AdministratorRepository ar = new AdministratorRepository();
-        List<Administrator> listaA = ar.getAll();
+        //DoctorRepository dr = new DoctorRepository();
+        //List<Doctor> listaD = dr.getAll();
+
+        DoctorAdministrationDTO doctorLogin = new DoctorAdministrationDTO();
+        ArrayList<pojo.Doctor> listaD = doctorLogin.getAll();
+
+        //AdministratorRepository ar = new AdministratorRepository();
+        //List<Administrator> listaA = ar.getAll();
+
+        AdminAdministrationDTO adminLogin = new AdminAdministrationDTO();
+        ArrayList<pojo.Administrator> listaA = adminLogin.getAll();
+
+
+
         //Patient u = new Patient(0,"txtLogin.getText()","", "tfPassword.getText()","", "");
         Parent root = null;
 
         if (!sprawdzenie) {
-            for (Patient u1 : listaU) {
-                if (u1.getForename().equals(txtLogin.getText()) && u1.getPassword().equals(tfPassword.getText())) {
+            for (pojo.Patient u1 : listaU) {
+                if (u1.getFirstName().equals(txtLogin.getText()) && u1.getPassword().equals(tfPassword.getText())) {
                     sprawdzenie = true;
                     rola = "patient";
 
@@ -90,8 +108,8 @@ public class HomescreenController implements Initializable, ControllerPagination
         }
 
         if (!sprawdzenie) {
-            for (Doctor dl : listaD) {
-                if (dl.getForename().equals(txtLogin.getText()) && dl.getPassword().equals(tfPassword.getText())) {
+            for (pojo.Doctor dl : listaD) {
+                if (dl.getFirstName().equals(txtLogin.getText()) && dl.getPassword().equals(tfPassword.getText())) {
                     sprawdzenie = true;
                     rola = "doctor";
                     // String rol2 = u1.getClass().getName();
@@ -101,8 +119,10 @@ public class HomescreenController implements Initializable, ControllerPagination
         }
 
         if (!sprawdzenie) {
-            for (Administrator a1 : listaA) {
-                if (a1.getForename().equals(txtLogin.getText()) && a1.getPassword().equals(tfPassword.getText())) {
+            for (pojo.Administrator a1 : listaA) {
+                //pojo.Administrator pA = adminLogin.get(al.g)
+
+                if (a1.getFirstName().equals(txtLogin.getText()) && a1.getPassword().equals(tfPassword.getText())) {
                     sprawdzenie = true;
                     rola = "admin";
                     // String rol2 = u1.getClass().getName();
