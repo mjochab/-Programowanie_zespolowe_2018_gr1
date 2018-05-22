@@ -4,6 +4,7 @@ import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.mapping.FetchType;
 import pojo.Address;
 import pojo.Doctor;
+import pojo.Specialization;
 
 import java.util.List;
 
@@ -33,7 +34,9 @@ public interface DoctorAdministrationMapper {
                     fetchType = FetchType.EAGER)),
             @Result(property = "email", column = "email"),
             @Result(property = "phoneNumber", column = "phone_number"),
-            @Result(property = "specializationId", column = "id_specialization")
+            @Result(property = "specialization", column = "id_specialization",
+                    javaType = Specialization.class, one = @One(select = "selectDoctorSpecialization",
+                    fetchType = FetchType.EAGER))
     })
     List<Doctor> getAllDoctorsToTable();
 
@@ -57,7 +60,9 @@ public interface DoctorAdministrationMapper {
                     fetchType = FetchType.EAGER)),
             @Result(property = "email", column = "email"),
             @Result(property = "phoneNumber", column = "phone_number"),
-            @Result(property = "specializationId", column = "id_specialization")
+            @Result(property = "specialization", column = "id_specialization",
+                    javaType = Specialization.class, one = @One(select = "selectDoctorSpecialization",
+                    fetchType = FetchType.EAGER))
     })
     Doctor getDoctor(int doctorId);
 
@@ -70,7 +75,7 @@ public interface DoctorAdministrationMapper {
      */
     @Insert("INSERT into doctors(id_doctor, first_name, last_name, PESEL, id_address, email, phone_number, " +
             "id_specialization, password) VALUES (#{id}, #{firstName}, #{lastName}, #{pesel}, #{address.addressId}, " +
-            "#{email}, #{phoneNumber}, #{specializationId}, #{password})")
+            "#{email}, #{phoneNumber}, #{specialization.id}, #{password})")
     @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id_doctor")
     void addDoctor(Doctor doctor);
 
@@ -150,4 +155,22 @@ public interface DoctorAdministrationMapper {
             @Result(property = "number", column = "number")
     })
     Address selectAddress(int addressId);
+
+    @Select("SELECT id_specialization, name FROM specializations " +
+            "WHERE id_specialization=#{specializationId}")
+    @Results(value = {
+            @Result(property = "id", column = "id_specialization"),
+            @Result(property = "name", column = "name")
+    })
+    Specialization selectDoctorSpecialization(int specializationId);
+
+    @Select("SELECT * FROM specializations")@Results(value = {
+            @Result(property = "id", column = "id_specialization"),
+            @Result(property = "name", column = "name")
+    })
+    List<Specialization> getAllSpecializations();
+
+
+
+
 }

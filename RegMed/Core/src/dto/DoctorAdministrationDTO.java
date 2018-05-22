@@ -5,8 +5,10 @@ import exceptions.ValidationException;
 import mappers.DoctorAdministrationMapper;
 import pojo.Address;
 import pojo.Doctor;
+import pojo.Specialization;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Holding methods using to operate on DoctorAdministration mapper. These methods are using MyBatisDbConnection class,
@@ -111,6 +113,15 @@ public class DoctorAdministrationDTO {
         }
     }
 
+    public List<Specialization> getAllSpecializations() {
+        dbConnection.openSession();
+        try {
+            return new ArrayList<>(dbConnection.getMapper().getAllSpecializations());
+        } finally {
+            dbConnection.closeSession();
+        }
+    }
+
 
     private boolean validateDoctor(Doctor doctor) throws ValidationException {
         if (!AdministrationValidators.userValidation(doctor)) {
@@ -127,5 +138,6 @@ public class DoctorAdministrationDTO {
 
         return true;
     }
+
 
 }

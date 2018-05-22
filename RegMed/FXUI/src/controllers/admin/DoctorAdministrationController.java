@@ -15,9 +15,12 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
+import pojo.Specialization;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Predicate;
 
 /**
@@ -58,8 +61,7 @@ public class DoctorAdministrationController implements ControllerPagination {
             cityFieldAdd,
             zipFieldAdd,
             streetFieldAdd,
-            numberFieldAdd,
-            specializationFieldAdd;
+            numberFieldAdd;
 
     @FXML
     private TabPane tabPane;
@@ -71,27 +73,32 @@ public class DoctorAdministrationController implements ControllerPagination {
     @FXML
     private TableView<Doctor> doctorsTable;
     @FXML
-    private TableColumn<Doctor, Integer> idColumn,
-            specializationColumn;
+    private TableColumn<Doctor, Integer> idColumn;
     @FXML
     private TableColumn<Doctor, String> forenameColumn,
             nameColumn,
             peselColumn,
             emailColumn,
             phoneNumberColumn,
-            addressColumn;
+            addressColumn,
+            specializationColumn;
 
     @FXML
     private Tab editWorkingHoursTab;
 
+    @FXML
+    private ChoiceBox<String> specializationChoiceBox;
+
     private DoctorAdministrationDTO doctorAdministrationDTO;
 
     private FilteredList filteredList;
-
     ObservableList<Doctor> tableData;
+    private List<Specialization> specializations;
 
     public DoctorAdministrationController() {
         this.doctorAdministrationDTO = new DoctorAdministrationDTO();
+        specializations = FXCollections.observableArrayList(
+                doctorAdministrationDTO.getAllSpecializations());
     }
 
     /**
@@ -108,15 +115,15 @@ public class DoctorAdministrationController implements ControllerPagination {
         emailColumn.setCellValueFactory(new PropertyValueFactory<Doctor, String>("email"));
         phoneNumberColumn.setCellValueFactory(new PropertyValueFactory<Doctor, String>("phoneNumber"));
         addressColumn.setCellValueFactory(new PropertyValueFactory<Doctor, String>("address"));
-        specializationColumn.setCellValueFactory(new PropertyValueFactory<Doctor, Integer>("specializationId"));
+        specializationColumn.setCellValueFactory(new PropertyValueFactory<Doctor, String>("specialization"));
 
         //load data
         loadDataToTable();
 
         filteredList = new FilteredList(tableData, e->true);    //list using to filter data
-
-
         editTabDisable(true);
+
+        specializationChoiceBox.setItems(FXCollections.observableArrayList(specializationsToString()));
     }
 
     /**
@@ -245,10 +252,10 @@ public class DoctorAdministrationController implements ControllerPagination {
             doctorToAdd.setAddress(addressToAdd);
             doctorToAdd.setEmail(emailFieldAdd.getText().toLowerCase());
             doctorToAdd.setPhoneNumber(phoneFieldAdd.getText());
-            if (specializationFieldAdd.getText().isEmpty()) {
+            if (specializationChoiceBox.getValue().isEmpty()) {
                 throw new ValidationException("Missing specialization id");
             } else {
-                doctorToAdd.setSpecializationId(Integer.parseInt(specializationFieldAdd.getText()));
+                doctorToAdd.setSpecialization(specializations.get(specializationChoiceBox.getSelectionModel().getSelectedIndex()));        //TODO nazwa to
             }
 
             doctorToAdd.setPassword(nameFieldAdd.getText());
@@ -366,7 +373,7 @@ public class DoctorAdministrationController implements ControllerPagination {
         streetFieldAdd.setText(null);
         numberFieldAdd.setText(null);
 
-        specializationFieldAdd.setText(null);
+        specializationChoiceBox.getSelectionModel().selectFirst();
     }
 
 
@@ -391,6 +398,14 @@ public class DoctorAdministrationController implements ControllerPagination {
      */
     private void editTabDisable(boolean bool) {
         editDoctorTab.setDisable(bool);
+    }
+
+    private List<String> specializationsToString() {
+        List<String> listToReturn = new ArrayList<>();
+        for (Specialization s : specializations) {
+            listToReturn.add(s.getName());
+        }
+        return listToReturn;
     }
 
 }
