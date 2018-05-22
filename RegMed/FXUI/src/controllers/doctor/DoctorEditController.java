@@ -55,14 +55,14 @@ public class DoctorEditController implements ControllerPagination{
             borderPane;
 
     private DoctorModuleDTO doctorModuleDTO;
+    private Boolean editSwitcher;
 
-    ObservableList<DoctorWorkingDays> tableData;
-    HashMap<String, DoctorWorkingDays> days = new HashMap<String, DoctorWorkingDays>();
+
 
     public DoctorEditController(){
         this.doctorModuleDTO = new DoctorModuleDTO();
+        this.editSwitcher = false;
         getDaysIfExist();
-        tableDataToHashMap(tableData);
     }
 
     @FXML
@@ -117,13 +117,28 @@ public class DoctorEditController implements ControllerPagination{
         }
 
         hours.forEach((k,v)-> System.out.println("day: " +k+" hour: "+v.getFrom()+" "+v.getTo()+" "+v.getActive()));
-        hours.forEach((k, v) -> insertWorkingDays(k, v.getFrom(), v.getTo(), intervalTextField.getText()));
+        if(!editSwitcher){
+            hours.forEach((k, v) -> insertWorkingDays(k, v.getFrom(), v.getTo(), intervalTextField.getText()));
+        }
+        else{
+            hours.forEach((k, v) -> insertWorkingDays(k, v.getFrom(), v.getTo(), intervalTextField.getText()));
+        }
 
     }
 
     public void insertWorkingDays(String day, String hourFrom, String hourTo, String hourInterval){
         DoctorWorkingDays dayToAdd = new DoctorWorkingDays();
-        dayToAdd.setDoctorId(1);
+        dayToAdd.setId(12);
+        dayToAdd.setDay(day);
+        dayToAdd.setHourFrom(hourFrom);
+        dayToAdd.setHourTo(hourTo);
+        dayToAdd.setHourInterval(hourInterval);
+        doctorModuleDTO.add(dayToAdd);
+    }
+
+    public void updateWorkingDays(String day, String hourFrom, String hourTo, String hourInterval){
+        DoctorWorkingDays dayToAdd = new DoctorWorkingDays();
+        dayToAdd.setId(12);
         dayToAdd.setDay(day);
         dayToAdd.setHourFrom(hourFrom);
         dayToAdd.setHourTo(hourTo);
@@ -132,14 +147,14 @@ public class DoctorEditController implements ControllerPagination{
     }
 
     public void getDaysIfExist(){
-        tableData = FXCollections.observableArrayList(doctorModuleDTO.getDoctorWorkingDays(1));
+        if(!FXCollections.observableArrayList(doctorModuleDTO.getDoctorWorkingDays(12)).isEmpty()){
+            tableData = FXCollections.observableArrayList(doctorModuleDTO.getDoctorWorkingDays(12));
+            editSwitcher = true;
+        }
+
     }
 
-    public void tableDataToHashMap(ObservableList<DoctorWorkingDays> tableData){
-        for (DoctorWorkingDays day:tableData) {
-            days.put(day.getDay(), day);
-        }
-    }
+
 
     public void fillHours(){
         if(days.get("monday")!=null) {
