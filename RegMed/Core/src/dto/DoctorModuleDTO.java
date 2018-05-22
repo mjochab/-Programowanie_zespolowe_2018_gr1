@@ -48,19 +48,6 @@ public class DoctorModuleDTO {
         }
     }
 
-    public void update(DoctorWorkingDays doctorWorkingDays) {
-        dbConnection.openSession();
-        try {
-            HashMap daysToUpdate = new HashMap();
-
-            daysToUpdate.putAll(tableDataToHashMap(getDoctorWorkingDays(12)));
-
-            dbConnection.getMapper().updateDoctorWorkingDays(doctorWorkingDays);
-            dbConnection.commit();
-        } finally {
-            dbConnection.closeSession();
-        }
-    }
 
     public HashMap tableDataToHashMap(List<DoctorWorkingDays> tableData){
         HashMap<String, DoctorWorkingDays> days = new HashMap<String, DoctorWorkingDays>();

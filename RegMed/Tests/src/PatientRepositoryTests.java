@@ -89,4 +89,11 @@ public class PatientRepositoryTests {
         assertTrue(patientRepository.getAll().size() == 1);
 
     }
+
+    @Test
+    void test(){
+        //ToHtmlParser parser = new ToHtmlParser();
+
+    }
+
 }

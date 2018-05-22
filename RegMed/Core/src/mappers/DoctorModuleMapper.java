@@ -21,23 +21,21 @@ public interface DoctorModuleMapper {
     })
     Doctor getDoctor(int doctorId);
 
-    @Select("select day, hour_from, hour_to, hour_interval from doctorworkingdays where id_doctor=#{id}")
+    @Select("select day, hour_from, hour_to, hour_interval, validate_date from doctorworkingdays where id_doctor=#{id}")
     @Results({
             @Result(property = "id", column = "id_doctor"),
             @Result(property = "day", column = "day"),
             @Result(property = "hourFrom", column = "hour_from"),
             @Result(property = "hourTo", column = "hour_to"),
-            @Result(property = "hourInterval", column = "hour_interval")
+            @Result(property = "hourInterval", column = "hour_interval"),
+            @Result(property = "validateDate", column = "validate_date")
     })
     List<DoctorWorkingDays> getDoctorWorkingDays(int id);
 
 
-    @Insert("INSERT into doctorworkingdays(id_doctor_working_day, id_doctor, day, hour_from, hour_to, hour_interval) VALUES (#{doctorWorkingDayId}, #{id}, #{day}, #{hourFrom}, #{hourTo}," +
-            "#{hourInterval})")
+    @Insert("INSERT into doctorworkingdays(id_doctor_working_day, id_doctor, day, hour_from, hour_to, hour_interval, validate_date) VALUES (#{doctorWorkingDayId}, #{id}, #{day}, #{hourFrom}, #{hourTo}," +
+            "#{hourInterval}, #{validateDate})")
     @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id_doctor")
     void addDoctorWorkingDays(DoctorWorkingDays doctorWorkingDays);
-
-    @Update("UPDATE doctorworkingdays SET hour_from=#{hourFrom}, hour_to=#{hourTo}, hour_interval=#{hourInterval} WHERE id_doctor=#{id} AND day=#{day}")
-    void updateDoctorWorkingDays(DoctorWorkingDays doctorWorkingDays);
 
 }

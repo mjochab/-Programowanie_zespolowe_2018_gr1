@@ -9,6 +9,7 @@ public class DoctorWorkingDays {
     private String hourFrom;
     private String hourTo;
     private String hourInterval;
+    private String validateDate;
     private Doctor doctor;
 
     public Doctor getDoctor() {
@@ -65,6 +66,14 @@ public class DoctorWorkingDays {
 
     public void setHourInterval(String hourInterval) {
         this.hourInterval = hourInterval;
+    }
+
+    public String getValidateDate() {
+        return validateDate;
+    }
+
+    public void setValidateDate(String validateDate) {
+        this.validateDate = validateDate;
     }
 
     public String doctorWorkingDaysToString() {

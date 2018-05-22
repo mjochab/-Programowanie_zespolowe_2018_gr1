@@ -152,7 +152,7 @@ public class DoctorAdministrationController implements ControllerPagination {
             if ( DialogBox.choiceBox("Remove confirmation", String.format("%s %s will be removed.",
                     doctorToDelete.getFirstName(), doctorToDelete.getLastName()), "Are you sure?") ) {
 
-                doctorAdministrationDTO.delete(getSelectedDoctorInTable().getDoctorId());
+                doctorAdministrationDTO.delete(getSelectedDoctorInTable().getId());
                 loadDataToTable();
             }
         } else {
