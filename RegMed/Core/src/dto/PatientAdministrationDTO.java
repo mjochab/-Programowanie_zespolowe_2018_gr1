@@ -67,7 +67,16 @@ public class PatientAdministrationDTO {
         } finally {
             dbConnection.closeSession();
         }
+    }
 
+    public void delete(int patientId) {
+        dbConnection.openSession();
+        try {
+            dbConnection.getMapper().deletePatient(patientId);
+            dbConnection.commit();
+        } finally {
+            dbConnection.closeSession();
+        }
     }
     
     public void updateAddress(Address address) {

@@ -126,7 +126,7 @@
                               <Font size="18.0" />
                            </font>
                         </TextField>
-                        <ChoiceBox fx:id="firstcontactDoctorChoiceBox" layoutX="142.0" layoutY="487.0" prefWidth="150.0" />
+                        <ChoiceBox fx:id="firstcontactDoctorChoiceBoxAdd" layoutX="142.0" layoutY="487.0" prefWidth="150.0" />
                      </children>
                   </AnchorPane>
             </content>
@@ -220,11 +220,7 @@
                            <Font size="18.0" />
                         </font>
                      </TextField>
-                     <TextField fx:id="doctorIdField" layoutX="121.0" layoutY="474.0" prefHeight="50.0" prefWidth="203.0" promptText="DoctorId">
-                        <font>
-                           <Font size="18.0" />
-                        </font>
-                     </TextField>
+                        <ChoiceBox fx:id="firstcontactDoctorChoiceBox" layoutX="151.0" layoutY="482.0" prefWidth="150.0" />
                   </children>
                </AnchorPane>
             </content>

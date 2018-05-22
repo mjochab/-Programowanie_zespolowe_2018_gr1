@@ -47,7 +47,6 @@ public class PatientAdministrationController implements ControllerPagination {
             zipField,
             streetField,
             numberField,
-            doctorIdField,
 
             forenameFieldAdd,
             nameFieldAdd,
@@ -80,7 +79,8 @@ public class PatientAdministrationController implements ControllerPagination {
             firstContactDoctorIdColumn;
 
     @FXML
-    private ChoiceBox<String> firstcontactDoctorChoiceBox;
+    private ChoiceBox<String> firstcontactDoctorChoiceBoxAdd,
+            firstcontactDoctorChoiceBox;
 
     private PatientAdministrationDTO patientAdministrationDTO;
 
@@ -103,6 +103,7 @@ public class PatientAdministrationController implements ControllerPagination {
         filteredList = new FilteredList(tableData, e->true);    //list using to filter data
         editTabDisable(true);
 
+        firstcontactDoctorChoiceBoxAdd.setItems(FXCollections.observableArrayList(parseFirstcontactDoctorsToString()));
         firstcontactDoctorChoiceBox.setItems(FXCollections.observableArrayList(parseFirstcontactDoctorsToString()));
     }
 
@@ -172,20 +173,18 @@ public class PatientAdministrationController implements ControllerPagination {
      */
     @FXML
     private void removePatientClicked() {
-        //TODO: remove patient
-//        Patient patientToDelete = getSelectedPatientInTable();
-//
-//        if (getSelectedPatientInTable() != null) {
-//            if ( DialogBox.choiceBox("Remove confirmation", String.format("%s %s will be removed.",
-//                    patientToDelete.getForename(), patientToDelete.getName()), "Are you sure?") ) {
-//
-//                patientRepository.remove(patientToDelete);
-//
-//                loadDataToTable();
-//            }
-//        } else {
-//            DialogBox.warningBox("Information", "Please select patient to remove in table");
-//        }
+        Patient patientToDelete = getSelectedPatientInTable();
+
+        if (getSelectedPatientInTable() != null) {
+            if ( DialogBox.choiceBox("Remove confirmation", String.format("%s %s will be removed.",
+                    patientToDelete.getFirstName(), patientToDelete.getLastName()), "Are you sure?") ) {
+
+                patientAdministrationDTO.delete(patientToDelete.getId());
+                loadDataToTable();
+            }
+        } else {
+            DialogBox.warningBox("Information", "Please select patient to remove in table");
+        }
     }
 
     /**
@@ -209,7 +208,8 @@ public class PatientAdministrationController implements ControllerPagination {
             saveEditButton.setOnAction(e -> {
                 patientAdministrationDTO.update(createPatientForEditFromTextfields(patientToEdit));
                 patientAdministrationDTO.updateAddress(createAddressForEditFromTexfields(patientToEdit.getAddress()));
-                patientAdministrationDTO.updateFirstcontactDoctorId(patientToEdit, Integer.parseInt(doctorIdField.getText()));
+                patientAdministrationDTO.updateFirstcontactDoctorId(patientToEdit, firstContactDoctors
+                        .get(firstcontactDoctorChoiceBox.getSelectionModel().getSelectedIndex()).getId());
 
                 loadDataToTable();
                 editTabDisable(true);
@@ -244,8 +244,7 @@ public class PatientAdministrationController implements ControllerPagination {
         patientToAdd.setAddress(addressToAdd);
         patientToAdd.setEmail(emailFieldAdd.getText());
         patientToAdd.setPhoneNumber(phoneFieldAdd.getText());
-        //patientToAdd.setFirstContactDoctor(Integer.parseInt(doctorIdFieldAdd.getText())); //TODO
-        patientToAdd.setFirstContactDoctor(firstContactDoctors.get(firstcontactDoctorChoiceBox.getSelectionModel().getSelectedIndex()));
+        patientToAdd.setFirstContactDoctor(firstContactDoctors.get(firstcontactDoctorChoiceBoxAdd.getSelectionModel().getSelectedIndex()));
         patientToAdd.setPassword(nameFieldAdd.getText());
 
         patientAdministrationDTO.add(patientToAdd);
@@ -290,7 +289,7 @@ public class PatientAdministrationController implements ControllerPagination {
         patientToReturn.setPesel(peselField.getText());
         patientToReturn.setEmail(emailField.getText());
         patientToReturn.setPhoneNumber(phoneField.getText());
-        //patientToReturn.setFirstContactDoctorId(Integer.parseInt(doctorIdField.getText()));   //TODO
+        patientToReturn.setFirstContactDoctor(firstContactDoctors.get(firstcontactDoctorChoiceBox.getSelectionModel().getSelectedIndex()));
         return patientToReturn;
     }
 
@@ -323,7 +322,7 @@ public class PatientAdministrationController implements ControllerPagination {
         peselField.setText(patient.getPesel());
         emailField.setText(patient.getEmail());
         phoneField.setText(patient.getPhoneNumber());
-        //doctorIdField.setText(String.valueOf(patient.getFirstContactDoctorId())); //TODO
+
     }
 
     /**
@@ -352,7 +351,7 @@ public class PatientAdministrationController implements ControllerPagination {
         streetFieldAdd.setText(null);
         numberFieldAdd.setText(null);
 
-        firstcontactDoctorChoiceBox.getSelectionModel().selectFirst();
+        firstcontactDoctorChoiceBoxAdd.getSelectionModel().selectFirst();
     }
 
 
