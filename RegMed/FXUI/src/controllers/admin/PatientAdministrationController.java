@@ -13,9 +13,13 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 import dto.PatientAdministrationDTO;
 import pojo.Address;
+import pojo.Doctor;
 import pojo.Patient;
+import pojo.Specialization;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Patients administration.
@@ -53,8 +57,7 @@ public class PatientAdministrationController implements ControllerPagination {
             cityFieldAdd,
             zipFieldAdd,
             streetFieldAdd,
-            numberFieldAdd,
-            doctorIdFieldAdd;   //TODO: change to dropdown with dload data from doctors
+            numberFieldAdd;
 
 
     @FXML
@@ -67,24 +70,28 @@ public class PatientAdministrationController implements ControllerPagination {
     @FXML
     private TableView<Patient> patientsTable;
     @FXML
-    private TableColumn<Patient, Integer> idColumn,
-            firstContactDoctorIdColumn;
+    private TableColumn<Patient, Integer> idColumn;
     @FXML
     private TableColumn<Patient, String> forenameColumn,
             nameColumn,
             peselColumn,
             addressColumn,
-            emailColumn;
+            emailColumn,
+            firstContactDoctorIdColumn;
 
-    
+    @FXML
+    private ChoiceBox<String> firstcontactDoctorChoiceBox;
+
     private PatientAdministrationDTO patientAdministrationDTO;
 
     private FilteredList filteredList;
-
     ObservableList<Patient> tableData;
+    private List<Doctor> firstContactDoctors;
+
 
     public PatientAdministrationController() {
         patientAdministrationDTO = new PatientAdministrationDTO();
+        firstContactDoctors = patientAdministrationDTO.getAllFirstcontactDoctors();
     }
 
 
@@ -95,6 +102,8 @@ public class PatientAdministrationController implements ControllerPagination {
 
         filteredList = new FilteredList(tableData, e->true);    //list using to filter data
         editTabDisable(true);
+
+        firstcontactDoctorChoiceBox.setItems(FXCollections.observableArrayList(parseFirstcontactDoctorsToString()));
     }
 
     /**
@@ -107,7 +116,7 @@ public class PatientAdministrationController implements ControllerPagination {
         peselColumn.setCellValueFactory(new PropertyValueFactory<Patient, String>("pesel"));
         addressColumn.setCellValueFactory(new PropertyValueFactory<Patient, String>("address"));
         emailColumn.setCellValueFactory(new PropertyValueFactory<Patient, String>("email"));
-        firstContactDoctorIdColumn.setCellValueFactory(new PropertyValueFactory<Patient, Integer>("firstContactDoctorId"));
+        firstContactDoctorIdColumn.setCellValueFactory(new PropertyValueFactory<Patient, String>("firstContactDoctor"));
     }
 
     /**
@@ -235,7 +244,8 @@ public class PatientAdministrationController implements ControllerPagination {
         patientToAdd.setAddress(addressToAdd);
         patientToAdd.setEmail(emailFieldAdd.getText());
         patientToAdd.setPhoneNumber(phoneFieldAdd.getText());
-        patientToAdd.setFirstContactDoctorId(Integer.parseInt(doctorIdFieldAdd.getText()));
+        //patientToAdd.setFirstContactDoctor(Integer.parseInt(doctorIdFieldAdd.getText())); //TODO
+        patientToAdd.setFirstContactDoctor(firstContactDoctors.get(firstcontactDoctorChoiceBox.getSelectionModel().getSelectedIndex()));
         patientToAdd.setPassword(nameFieldAdd.getText());
 
         patientAdministrationDTO.add(patientToAdd);
@@ -280,7 +290,7 @@ public class PatientAdministrationController implements ControllerPagination {
         patientToReturn.setPesel(peselField.getText());
         patientToReturn.setEmail(emailField.getText());
         patientToReturn.setPhoneNumber(phoneField.getText());
-        patientToReturn.setFirstContactDoctorId(Integer.parseInt(doctorIdField.getText()));
+        //patientToReturn.setFirstContactDoctorId(Integer.parseInt(doctorIdField.getText()));   //TODO
         return patientToReturn;
     }
 
@@ -313,7 +323,7 @@ public class PatientAdministrationController implements ControllerPagination {
         peselField.setText(patient.getPesel());
         emailField.setText(patient.getEmail());
         phoneField.setText(patient.getPhoneNumber());
-        doctorIdField.setText(String.valueOf(patient.getFirstContactDoctorId()));
+        //doctorIdField.setText(String.valueOf(patient.getFirstContactDoctorId())); //TODO
     }
 
     /**
@@ -342,7 +352,7 @@ public class PatientAdministrationController implements ControllerPagination {
         streetFieldAdd.setText(null);
         numberFieldAdd.setText(null);
 
-        doctorIdFieldAdd.setText(null);
+        firstcontactDoctorChoiceBox.getSelectionModel().selectFirst();
     }
 
 
@@ -367,6 +377,15 @@ public class PatientAdministrationController implements ControllerPagination {
      */
     private void editTabDisable(boolean bool) {
         editPatientTab.setDisable(bool);
+    }
+
+    private List<String> parseFirstcontactDoctorsToString() {
+        List<String> result = new ArrayList<>();
+        for (Doctor doctor : firstContactDoctors) {
+            result.add(String.format("%s %s", doctor.getFirstName(),
+                    doctor.getLastName()));
+        }
+        return result;
     }
 
 

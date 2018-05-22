@@ -9,7 +9,7 @@ package pojo;
  */
 public class Patient extends User {
 
-    private int firstContactDoctorId;
+    //private int firstContactDoctorId;
 
     /**
      * Address must be stored as object, not as integer id.
@@ -18,6 +18,8 @@ public class Patient extends User {
      * @see mappers.PatientAdministrationMapper
      */
     private Address address;
+
+
 
     /**
      * Address must be stored as object, not as integer id.
@@ -30,13 +32,7 @@ public class Patient extends User {
 
 
 
-    public int getFirstContactDoctorId() {
-        return firstContactDoctorId;
-    }
 
-    public void setFirstContactDoctorId(int firstContactDoctorId) {
-        this.firstContactDoctorId = firstContactDoctorId;
-    }
 
     public Address getAddress() {
         return address;
@@ -62,7 +58,6 @@ public class Patient extends User {
                 "pesel: " + getPesel(),
                 "email: " + getEmail(),
                 "phone: " + getPhoneNumber(),
-                "doctor: " + getFirstContactDoctorId(),
                 "address: " + getAddress().toString()
         );
     }
