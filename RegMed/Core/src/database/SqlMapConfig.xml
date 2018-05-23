@@ -21,6 +21,8 @@
         <mapper class="mappers.DoctorAdministrationMapper" />
         <mapper class="mappers.AdminAdministrationMapper" />
         <mapper class="mappers.DoctorModuleMapper" />
+        <mapper class="mappers.PatientDataMapper" />
+        <mapper class="mappers.PatientsHistoryMapper"/>
         <mapper class="mappers.FileMapper" />
         <mapper class="mappers.PatientModuleMapper" />
     </mappers>
