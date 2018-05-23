@@ -4,8 +4,11 @@ import java.util.Iterator;
 public class ToHtmlParser {
 
     /**
-     * @param patientData
-     * @param patientHistory - 1st string -> date of visit, 2nd -> patient history write while that visit
+     *
+     * @param patient
+     * @param doctor
+     * @param patientHistory
+     * @return
      */
     public String patietFile(ToHtmlPatient patient, ToHtmlDoctor doctor, HashMap<String, String> patientHistory){
         String result = "";
@@ -17,7 +20,8 @@ public class ToHtmlParser {
 
     /**
      *
-     * @param patientData
+     * @param patient
+     * @param doctor
      * @return
      */
     private String createPatientDataHtml(ToHtmlPatient patient, ToHtmlDoctor doctor) {
@@ -54,6 +58,14 @@ public class ToHtmlParser {
         return result;
     }
 
+    /**
+     *
+     * @param doctor
+     * @param patient
+     * @param content
+     * @param date
+     * @return
+     */
     public String prescription(ToHtmlDoctor doctor, ToHtmlPatient patient, String content, String date){
         String result = null;
 
@@ -67,6 +79,11 @@ public class ToHtmlParser {
         return result;
     }
 
+    /**
+     *
+     * @param doctor
+     * @return
+     */
     private String createDoctorPrescriptionHtml(ToHtmlDoctor doctor){
 
         String row1 = String.format("<h3>%s %s</h3>", doctor.getFirstName(), doctor.getLastName()),
@@ -75,6 +92,11 @@ public class ToHtmlParser {
         return row1 + row2 + row3;
     }
 
+    /**
+     *
+     * @param patient
+     * @return
+     */
     private String createPatientPerscriptionHtml(ToHtmlPatient patient)
     {
         String row1 = String.format("<h3>%s %s</h3>", patient.getFirstName(), patient.getLastName()),
@@ -88,6 +110,15 @@ public class ToHtmlParser {
         return row1 + row2 + row3;
     }
 
+    /**
+     *
+     * @param doctor
+     * @param doctorSpecialist
+     * @param patient
+     * @param content
+     * @param date
+     * @return
+     */
     public String refference(ToHtmlDoctor doctor, ToHtmlDoctor doctorSpecialist, ToHtmlPatient patient, String content, String date){
         String result = "";
         result += String.format("<h2>Refferal to: %s</h2>", doctorSpecialist.getSpecialization());
@@ -97,6 +128,9 @@ public class ToHtmlParser {
         return result;
     }
 
+    /**
+     *
+     */
     public void test(){
         System.out.println("test");
     }

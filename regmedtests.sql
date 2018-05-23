@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Czas generowania: 22 Maj 2018, 09:02
+-- Czas generowania: 23 Maj 2018, 08:55
 -- Wersja serwera: 5.7.19
 -- Wersja PHP: 5.6.31
 
@@ -133,19 +133,18 @@ CREATE TABLE IF NOT EXISTS `doctorworkingdays` (
   `hour_from` time NOT NULL,
   `hour_to` time NOT NULL,
   `hour_interval` varchar(2) NOT NULL,
+  `validate_date` date DEFAULT NULL,
   PRIMARY KEY (`id_doctor_working_day`),
   KEY `id_doctor` (`id_doctor`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
 
 --
 -- Zrzut danych tabeli `doctorworkingdays`
 --
 
-INSERT INTO `doctorworkingdays` (`id_doctor_working_day`, `id_doctor`, `day`, `hour_from`, `hour_to`, `hour_interval`) VALUES
-(9, 12, 'tuesday', '10:00:00', '12:00:00', '30'),
-(10, 12, 'monday', '10:00:00', '12:00:00', '30'),
-(11, 12, 'tuesday', '11:00:00', '12:00:00', '30'),
-(12, 12, 'monday', '10:00:00', '12:00:00', '30');
+INSERT INTO `doctorworkingdays` (`id_doctor_working_day`, `id_doctor`, `day`, `hour_from`, `hour_to`, `hour_interval`, `validate_date`) VALUES
+(13, 12, 'wednesday', '11:00:00', '15:00:00', '30', '2022-06-20'),
+(14, 12, 'monday', '10:00:00', '12:00:00', '30', '2022-06-20');
 
 -- --------------------------------------------------------
 
@@ -156,12 +155,19 @@ INSERT INTO `doctorworkingdays` (`id_doctor_working_day`, `id_doctor`, `day`, `h
 DROP TABLE IF EXISTS `files`;
 CREATE TABLE IF NOT EXISTS `files` (
   `id_file` int(11) NOT NULL AUTO_INCREMENT,
-  `id_visit` int(11) NOT NULL,
+  `id_patient` int(11) NOT NULL,
+  `id_doctor` int(11) NOT NULL,
   `date` timestamp NOT NULL,
   `history` mediumtext CHARACTER SET latin1 NOT NULL,
-  PRIMARY KEY (`id_file`),
-  KEY `id_visit` (`id_visit`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
+  PRIMARY KEY (`id_file`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
+
+--
+-- Zrzut danych tabeli `files`
+--
+
+INSERT INTO `files` (`id_file`, `id_patient`, `id_doctor`, `date`, `history`) VALUES
+(1, 1, 12, '2018-05-21 22:00:00', 'huj dupa cipa!!');
 
 -- --------------------------------------------------------
 
@@ -206,6 +212,7 @@ CREATE TABLE IF NOT EXISTS `prescriptions` (
   `id_doctor` int(11) NOT NULL,
   `date` timestamp NOT NULL,
   `content` varchar(65000) CHARACTER SET latin1 NOT NULL,
+  `html_content` mediumtext COLLATE utf8_polish_ci NOT NULL,
   PRIMARY KEY (`id_prescription`),
   KEY `id_doctor` (`id_doctor`),
   KEY `id_patient` (`id_patient`)
@@ -299,12 +306,6 @@ ALTER TABLE `doctors`
 --
 ALTER TABLE `doctorworkingdays`
   ADD CONSTRAINT `DoctorWorkingDays_ibfk_1` FOREIGN KEY (`id_doctor`) REFERENCES `doctors` (`id_doctor`) ON DELETE CASCADE;
-
---
--- Ograniczenia dla tabeli `files`
---
-ALTER TABLE `files`
-  ADD CONSTRAINT `files_ibfk_1` FOREIGN KEY (`id_visit`) REFERENCES `singlevisits` (`id_single_visit`) ON DELETE NO ACTION;
 
 --
 -- Ograniczenia dla tabeli `patients`
