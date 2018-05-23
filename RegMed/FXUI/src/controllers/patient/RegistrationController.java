@@ -28,6 +28,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
+/**
+ * Allowing select visit at selected first contact doctor or specialist.
+ *
+ * @author Pawel Lawera
+ */
 public class RegistrationController implements Initializable, ControllerPagination {
 
     private PatientModuleDTO patientModuleDTO;
@@ -71,6 +76,9 @@ public class RegistrationController implements Initializable, ControllerPaginati
 
     }
 
+    /**
+     * Enabling in doctor admission days calendar only days, when doctor is admitting.
+     */
     private void setDatiePickerFields() {
         //https://stackoverflow.com/questions/42542312/javafx-datepicker-color-single-cell
         List<AdmissionDay> admissionDays = new ArrayList<>(patientModuleDTO.getAllAdmissionDays());
@@ -106,18 +114,32 @@ public class RegistrationController implements Initializable, ControllerPaginati
     }
 
 
-
+    /**
+     * Switching scene back to admin default screen after login.
+     *
+     * @param event         using by pagination helper for get current scene.
+     *                      It is necessary to switch from one scene to another.
+     * @see helpers.ControllerHelpers
+     * @throws IOException  throwing when fxml file wasn't found
+     */
     @FXML
     private void backButtonClicked(ActionEvent event) throws IOException {
         helpers.SwitchScene("patient/PatientHome", event);
     }
 
+
+    /**
+     * Inserting visits (free and busy) form day selected in calendar.
+     */
     @FXML
-    private void findButtonClicked(ActionEvent event) {
+    private void findButtonClicked() {
         loadVisits();
     }
 
 
+    /**
+     * TODO: incomplete
+     */
     private void setDoctorWorkingDaysTableDataConnection() {
         dayColumn.setCellValueFactory(new PropertyValueFactory<DoctorWorkingDays, String>("day"));
         admissionHoursFromColumn.setCellValueFactory(new PropertyValueFactory<DoctorWorkingDays, String>("hourFrom"));
@@ -125,14 +147,21 @@ public class RegistrationController implements Initializable, ControllerPaginati
     }
 
 
-
-
+    /**
+     * Loading doctor working days into table.
+     *
+     * @param doctorId doctor id of which working days you want load to table
+     *                 with admission days.
+     */
     private void loadDoctorWorkingDaysDataToTable(int doctorId) {
         doctorWorkingDaysTableData = FXCollections.observableArrayList(patientModuleDTO.getDoctorWorkingDays(doctorId));
         doctorWorkingDaysTable.setItems(doctorWorkingDaysTableData);
     }
 
 
+    /**
+     * Loading visits (free and busy) form day selected in calendar.
+     */
     private void loadVisits() {
         AdmissionDay admissionDay = patientModuleDTO.getAdmissionDayByDate(getDateFromCalendar());
         ArrayList list = new ArrayList(parseVisitsToHour(patientModuleDTO.getAllVisits(admissionDay)));
@@ -144,6 +173,13 @@ public class RegistrationController implements Initializable, ControllerPaginati
     }
 
 
+    /**
+     * Converting list with doctor objects to strings, containg doctors
+     * first and last name.
+     *
+     * @param list of doctors
+     * @return  list of strings, containing doctors first and last names.
+     */
     private ObservableList<String> doctorsToString(ObservableList<Doctor> list) {
         List<String> listString = new ArrayList<>();
         for (Doctor doc : list) {
@@ -153,6 +189,12 @@ public class RegistrationController implements Initializable, ControllerPaginati
         return FXCollections.observableArrayList(listString);
     }
 
+
+    /**
+     * Converting list with visits as hours to string.
+     * @param visits    list of visits hours in datetime.
+     * @return          list of visits hours in string list.
+     */
     private List<String> parseVisitsToHour(List<SingleVisit> visits) {
         List<String> list = new ArrayList<>();
 
@@ -163,6 +205,11 @@ public class RegistrationController implements Initializable, ControllerPaginati
         return list;
     }
 
+    /**
+     * Getting date from selected cell in callendar.
+     *
+     * @return date of selected cell.
+     */
     private LocalDate getDateFromCalendar() {
         return visitDatePicker.getValue();
     }
