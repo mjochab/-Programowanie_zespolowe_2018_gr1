@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.7.4
+-- version 4.7.9
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Czas generowania: 23 Maj 2018, 08:55
--- Wersja serwera: 5.7.19
--- Wersja PHP: 5.6.31
+-- Czas generowania: 23 Maj 2018, 09:00
+-- Wersja serwera: 5.7.21
+-- Wersja PHP: 5.6.35
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -117,7 +117,7 @@ INSERT INTO `doctors` (`id_doctor`, `first_name`, `last_name`, `PESEL`, `id_addr
 (13, 'Elżbieta', 'Krzywonóg', '87456987531', 1, 'elakrzywenogi@mam.pl', '698486512', 'password', 15),
 (14, 'Marian', 'Długonos', '35897456125', 2, 'duzedziury@op.pl', '569874532', 'password', 14),
 (15, 'Mirosława', 'Łopata', '68458974532', 1, 'ml@wp.pl', '456878987', 'password', 12),
-(16, 'Anna', 'Nowak', '89745896515', 1, 'an@op.pl', '987654321', 'password', NULL);
+(16, 'Anna', 'Nowak', '89745896515', 1, 'an@op.pl', '987654321', 'password', 21);
 
 -- --------------------------------------------------------
 
@@ -266,7 +266,7 @@ CREATE TABLE IF NOT EXISTS `specializations` (
   `id_specialization` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(300) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id_specialization`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Zrzut danych tabeli `specializations`
@@ -282,7 +282,8 @@ INSERT INTO `specializations` (`id_specialization`, `name`) VALUES
 (17, 'Chirurg'),
 (18, 'Immunolog'),
 (19, 'Kardiolog'),
-(20, 'Nefrolog');
+(20, 'Nefrolog'),
+(21, 'First contact');
 
 --
 -- Ograniczenia dla zrzutów tabel
