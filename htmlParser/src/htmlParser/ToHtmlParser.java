@@ -1,3 +1,5 @@
+package htmlParser;
+
 import java.util.HashMap;
 import java.util.Iterator;
 
