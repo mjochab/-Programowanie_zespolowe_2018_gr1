@@ -85,19 +85,51 @@ public class RegistrationController implements Initializable, ControllerPaginati
      * into doctors choice box.
      */
     private void loadDataIntoSpecializationAndDoctorsChoiceBoxes() {
-        //doctorsList = FXCollections.observableArrayList(patientModuleDTO.getAllDoctors());
         specializationsList = FXCollections.observableArrayList(patientModuleDTO.getSpecializationsNames());
-        //doctorChoiceBox.setItems(doctorsToString(doctorsList));
         specializationChoiceBox.setItems(specializationsList);
 
         specializationChoiceBox.getSelectionModel().selectedItemProperty().addListener((v, oldValue, newValue) -> {
-
             ObservableList<Doctor> doctorsList = FXCollections.observableArrayList(
                 patientModuleDTO.getDoctorsBySpecialization(specializationChoiceBox.getValue()));
             doctorChoiceBox.setItems(doctorsToString(doctorsList));
+
         });
+
+
     }
 
+
+    /**
+     * After doctors choice box clicked setting setted doctor admission days
+     * in tableView.
+     */
+    @FXML
+    private void doctorsChoiceBoxClicked() {
+
+        List<Doctor> d = new ArrayList<>(patientModuleDTO.getDoctorsBySpecialization(
+                specializationChoiceBox.getValue()));
+        doctorChoiceBox.getSelectionModel().selectedItemProperty().addListener((v, oldValue, newValue) -> {
+            try {
+                loadDoctorWorkingDaysDataToTable(d.get(doctorChoiceBox.getSelectionModel().getSelectedIndex()).getId());
+            } catch (IndexOutOfBoundsException ex) {
+                System.err.print("Doctor havnt addmission days\n");
+                doctorWorkingDaysTable.setPlaceholder(new Label("Doctor have not admission days."));
+            }
+
+        });
+
+    }
+
+    /**
+     * Loading doctor working days into table.
+     *
+     * @param doctorId doctor id of which working days you want load to table
+     *                 with admission days.
+     */
+    private void loadDoctorWorkingDaysDataToTable(int doctorId) {
+        doctorWorkingDaysTableData = FXCollections.observableArrayList(patientModuleDTO.getDoctorWorkingDays(doctorId));
+        doctorWorkingDaysTable.setItems(doctorWorkingDaysTableData);
+    }
 
 
     /**
@@ -172,20 +204,6 @@ public class RegistrationController implements Initializable, ControllerPaginati
         hoursList.setItems(FXCollections.observableArrayList(list));
 
 
-    }
-
-
-
-
-    /**
-     * Loading doctor working days into table.
-     *
-     * @param doctorId doctor id of which working days you want load to table
-     *                 with admission days.
-     */
-    private void loadDoctorWorkingDaysDataToTable(int doctorId) {
-        doctorWorkingDaysTableData = FXCollections.observableArrayList(patientModuleDTO.getDoctorWorkingDays(doctorId));
-        doctorWorkingDaysTable.setItems(doctorWorkingDaysTableData);
     }
 
 

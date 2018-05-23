@@ -110,13 +110,11 @@ public interface PatientModuleMapper {
      * @param doctorId  id of doctor to get data.
      * @return          List of doctor working days
      */
-    @Select("select day, hour_from, hour_to, hour_interval from doctorworkingdays where id_doctor=#{doctorId}")
+    @Select("select day, hour_from, hour_to from doctorworkingdays where id_doctor=#{doctorId}")
     @Results({
-            @Result(property = "doctorId", column = "id_doctor"),
             @Result(property = "day", column = "day"),
             @Result(property = "hourFrom", column = "hour_from"),
             @Result(property = "hourTo", column = "hour_to"),
-            @Result(property = "hourInterval", column = "hour_interval")
     })
     List<DoctorWorkingDays> getDoctorWorkingDays(int doctorId);
 
@@ -150,9 +148,10 @@ public interface PatientModuleMapper {
     @Results(value = @Result(property = "name", column = "name"))
     List<Specialization> getSpecializations();
 
-    @Select("select first_name, last_name from doctors d INNER JOIN specializations s " +
+    @Select("select id_doctor, first_name, last_name from doctors d INNER JOIN specializations s " +
             "where s.id_specialization = d.id_specialization AND s.name = #{specialization}")
     @Results(value = {
+            @Result(property = "id", column = "id_doctor"),
             @Result(property = "firstName", column = "first_name"),
             @Result(property = "lastName", column = "last_name")
     })
