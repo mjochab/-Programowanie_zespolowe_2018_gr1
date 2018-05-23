@@ -137,8 +137,7 @@ public class RegistrationController implements Initializable, ControllerPaginati
      */
     private void setDatiePickerFields() {
         //https://stackoverflow.com/questions/42542312/javafx-datepicker-color-single-cell
-        List<AdmissionDay> admissionDays = new ArrayList<>(patientModuleDTO.getAllAdmissionDays());
-
+        List<LocalDate> admissionDays = new ArrayList<>(patientModuleDTO.getAdmissionDaysDatesForDoctor(12));
         final Callback<DatePicker, DateCell> dayCellFactory = new Callback<DatePicker, DateCell>() {
 
             @Override
@@ -151,10 +150,10 @@ public class RegistrationController implements Initializable, ControllerPaginati
                         setDisable(true);   //All not admission days are disabled
 
                         //all admission days are enabled
-                        for (AdmissionDay admissionDay : admissionDays) {
+                        for (LocalDate admissionDay : admissionDays) {
 
-                            if (MonthDay.from(item).equals(MonthDay.of(admissionDay.getDate().getMonth(),
-                                    admissionDay.getDate().getDayOfMonth()))) {
+                            if (MonthDay.from(item).equals(MonthDay.of(admissionDay.getMonth(),
+                                    admissionDay.getDayOfMonth()))) {
                                 setDisable(false);
 
                             }

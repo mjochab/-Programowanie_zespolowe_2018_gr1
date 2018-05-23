@@ -4,6 +4,7 @@ import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.mapping.FetchType;
 import pojo.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -140,12 +141,13 @@ public interface PatientModuleMapper {
     List<Doctor> getAllDoctors();
 
 
+    //TODO:javadoc
     @Select("select name from specializations")
     @Results(value = @Result(property = "name", column = "name"))
     List<String> getSpecializationsString();
 
     @Select("select name from specializations")
-    @Results(value = @Result(property = "name", column = "name"))
+    @Results(@Result(property = "name", column = "name"))
     List<Specialization> getSpecializations();
 
     @Select("select id_doctor, first_name, last_name from doctors d INNER JOIN specializations s " +
@@ -156,5 +158,12 @@ public interface PatientModuleMapper {
             @Result(property = "lastName", column = "last_name")
     })
     List<Doctor> getDoctorsBySpecialization(String specialization);
+
+
+    @Select("select date from admissiondays a INNER JOIN doctorworkingdays d " +
+            "WHERE a.id_doctor_working_day = d.id_doctor_working_day " +
+            "AND d.id_doctor = #{doctorId};")
+    @Results(@Result(column = "date"))
+    List<LocalDate> getAdmissionDaysDatesForDoctor(int doctorId);
 
 }
