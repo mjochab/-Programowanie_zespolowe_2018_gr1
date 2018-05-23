@@ -23,11 +23,13 @@ import java.util.ResourceBundle;
 public class AdminAdministrationController implements Initializable, ControllerPagination {
 
     @FXML
-    private Button saveEditButton,
+    private Button
+            saveEditButton,
             declineEditButton;
 
     @FXML
-    private TextField idField,
+    private TextField
+            idField,
             searchField,
             peselField,
             forenameField,
@@ -42,18 +44,23 @@ public class AdminAdministrationController implements Initializable, ControllerP
             phoneNumberFieldAdd;
 
     @FXML
-    private TabPane tabPane;
+    private TabPane
+            tabPane;
 
     @FXML
-    private Tab editAdministratorTab,
+    private Tab
+            editAdministratorTab,
             createAdministratorTab;
 
     @FXML
-    private TableView<Administrator> administratorsTable;
+    private TableView<Administrator>
+            administratorsTable;
     @FXML
-    private TableColumn<Administrator, Integer> idColumn;
+    private TableColumn<Administrator, Integer>
+            idColumn;
     @FXML
-    private TableColumn<Administrator, String> forenameColumn,
+    private TableColumn<Administrator, String>
+            forenameColumn,
             nameColumn,
             peselColumn,
             emailColumn,
