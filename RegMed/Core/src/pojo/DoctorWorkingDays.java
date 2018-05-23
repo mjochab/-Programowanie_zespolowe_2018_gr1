@@ -4,11 +4,12 @@ import java.sql.Time;
 
 public class DoctorWorkingDays {
     private int doctorWorkingDayId;
-    private int doctorId;
+    private int id;
     private String day;
     private String hourFrom;
     private String hourTo;
     private String hourInterval;
+    private String validateDate;
     private Doctor doctor;
 
     public Doctor getDoctor() {
@@ -27,12 +28,12 @@ public class DoctorWorkingDays {
         this.doctorWorkingDayId = doctorWorkingDayId;
     }
 
-    public int getDoctorId() {
-        return doctorId;
+    public int getId() {
+        return id;
     }
 
-    public void setDoctorId(int doctorId) {
-        this.doctorId = doctorId;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getDay() {
@@ -67,10 +68,18 @@ public class DoctorWorkingDays {
         this.hourInterval = hourInterval;
     }
 
+    public String getValidateDate() {
+        return validateDate;
+    }
+
+    public void setValidateDate(String validateDate) {
+        this.validateDate = validateDate;
+    }
+
     public String doctorWorkingDaysToString() {
         return String.format("%s %s %s %s %s %s %s %s",
                 "doctorWorkingDayId: " + getDoctorWorkingDayId(),
-                "doctorId: " + getDoctorId(),
+                "doctorId: " + getId(),
                 "day: " + getDay(),
                 "hourFrom: " + getHourFrom(),
                 "hourTo: " + getHourTo(),

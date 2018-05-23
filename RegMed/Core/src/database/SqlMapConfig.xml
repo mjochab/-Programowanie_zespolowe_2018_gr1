@@ -23,5 +23,7 @@
         <mapper class="mappers.DoctorModuleMapper" />
         <mapper class="mappers.PatientDataMapper" />
         <mapper class="mappers.PatientsHistoryMapper"/>
+        <mapper class="mappers.FileMapper" />
+        <mapper class="mappers.PatientModuleMapper" />
     </mappers>
 </configuration>
