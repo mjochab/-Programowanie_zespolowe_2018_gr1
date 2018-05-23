@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="borderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="346.0" prefWidth="471.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.doctor.PatientFileController">
+<BorderPane fx:id="borderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="346.0" prefWidth="471.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.doctor.PatientFile1Controller">
     <top>
         <Label maxWidth="471.0" text="PatientFile" BorderPane.alignment="CENTER">
             <font>
@@ -24,7 +24,7 @@
             <children>
                 <TableView fx:id="tableID" prefHeight="320.0" prefWidth="471.0">
                     <columns>
-                        <TableColumn fx:id="id" prefWidth="75.0" text="Id" />
+                        <TableColumn fx:id="patientId" prefWidth="75.0" text="Id" />
                         <TableColumn fx:id="firstName" prefWidth="75.0" text="FirstName" />
                         <TableColumn fx:id="lastName" prefWidth="75.0" text="LastName" />
                     </columns>

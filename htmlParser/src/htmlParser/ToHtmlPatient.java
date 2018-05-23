@@ -1,3 +1,5 @@
+package htmlParser;
+
 public class ToHtmlPatient {
     private String firstName, lastName, pesel, zipCode, city, street, number, phoneNumber;
 

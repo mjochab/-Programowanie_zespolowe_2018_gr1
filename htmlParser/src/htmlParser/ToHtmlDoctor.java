@@ -1,3 +1,5 @@
+package htmlParser;
+
 public class ToHtmlDoctor {
     private String firstName,
             lastName,

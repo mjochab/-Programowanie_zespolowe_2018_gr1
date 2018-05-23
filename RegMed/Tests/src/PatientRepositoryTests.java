@@ -1,6 +1,9 @@
 import dto.FileDTO;
 import entities.Doctor;
 import entities.Patient;
+import htmlParser.ToHtmlDoctor;
+import htmlParser.ToHtmlParser;
+import htmlParser.ToHtmlPatient;
 import org.junit.jupiter.api.*;
 import pojo.File;
 import repositories.PatientRepository;
