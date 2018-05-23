@@ -9,7 +9,7 @@
 			
          <dataSource type = "POOLED">
             <property name = "driver" value = "com.mysql.jdbc.Driver"/>
-            <property name = "url" value = "jdbc:mysql://localhost:3306/regmedtests"/>
+            <property name = "url" value = "jdbc:mysql://localhost:3306/regmedIntegrationTests"/>
             <property name = "username" value = "root"/>
             <property name = "password" value = ""/>
          </dataSource>   
@@ -21,7 +21,6 @@
         <mapper class="mappers.DoctorAdministrationMapper" />
         <mapper class="mappers.AdminAdministrationMapper" />
         <mapper class="mappers.DoctorModuleMapper" />
-        <mapper class="mappers.FileMapper" />
         <mapper class="mappers.PatientModuleMapper" />
     </mappers>
 </configuration>

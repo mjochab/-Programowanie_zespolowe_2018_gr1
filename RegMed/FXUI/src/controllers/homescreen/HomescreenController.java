@@ -31,6 +31,12 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * The homescreen class that you use to log in
+ * 
+ * @author student
+ */
+
 public class HomescreenController implements Initializable, ControllerPagination {
 
 
@@ -56,7 +62,13 @@ public class HomescreenController implements Initializable, ControllerPagination
     public void initialize(URL url, ResourceBundle rb) {
 
     }
-
+/**
+ * method for logging in
+ * checking data with the database
+ * Display of the corresponding window for data from the database
+ * @param event
+ * @throws IOException 
+ */
 
     @FXML
     void Login(ActionEvent event) throws IOException {
@@ -116,20 +128,22 @@ public class HomescreenController implements Initializable, ControllerPagination
                 helpers.SwitchScene("admin/AdminHome", event);
                 break;
             case ("patient"):
-                //helpers.SwitchScene("AdminPatient", event);
-                DialogBox.warningBox("Warning!", "Pawel L. incomplete module");
-
+                helpers.SwitchScene("patient/PatientHome", event);
                 break;
             case ("doctor"):
                 helpers.SwitchScene("doctor/DoctorMain", event);
                 break;
         }
         if (!sprawdzenie) {
-            DialogBox.informationBox("Błędne dane", "Podaj poprawne dane do logowanie");
+            DialogBox.informationBox("BĹ‚Ä™dne dane", "Podaj poprawne dane do logowanie");
         }
 
     }
-
+ /**
+  * method that opens a new scene for registration
+  * @param event
+  * @throws IOException 
+  */
     @FXML
     void Register(ActionEvent event) throws IOException {
            Stage stage;
@@ -137,7 +151,10 @@ public class HomescreenController implements Initializable, ControllerPagination
 
             stage = new Stage();
     }
-
+/**
+ * method closing the stage.
+ * @param event 
+ */
     @FXML
     void Exit(ActionEvent event) {
         System.exit(0);

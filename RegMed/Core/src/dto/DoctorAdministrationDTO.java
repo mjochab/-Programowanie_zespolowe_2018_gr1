@@ -1,12 +1,22 @@
 package dto;
 
 import database.MyBatisDbConnection;
+import exceptions.ValidationException;
 import mappers.DoctorAdministrationMapper;
 import pojo.Address;
 import pojo.Doctor;
+import pojo.Specialization;
 
 import java.util.ArrayList;
+import java.util.List;
 
+/**
+ * Holding methods using to operate on DoctorAdministration mapper. These methods are using MyBatisDbConnection class,
+ * which holding mapped methods using to operate on database.
+ * Class in methods make sure if the connection is always closed.
+ *
+ * @author Szymon P
+ */
 public class DoctorAdministrationDTO {
 
     private MyBatisDbConnection<DoctorAdministrationMapper> dbConnection;
@@ -33,7 +43,10 @@ public class DoctorAdministrationDTO {
         }
     }
 
-    public void add(Doctor doctor) {
+    public void add(Doctor doctor) throws ValidationException {
+        validateDoctor(doctor);
+        validateAddress(doctor.getAddress());
+
         dbConnection.openSession();
         try {
             dbConnection.getMapper().addDoctorAddressAsChild(doctor.getAddress());
@@ -100,6 +113,31 @@ public class DoctorAdministrationDTO {
         }
     }
 
+    public List<Specialization> getAllSpecializations() {
+        dbConnection.openSession();
+        try {
+            return new ArrayList<>(dbConnection.getMapper().getAllSpecializations());
+        } finally {
+            dbConnection.closeSession();
+        }
+    }
+
+
+    private boolean validateDoctor(Doctor doctor) throws ValidationException {
+        if (!AdministrationValidators.userValidation(doctor)) {
+            throw new ValidationException(AdministrationValidators.userValidationErrors(doctor));
+        }
+
+        return true;
+    }
+
+    private boolean validateAddress(Address address) throws ValidationException {
+        if (!AdministrationValidators.addressValidation(address)) {
+            throw new ValidationException(AdministrationValidators.addressValidationErrors(address));
+        }
+
+        return true;
+    }
 
 
 }

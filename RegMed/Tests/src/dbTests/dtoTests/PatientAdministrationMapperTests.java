@@ -39,7 +39,7 @@ public class PatientAdministrationMapperTests {
         System.out.println(result.patientToString());
 
         assertEquals("Krzysztof", result.getFirstName());
-        assertTrue(result.getPatientId() == 2);
+        assertTrue(result.getId() == 2);
     }
 
     @Disabled
@@ -56,7 +56,7 @@ public class PatientAdministrationMapperTests {
         a.setNumber(23);
 
         Patient p = new Patient();
-        p.setPatientId(0);
+        p.setId(0);
         p.setFirstName("Paweł");
         p.setLastName("Wołowicz");
         p.setPesel("95042411065");

@@ -1,50 +1,38 @@
 package pojo;
 
-public class Patient {
-    private int patientId;
-    private String firstName;
-    private String lastName;
-    private String pesel;
-    private String email;
-    private String phoneNumber;
-    private int firstContactDoctorId;
-    private String password;
+/**
+ * Plain Old Java Object class, using inherited user class and adding specially fields for patient.
+ *
+ * @see pojo.User
+ * @author Szymon P
+ *
+ */
+public class Patient extends User {
 
+    //private int firstContactDoctorId;
+
+    /**
+     * Address must be stored as object, not as integer id.
+     * It is necesarry for EagerLoading address data for patient using mapper.
+     *
+     * @see mappers.PatientAdministrationMapper
+     */
     private Address address;
 
 
-    public int getPatientId() {
-        return patientId;
-    }
 
-    public void setPatientId(int patientId) {
-        this.patientId = patientId;
-    }
+    /**
+     * Address must be stored as object, not as integer id.
+     * It is necessary for EagerLoading firstContactDoctor data for patient using mapper.
+     *
+     * @see mappers.PatientAdministrationMapper
+     */
+    private Doctor firstContactDoctor;
 
 
-    public String getFirstName() {
-        return firstName;
-    }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
 
-    public String getLastName() {
-        return lastName;
-    }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getPesel() {
-        return pesel;
-    }
-
-    public void setPesel(String pesel) {
-        this.pesel = pesel;
-    }
 
     public Address getAddress() {
         return address;
@@ -54,47 +42,22 @@ public class Patient {
         this.address = address;
     }
 
-    public String getEmail() {
-        return email;
+    public Doctor getFirstContactDoctor() {
+        return firstContactDoctor;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
-    public int getFirstContactDoctorId() {
-        return firstContactDoctorId;
-    }
-
-    public void setFirstContactDoctorId(int firstContactDoctorId) {
-        this.firstContactDoctorId = firstContactDoctorId;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
+    public void setFirstContactDoctor(Doctor firstContactDoctor) {
+        this.firstContactDoctor = firstContactDoctor;
     }
 
     public String patientToString() {
         return String.format("%s %s %s %s %s %s %s %s",
-                "patientId: " + getPatientId(),
+                "patientId: " + getId(),
                 "firstName: " + getFirstName(),
                 "lastName: " + getLastName(),
                 "pesel: " + getPesel(),
                 "email: " + getEmail(),
                 "phone: " + getPhoneNumber(),
-                "doctor: " + getFirstContactDoctorId(),
                 "address: " + getAddress().toString()
         );
     }

@@ -25,8 +25,9 @@ public class RegisterController implements Initializable, ControllerPagination {
     public void initialize(URL location, ResourceBundle resources) {
 
     }
-
-
+/**
+ * method closing the stage.
+*/
     @FXML
     void Exit(ActionEvent event) {
         // Stage stage = (Stage) bBack.getScene().getWindow();
@@ -40,5 +41,7 @@ public class RegisterController implements Initializable, ControllerPagination {
 
     }
 }
+
+
 
 

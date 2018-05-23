@@ -1,10 +1,13 @@
 package entities;
 
+import pojo.Doctor;
+
 import java.util.Random;
 import java.util.UUID;
 
 public class Patient extends User {
     private String address;
+    private Doctor firstcontactDoctor;
     //phone no
 
 
@@ -29,5 +32,13 @@ public class Patient extends User {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public Doctor getFirstcontactDoctor() {
+        return firstcontactDoctor;
+    }
+
+    public void setFirstcontactDoctor(Doctor firstcontactDoctor) {
+        this.firstcontactDoctor = firstcontactDoctor;
     }
 }
