@@ -147,6 +147,33 @@ public class PatientModuleDTO {
         return listToReturn;
     }
 
+    public List<String> getSpecializationsNames() {
+        db.openSession();
+        try {
+            return new ArrayList<>(db.getMapper().getSpecializationsString());
+        } finally {
+            db.closeSession();
+        }
+    }
+
+    public List<Specialization> getSpecializations() {
+        db.openSession();
+        try {
+            return new ArrayList<>(db.getMapper().getSpecializations());
+        } finally {
+            db.closeSession();
+        }
+    }
+
+    public List<Doctor> getDoctorsBySpecialization(String specialization) {
+        db.openSession();
+        try {
+            return new ArrayList<>(db.getMapper().getDoctorsBySpecialization(specialization));
+        } finally {
+            db.closeSession();
+        }
+    }
+
 
 
 }

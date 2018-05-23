@@ -15,10 +15,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.util.Callback;
-import pojo.AdmissionDay;
-import pojo.Doctor;
-import pojo.DoctorWorkingDays;
-import pojo.SingleVisit;
+import pojo.*;
 
 import java.io.IOException;
 import java.net.URL;
@@ -37,7 +34,7 @@ public class RegistrationController implements Initializable, ControllerPaginati
 
     private PatientModuleDTO patientModuleDTO;
     private ObservableList<DoctorWorkingDays> doctorWorkingDaysTableData;
-    private ObservableList<Doctor> doctorsList;
+    private ObservableList<String> specializationsList;
 
     @FXML
     private DatePicker visitDatePicker;
@@ -57,7 +54,8 @@ public class RegistrationController implements Initializable, ControllerPaginati
         admissionHoursToColumn;
 
     @FXML
-    private ChoiceBox<String> doctorChoiceBox;
+    private ChoiceBox<String> doctorChoiceBox,
+            specializationChoiceBox;
 
 
 
@@ -69,12 +67,38 @@ public class RegistrationController implements Initializable, ControllerPaginati
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         setDoctorWorkingDaysTableDataConnection();
-        doctorsList = FXCollections.observableArrayList(patientModuleDTO.getAllDoctors());
-        doctorChoiceBox.setItems(doctorsToString(doctorsList));
-
         setDatiePickerFields();
-
+        loadDataIntoSpecializationAndDoctorsChoiceBoxes();
     }
+
+    /**
+     * TODO: incomplete
+     */
+    private void setDoctorWorkingDaysTableDataConnection() {
+        dayColumn.setCellValueFactory(new PropertyValueFactory<DoctorWorkingDays, String>("day"));
+        admissionHoursFromColumn.setCellValueFactory(new PropertyValueFactory<DoctorWorkingDays, String>("hourFrom"));
+        admissionHoursToColumn.setCellValueFactory(new PropertyValueFactory<DoctorWorkingDays, String>("hourTo"));
+    }
+
+    /**
+     * Loading data into specializations choice box, and doctors connected with it
+     * into doctors choice box.
+     */
+    private void loadDataIntoSpecializationAndDoctorsChoiceBoxes() {
+        //doctorsList = FXCollections.observableArrayList(patientModuleDTO.getAllDoctors());
+        specializationsList = FXCollections.observableArrayList(patientModuleDTO.getSpecializationsNames());
+        //doctorChoiceBox.setItems(doctorsToString(doctorsList));
+        specializationChoiceBox.setItems(specializationsList);
+
+        specializationChoiceBox.getSelectionModel().selectedItemProperty().addListener((v, oldValue, newValue) -> {
+
+            ObservableList<Doctor> doctorsList = FXCollections.observableArrayList(
+                patientModuleDTO.getDoctorsBySpecialization(specializationChoiceBox.getValue()));
+            doctorChoiceBox.setItems(doctorsToString(doctorsList));
+        });
+    }
+
+
 
     /**
      * Enabling in doctor admission days calendar only days, when doctor is admitting.
@@ -138,13 +162,19 @@ public class RegistrationController implements Initializable, ControllerPaginati
 
 
     /**
-     * TODO: incomplete
+     * Loading visits (free and busy) form day selected in calendar.
      */
-    private void setDoctorWorkingDaysTableDataConnection() {
-        dayColumn.setCellValueFactory(new PropertyValueFactory<DoctorWorkingDays, String>("day"));
-        admissionHoursFromColumn.setCellValueFactory(new PropertyValueFactory<DoctorWorkingDays, String>("hourFrom"));
-        admissionHoursToColumn.setCellValueFactory(new PropertyValueFactory<DoctorWorkingDays, String>("hourTo"));
+    private void loadVisits() {
+        AdmissionDay admissionDay = patientModuleDTO.getAdmissionDayByDate(getDateFromCalendar());
+        ArrayList list = new ArrayList(parseVisitsToHour(patientModuleDTO.getAllVisits(admissionDay)));
+
+        visitHourPicker.setItems(FXCollections.observableArrayList(list));
+        hoursList.setItems(FXCollections.observableArrayList(list));
+
+
     }
+
+
 
 
     /**
@@ -159,18 +189,7 @@ public class RegistrationController implements Initializable, ControllerPaginati
     }
 
 
-    /**
-     * Loading visits (free and busy) form day selected in calendar.
-     */
-    private void loadVisits() {
-        AdmissionDay admissionDay = patientModuleDTO.getAdmissionDayByDate(getDateFromCalendar());
-        ArrayList list = new ArrayList(parseVisitsToHour(patientModuleDTO.getAllVisits(admissionDay)));
 
-        visitHourPicker.setItems(FXCollections.observableArrayList(list));
-        hoursList.setItems(FXCollections.observableArrayList(list));
-
-
-    }
 
 
     /**

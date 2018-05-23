@@ -127,7 +127,7 @@ public interface PatientModuleMapper {
      */
     @Select("select id_doctor, first_name, last_name, PESEL, id_address, email, phone_number, " +
             "id_specialization from doctors")
-    @Results({
+    @Results(value = {
             @Result(property = "id", column = "id_doctor"),
             @Result(property = "firstName", column = "first_name"),
             @Result(property = "lastName", column = "last_name"),
@@ -140,5 +140,22 @@ public interface PatientModuleMapper {
             @Result(property = "specializationId", column = "id_specialization")
     })
     List<Doctor> getAllDoctors();
+
+
+    @Select("select name from specializations")
+    @Results(value = @Result(property = "name", column = "name"))
+    List<String> getSpecializationsString();
+
+    @Select("select name from specializations")
+    @Results(value = @Result(property = "name", column = "name"))
+    List<Specialization> getSpecializations();
+
+    @Select("select first_name, last_name from doctors d INNER JOIN specializations s " +
+            "where s.id_specialization = d.id_specialization AND s.name = #{specialization}")
+    @Results(value = {
+            @Result(property = "firstName", column = "first_name"),
+            @Result(property = "lastName", column = "last_name")
+    })
+    List<Doctor> getDoctorsBySpecialization(String specialization);
 
 }
