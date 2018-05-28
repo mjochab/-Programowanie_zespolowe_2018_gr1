@@ -5,6 +5,7 @@
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.web.WebView?>
 
 <AnchorPane prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.patient.HistoryController">
    <children>
@@ -50,16 +51,7 @@
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <Button fx:id="nextReferralButton1" layoutX="139.0" layoutY="402.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="90.0" text="Next">
-                           <font>
-                              <Font size="24.0" />
-                           </font>
-                        </Button>
-                        <Button fx:id="prevReferralButton1" layoutX="241.0" layoutY="402.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="90.0" text="Prev">
-                           <font>
-                              <Font size="24.0" />
-                           </font>
-                        </Button>
+                        <WebView fx:id="historyWebView" layoutX="223.0" layoutY="14.0" prefHeight="485.0" prefWidth="321.0" />
                      </children>
                   </AnchorPane>
                </content>

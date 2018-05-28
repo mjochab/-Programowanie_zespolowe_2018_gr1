@@ -8,6 +8,7 @@ public class SingleVisit {
     LocalTime visitHour;
     Patient patient;
     AdmissionDay admissionDay;
+    AdmissionDay2 admissionDay2;
 
     public int getId() {
         return id;
@@ -41,6 +42,13 @@ public class SingleVisit {
         this.admissionDay = admissionDay;
     }
 
+    public AdmissionDay2 getAdmissionDay2() {
+        return admissionDay2;
+    }
+
+    public void setAdmissionDay2(AdmissionDay2 admissionDay2) {
+        this.admissionDay2 = admissionDay2;
+    }
 
     public String visitHourToString() {
         //return String.format("%d:%d", visitHour.getHour(), visitHour.getMinute());

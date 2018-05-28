@@ -137,7 +137,8 @@ public class RegistrationController implements Initializable, ControllerPaginati
      */
     private void setDatiePickerFields() {
         //https://stackoverflow.com/questions/42542312/javafx-datepicker-color-single-cell
-        List<LocalDate> admissionDays = new ArrayList<>(patientModuleDTO.getAdmissionDaysDatesForDoctor(12));
+        //List<LocalDate> admissionDays = new ArrayList<>(patientModuleDTO.getAdmissionDaysDatesForDoctor(12));   //TODO: just get from selected doctor.
+        List<AdmissionDay2> admissionDays = new ArrayList<>(patientModuleDTO.getAdmissionDaysForDoctor(12));
         final Callback<DatePicker, DateCell> dayCellFactory = new Callback<DatePicker, DateCell>() {
 
             @Override
@@ -150,10 +151,10 @@ public class RegistrationController implements Initializable, ControllerPaginati
                         setDisable(true);   //All not admission days are disabled
 
                         //all admission days are enabled
-                        for (LocalDate admissionDay : admissionDays) {
+                        for (AdmissionDay2 admissionDay : admissionDays) {
 
-                            if (MonthDay.from(item).equals(MonthDay.of(admissionDay.getMonth(),
-                                    admissionDay.getDayOfMonth()))) {
+                            if (MonthDay.from(item).equals(MonthDay.of(admissionDay.getDate().getMonth(),
+                                    admissionDay.getDate().getDayOfMonth()))) {
                                 setDisable(false);
 
                             }
@@ -196,11 +197,11 @@ public class RegistrationController implements Initializable, ControllerPaginati
      * Loading visits (free and busy) form day selected in calendar.
      */
     private void loadVisits() {
-        AdmissionDay admissionDay = patientModuleDTO.getAdmissionDayByDate(getDateFromCalendar());
-        ArrayList list = new ArrayList(parseVisitsToHour(patientModuleDTO.getAllVisits(admissionDay)));
 
-        visitHourPicker.setItems(FXCollections.observableArrayList(list));
-        hoursList.setItems(FXCollections.observableArrayList(list));
+        List<SingleVisit> visitsInDb = new ArrayList<>(patientModuleDTO.getSingleVisitsFromDate(visitDatePicker.getValue(), 12));
+
+         visitHourPicker.setItems(FXCollections.observableArrayList(visitsInDb));
+        hoursList.setItems(FXCollections.observableArrayList(parseVisitsToHour(visitsInDb)));
 
 
     }
@@ -235,10 +236,18 @@ public class RegistrationController implements Initializable, ControllerPaginati
         List<String> list = new ArrayList<>();
 
         for (SingleVisit visit : visits) {
-            list.add(visit.visitHourToString());
+            list.add(parseVisitToAvailabilityInformation(visit));
         }
 
         return list;
+    }
+
+    private String parseVisitToAvailabilityInformation(SingleVisit singleVisit) {
+        if (singleVisit.getPatient() != null) {
+            return String.format("%d:%d  -  Term is not free", singleVisit.getVisitHour().getHour(), singleVisit.getVisitHour().getMinute());
+        } else {
+            return String.format("%d:%d  -  Term is free", singleVisit.getVisitHour().getHour(), singleVisit.getVisitHour().getMinute());
+        }
     }
 
     /**

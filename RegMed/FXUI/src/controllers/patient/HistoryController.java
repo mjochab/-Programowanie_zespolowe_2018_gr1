@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.web.WebView;
 
 import java.io.File;
 import java.io.IOException;
@@ -30,6 +31,9 @@ public class HistoryController implements ControllerPagination, Initializable {
     private Tab perscriptionsTab,
         referralsTab,
         historyTab;
+
+    @FXML
+    private WebView historyWebView;
 
     FileDTO dto;
 

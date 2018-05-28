@@ -186,6 +186,25 @@ public class PatientModuleDTO {
         }
     }
 
+    public List<AdmissionDay2> getAdmissionDaysForDoctor(int doctorId) {
+        db.openSession();
+        try {
+            return new ArrayList<>(db.getMapper().getAdmissionDaysForDoctor(doctorId));
+        } finally {
+            db.closeSession();
+        }
+    }
+
+    public List<SingleVisit> getSingleVisitsFromDate(LocalDate visitDate, int doctorId) {
+        db.openSession();
+        try {
+            List<SingleVisit> result = new ArrayList<>(db.getMapper().getSingleVisitsFromDate(visitDate, doctorId));
+            return result;
+        } finally {
+            db.closeSession();
+        }
+    }
+
     //TODO: checkIfAdmissiondayHaveFreeVisits
     public boolean checkIfAdmissiondayHaveFreeVisits() {
         return false;

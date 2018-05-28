@@ -166,4 +166,64 @@ public interface PatientModuleMapper {
     @Results(@Result(column = "date"))
     List<LocalDate> getAdmissionDaysDatesForDoctor(int doctorId);
 
+
+    @Select("select id_admission_day, a.date, d.id_doctor," +
+            " d.hour_from, d.hour_to, d.hour_interval, d.validate_date " +
+            "from admissiondays a JOIN doctorworkingdays d on a.id_doctor_working_day = d.id_doctor_working_day" +
+            " where d.id_doctor = #{doctorId};")
+    @Results(value = {
+            @Result(property = "id", column = "id_admission_day"),
+            @Result(property = "date", column = "date"),
+            @Result(property = "doctor", column = "id_doctor", javaType = Doctor.class,
+                    one = @One(select = "selectFirstcontactDoctor", fetchType = FetchType.EAGER)),
+            @Result(property = "hourFrom", column = "hour_from"),
+            @Result(property = "hourTo", column = "hour_to"),
+            @Result(property = "hourInterval", column = "hour_interval"),
+            @Result(property = "validateDate", column = "validate_date")
+    })
+    List<AdmissionDay2> getAdmissionDaysForDoctor(int doctorId);
+
+
+    //SETTING DATA TO DATE PICKER
+
+    @Select("select id_admission_day, a.date, d.id_doctor," +
+            " d.hour_from, d.hour_to, d.hour_interval, d.validate_date " +
+            "from admissiondays a JOIN doctorworkingdays d on a.id_doctor_working_day = d.id_doctor_working_day" +
+            " where a.id_admission_day=#{admissionDayId};")
+    @Results(value = {
+            @Result(property = "id", column = "id_admission_day"),
+            @Result(property = "date", column = "date"),
+            @Result(property = "doctor", column = "id_doctor", javaType = Doctor.class,
+                    one = @One(select = "selectFirstcontactDoctor", fetchType = FetchType.EAGER)),
+            @Result(property = "hourFrom", column = "hour_from"),
+            @Result(property = "hourTo", column = "hour_to"),
+            @Result(property = "hourInterval", column = "hour_interval"),
+            @Result(property = "validateDate", column = "validate_date")
+    })
+    AdmissionDay2 getAdmissionDay(int admissionDayId);
+
+
+    //TODO
+    @Select("select s.id_single_visit, s.id_admission_day, visit_hour, id_patient, d.id_doctor from singlevisits s " +
+            "JOIN admissiondays a on s.id_admission_day = a.id_admission_day " +
+            "JOIN doctorworkingdays d on a.id_doctor_working_day = d.id_doctor_working_day " +
+            "WHERE a.date = #{date} AND id_doctor = #{doctorId};")
+    @Results(value = {
+            @Result(property = "id", column = "id_single_visit"),
+            @Result(property = "visitHour", column = "visit_hour"),
+            @Result(property = "patient", column = "id_patient", javaType = Patient.class,
+                    one = @One(select = "getPatient_OnlyId", fetchType = FetchType.EAGER)),
+            @Result(property = "admissionDay2", column = "id_admission_day", javaType = AdmissionDay2.class,
+                    one = @One(select = "getAdmissionDay", fetchType = FetchType.EAGER)),
+    })
+    List<SingleVisit> getSingleVisitsFromDate(@Param("date") LocalDate date, @Param("doctorId") int doctorId);
+
+
+
+    @Select("SELECT id_patient FROM patients WHERE id_patient = #{patientId}")
+    @Results({
+            @Result(property = "id", column = "id_patient")
+    })
+    Patient getPatient_OnlyId(int patientId);
+
 }
