@@ -7,6 +7,7 @@ import pojo.*;
 import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -193,6 +194,43 @@ public class PatientModuleDTO {
         }
 
         return allDayVisits;
+    }
+
+    public List<AdmissionDay2> admissionDaysBetweenDates(LocalDate start, LocalDate end, int doctorId) {
+        db.openSession();
+        try {
+            return new ArrayList<>(db.getMapper().getAdmissionDaysBetweenDates(start, end, doctorId));
+        } finally {
+            db.closeSession();
+        }
+    }
+
+    public List<AdmissionDay2> admissionDaysFullOfVisits(List<AdmissionDay2> listOfDaysToCheck, int doctorId) {
+        List<AdmissionDay2> result = new ArrayList<>();
+
+        for (AdmissionDay2 admissionDay : listOfDaysToCheck) {
+            List<SingleVisit> visits = new ArrayList<>(getAllVisits(admissionDay));
+            if (checkIfDayHaveFreeVisits(visits) == false) {
+                result.add(admissionDay);
+            }
+
+        }
+
+        return result;
+    }
+
+    private boolean checkIfDayHaveFreeVisits(List<SingleVisit> singleVisits) {
+
+        for (SingleVisit s : singleVisits) {
+
+            if (s.getPatient() == null) {
+                return true;
+            }
+        }
+
+
+
+        return false;
     }
 
 }

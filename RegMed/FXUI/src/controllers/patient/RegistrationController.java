@@ -137,8 +137,14 @@ public class RegistrationController implements Initializable, ControllerPaginati
      */
     private void setDatiePickerFields() {
         //https://stackoverflow.com/questions/42542312/javafx-datepicker-color-single-cell
-        //List<LocalDate> admissionDays = new ArrayList<>(patientModuleDTO.getAdmissionDaysDatesForDoctor(12));   //TODO: just get from selected doctor.
         List<AdmissionDay2> admissionDays = new ArrayList<>(patientModuleDTO.getAdmissionDaysForDoctor(12));
+
+        LocalDate mthCurrent = LocalDate.now();
+        LocalDate mthAfter = mthCurrent.plusMonths(1);
+        List<AdmissionDay2> list = new ArrayList<>(patientModuleDTO.admissionDaysBetweenDates(mthCurrent, mthAfter, 12));
+        List<AdmissionDay2> list2 = new ArrayList<>(patientModuleDTO.admissionDaysFullOfVisits(list, 12));
+
+
         final Callback<DatePicker, DateCell> dayCellFactory = new Callback<DatePicker, DateCell>() {
 
             @Override
@@ -156,7 +162,14 @@ public class RegistrationController implements Initializable, ControllerPaginati
                             if (MonthDay.from(item).equals(MonthDay.of(admissionDay.getDate().getMonth(),
                                     admissionDay.getDate().getDayOfMonth()))) {
                                 setDisable(false);
+                            }
+                        }
 
+                        for (AdmissionDay2 admissionDay : list2) {
+                            if (MonthDay.from(item).equals(MonthDay.of(admissionDay.getDate().getMonth(),
+                                    admissionDay.getDate().getDayOfMonth()))) {
+                                setStyle("-fx-background-color: #ff4444;");
+                                setTooltip(new Tooltip("All visits booked!"));
                             }
                         }
 
@@ -167,6 +180,11 @@ public class RegistrationController implements Initializable, ControllerPaginati
         };
 
         visitDatePicker.setDayCellFactory(dayCellFactory);
+
+        //Showing visits from selected day
+        visitDatePicker.setOnAction(e -> {
+            loadVisits();
+        });
     }
 
 
@@ -185,15 +203,6 @@ public class RegistrationController implements Initializable, ControllerPaginati
 
 
     /**
-     * Inserting visits (free and busy) form day selected in calendar.
-     */
-    @FXML
-    private void findButtonClicked() {
-        loadVisits();
-    }
-
-
-    /**
      * Loading visits (free and busy) form day selected in calendar.
      */
     private void loadVisits() {
@@ -208,6 +217,9 @@ public class RegistrationController implements Initializable, ControllerPaginati
         List<SingleVisit> allVisits = new ArrayList<>(patientModuleDTO.getAllVisits(admissionDay));
 
         hoursList.setItems(FXCollections.observableArrayList(parseVisitsToHour(allVisits)));
+
+
+
     }
 
 
