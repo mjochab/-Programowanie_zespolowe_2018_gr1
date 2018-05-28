@@ -200,10 +200,14 @@ public class RegistrationController implements Initializable, ControllerPaginati
 
         List<SingleVisit> visitsInDb = new ArrayList<>(patientModuleDTO.getSingleVisitsFromDate(visitDatePicker.getValue(), 12));
 
-         visitHourPicker.setItems(FXCollections.observableArrayList(visitsInDb));
-        hoursList.setItems(FXCollections.observableArrayList(parseVisitsToHour(visitsInDb)));
+        visitHourPicker.setItems(FXCollections.observableArrayList(visitsInDb));
+        //hoursList.setItems(FXCollections.observableArrayList(parseVisitsToHour(visitsInDb)));
 
 
+        AdmissionDay2 admissionDay = patientModuleDTO.getAdmissionDayForVisitPicker(visitDatePicker.getValue());
+        List<SingleVisit> allVisits = new ArrayList<>(patientModuleDTO.getAllVisits(admissionDay));
+
+        hoursList.setItems(FXCollections.observableArrayList(parseVisitsToHour(allVisits)));
     }
 
 

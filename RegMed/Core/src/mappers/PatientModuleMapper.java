@@ -202,6 +202,22 @@ public interface PatientModuleMapper {
     })
     AdmissionDay2 getAdmissionDay(int admissionDayId);
 
+    @Select("select id_admission_day, a.date, d.id_doctor," +
+            " d.hour_from, d.hour_to, d.hour_interval, d.validate_date " +
+            "from admissiondays a JOIN doctorworkingdays d on a.id_doctor_working_day = d.id_doctor_working_day" +
+            " where a.date=#{date};")
+    @Results(value = {
+            @Result(property = "id", column = "id_admission_day"),
+            @Result(property = "date", column = "date"),
+            @Result(property = "doctor", column = "id_doctor", javaType = Doctor.class,
+                    one = @One(select = "selectFirstcontactDoctor", fetchType = FetchType.EAGER)),
+            @Result(property = "hourFrom", column = "hour_from"),
+            @Result(property = "hourTo", column = "hour_to"),
+            @Result(property = "hourInterval", column = "hour_interval"),
+            @Result(property = "validateDate", column = "validate_date")
+    })
+    AdmissionDay2 getAdmissionDayByDate(LocalDate date);
+
 
     //TODO
     @Select("select s.id_single_visit, s.id_admission_day, visit_hour, id_patient, d.id_doctor from singlevisits s " +

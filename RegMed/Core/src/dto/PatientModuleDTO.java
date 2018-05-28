@@ -81,72 +81,6 @@ public class PatientModuleDTO {
 
 
 
-    public void addVisit() {
-
-    }
-
-    public List<SingleVisit> getAllVisits(AdmissionDay admissionDay) {
-        List<SingleVisit> visits = new ArrayList<>();
-        List<SingleVisit> visits2 = new ArrayList<>();
-        List<AdmissionDay> admissionDays = getAllAdmissionDays();
-
-        SingleVisit v1 = new SingleVisit();
-        v1.setId(1);
-        v1.setAdmissionDay(admissionDays.get(0));
-        v1.setVisitHour(LocalTime.of(10,00));
-        Patient p = new Patient();
-        p.setFirstName("FurstNamePatient");
-        v1.setPatient(p);
-        visits.add(v1);
-
-        SingleVisit v2 = new SingleVisit();
-        v2.setId(2);
-        v2.setAdmissionDay(admissionDays.get(0));
-        v2.setVisitHour(LocalTime.of(10,30));
-        visits.add(v2);
-
-        SingleVisit v3 = new SingleVisit();
-        v3.setId(3);
-        v3.setAdmissionDay(admissionDays.get(1));
-        v3.setVisitHour(LocalTime.of(20,30));
-        visits.add(v3);
-
-        for (SingleVisit visit : visits) {
-            if (visit.getAdmissionDay().getId() == admissionDay.getId()) {
-                visits2.add(visit);
-            }
-        }
-        return visits2;
-    }
-
-
-
-    public List<SingleVisit> getBusyVisits(AdmissionDay admissionDay) {
-        List<SingleVisit> allVisits = getAllVisits(admissionDay);
-        List<SingleVisit> listToReturn = new ArrayList<>();
-
-        for (SingleVisit visit : allVisits) {
-            if (visit.getPatient() != null) {
-                listToReturn.add(visit);
-            }
-        }
-
-        return listToReturn;
-    }
-
-    public List<SingleVisit> getFreeVisits(AdmissionDay admissionDay) {
-        List<SingleVisit> allVisits = getAllVisits(admissionDay);
-        List<SingleVisit> listToReturn = new ArrayList<>();
-
-        for (SingleVisit visit : allVisits) {
-            if (visit.getPatient() == null) {
-                listToReturn.add(visit);
-            }
-        }
-
-        return listToReturn;
-    }
-
     public List<String> getSpecializationsNames() {
         db.openSession();
         try {
@@ -195,6 +129,16 @@ public class PatientModuleDTO {
         }
     }
 
+    public AdmissionDay2 getAdmissionDayForVisitPicker(LocalDate admissionDayDate) {
+        db.openSession();
+        try {
+            AdmissionDay2 result = db.getMapper().getAdmissionDayByDate(admissionDayDate);
+            return result;
+        } finally {
+            db.closeSession();
+        }
+    }
+
     public List<SingleVisit> getSingleVisitsFromDate(LocalDate visitDate, int doctorId) {
         db.openSession();
         try {
@@ -210,6 +154,45 @@ public class PatientModuleDTO {
         return false;
     }
 
+    public List<SingleVisit> getAllVisits(AdmissionDay2 admissionDay) {
+        LocalDate visitsDate = admissionDay.getDate();
+        int doctorId = admissionDay.getDoctor().getId();
 
+        List<SingleVisit> lockedVisits = new ArrayList<>(getSingleVisitsFromDate(visitsDate, doctorId));
+        List<SingleVisit> freeVisits = new ArrayList<>();
+        List<SingleVisit> allDayVisits = new ArrayList<>();
+
+        int interval = admissionDay.getHourInterval();
+
+        LocalTime hourFrom = admissionDay.getHourFrom();
+        LocalTime hourTo = admissionDay.getHourTo();
+        LocalTime currentTime = admissionDay.getHourFrom();
+
+        do {
+            SingleVisit singleVisit = new SingleVisit();
+            singleVisit.setVisitHour(currentTime);
+            freeVisits.add(singleVisit);
+
+            currentTime = currentTime.plusMinutes(interval);
+        } while(!currentTime.equals(hourTo));
+
+        if(lockedVisits.size() == 0) {
+            return freeVisits;
+        }
+
+        allDayVisits = new ArrayList<>(freeVisits);
+
+        for (SingleVisit lockedVisit : lockedVisits) {
+            for (int i = 0; i < freeVisits.size(); i++) {
+                if (lockedVisit.getVisitHour().getHour() == freeVisits.get(i).getVisitHour().getHour()
+                        && lockedVisit.getVisitHour().getMinute() == freeVisits.get(i).getVisitHour().getMinute()) {
+                    allDayVisits.set(i, lockedVisit);
+                    break;
+                }
+            }
+        }
+
+        return allDayVisits;
+    }
 
 }
