@@ -1,3 +1,5 @@
+package htmlParser;
+
 import java.util.HashMap;
 import java.util.Iterator;
 
@@ -143,7 +145,7 @@ public class ToHtmlParser {
     }
 
     private String createDailyPatientListHtml(HashMap<String, String> visitOfDay){
-        String result = null;
+        String result = "";
 
         Iterator it = visitOfDay.entrySet().iterator();
         while (it.hasNext()) {

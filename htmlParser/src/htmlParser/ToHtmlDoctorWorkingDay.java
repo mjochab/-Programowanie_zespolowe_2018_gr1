@@ -1,3 +1,5 @@
+package htmlParser;
+
 public class ToHtmlDoctorWorkingDay {
     private String idDoctor, day, hourFrom, hourTo, hourInterval, validateDate;
 

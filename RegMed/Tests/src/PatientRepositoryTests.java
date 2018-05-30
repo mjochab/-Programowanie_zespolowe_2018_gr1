@@ -2,6 +2,9 @@ import dto.FileDTO;
 import dto.PatientListDTO;
 import entities.Doctor;
 import entities.Patient;
+import htmlParser.ToHtmlDoctor;
+import htmlParser.ToHtmlParser;
+import htmlParser.ToHtmlPatient;
 import org.junit.jupiter.api.*;
 import pojo.File;
 import repositories.PatientRepository;
@@ -122,6 +125,7 @@ public class PatientRepositoryTests {
         String hour = patientList.getPatientList(12).getVisitHour();
         String name = patientList.getPatientList(12).getFirstName()+" "+patientList.getPatientList(12).getLastName();
         HashMap<String, String> h = new HashMap<>();
+        h.clear();
         h.put(hour,name);
         System.out.println(parser.dailyPatientList(h));
     }

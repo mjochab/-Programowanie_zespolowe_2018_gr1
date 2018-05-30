@@ -1,3 +1,5 @@
+package htmlParser;
+
 public class ToHtmlAdmissionDay {
     private String idDoctorWorkingDay, date;
 

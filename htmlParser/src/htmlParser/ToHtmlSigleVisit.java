@@ -1,3 +1,5 @@
+package htmlParser;
+
 public class ToHtmlSigleVisit {
     private String idAdmissionDay, visitHour, idPatient;
 
