@@ -61,14 +61,12 @@ public class DoctorAdministrationDTOTests {
         doctorAdministrationDTO.add(doctor);
 
         assertEquals(3, doctorAdministrationDTO.getAll().size());
-        System.out.println(doctorAdministrationDTO.get(3).doctorToString());
     }
 
     @Disabled
     @Test
     void update_doctor_test() {
         Doctor before = doctorAdministrationDTO.get(3);
-        System.out.println(doctorAdministrationDTO.get(3).doctorToString());
         Doctor result = doctorAdministrationDTO.get(3);
         result.setFirstName("firstName");
         result.setLastName("lastName");
@@ -78,7 +76,6 @@ public class DoctorAdministrationDTOTests {
 
         doctorAdministrationDTO.update(result);
 
-        System.out.println(doctorAdministrationDTO.get(3).doctorToString());
     }
 
     @Disabled

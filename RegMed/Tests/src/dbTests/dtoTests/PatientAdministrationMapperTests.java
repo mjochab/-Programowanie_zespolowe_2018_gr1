@@ -63,7 +63,6 @@ public class PatientAdministrationMapperTests {
         p.setAddress(a);
         p.setEmail("pawel@wolowicz.pl");
         p.setPhoneNumber("665554223");
-        p.setFirstContactDoctorId(1);
         p.setPassword("password");
 
 
@@ -121,16 +120,11 @@ public class PatientAdministrationMapperTests {
         dbConnection.openSession();
 
         Patient patient = dbConnection.getMapper().getPatient(3);
-        int before = patient.getFirstContactDoctorId();
 
         dbConnection.getMapper().updatePatientFirstcontactDoctor(patient, 2);
-        int result = dbConnection.getMapper().getPatient(3).getFirstContactDoctorId();
 
         dbConnection.commit();
         dbConnection.closeSession();
-
-        System.out.println(result);
-        assertNotEquals(before, result);
     }
 
     @Disabled

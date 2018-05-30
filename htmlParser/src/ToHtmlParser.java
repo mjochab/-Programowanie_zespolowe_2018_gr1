@@ -130,6 +130,35 @@ public class ToHtmlParser {
 
     /**
      *
+     *
+     * @param singleVisit
+     * @param date
+     * @return
+     */
+
+    public String dailyPatientList(HashMap<String, String> visitOfDay){
+        String result="";
+        result += createDailyPatientListHtml(visitOfDay);
+        return result;
+    }
+
+    private String createDailyPatientListHtml(HashMap<String, String> visitOfDay){
+        String result = null;
+
+        Iterator it = visitOfDay.entrySet().iterator();
+        while (it.hasNext()) {
+            HashMap.Entry pair = (HashMap.Entry) it.next();
+            String h2 = String.format("<h2>%s</h2>", pair.getKey()),
+                    p = String.format("<h3>%s</h3><br><hr>", pair.getValue());
+            result += (h2 + p);
+            it.remove();
+        }
+
+        return result;
+    }
+
+    /**
+     *
      */
     public void test(){
         System.out.println("test");
