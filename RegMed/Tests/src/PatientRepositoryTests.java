@@ -1,10 +1,17 @@
+import dto.FileDTO;
+import dto.PatientListDTO;
 import entities.Doctor;
 import entities.Patient;
+import htmlParser.ToHtmlDoctor;
+import htmlParser.ToHtmlParser;
+import htmlParser.ToHtmlPatient;
 import org.junit.jupiter.api.*;
+import pojo.File;
 import repositories.PatientRepository;
 import repositories.RepositoryInterface;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -89,4 +96,38 @@ public class PatientRepositoryTests {
         assertTrue(patientRepository.getAll().size() == 1);
 
     }
+
+    @Test
+    void test(){
+        FileDTO file = new FileDTO();
+        ArrayList files = new ArrayList(file.getFiles(1));
+        ToHtmlParser parser = new ToHtmlParser();
+        ToHtmlDoctor doctor = new ToHtmlDoctor(file.getFiles(1).get(0).getDoctor().getFirstName(), file.getFiles(1).get(0).getDoctor().getLastName());
+        ToHtmlPatient patient = new ToHtmlPatient(file.getFiles(1).get(0).getPatient().getFirstName(),
+                file.getFiles(1).get(0).getPatient().getLastName(),
+                file.getFiles(1).get(0).getPatient().getPesel(),
+                file.getFiles(1).get(0).getPatient().getAddress().getZip(),
+                file.getFiles(1).get(0).getPatient().getAddress().getCity(),
+                file.getFiles(1).get(0).getPatient().getAddress().getStreet(),
+                String.valueOf(file.getFiles(1).get(0).getPatient().getAddress().getNumber()),
+                file.getFiles(1).get(0).getPatient().getPhoneNumber());
+        String date = file.getFiles(1).get(0).getDate();
+        String history = file.getFiles(1).get(0).getHistory();
+        HashMap<String, String> h = new HashMap<>();
+        h.put(date,history);
+        System.out.println(parser.patietFile(patient,doctor,h));
+    }
+
+    @Test
+    void dailyPatientListTest(){
+        PatientListDTO patientList = new PatientListDTO();
+        ToHtmlParser parser = new ToHtmlParser();
+        String hour = patientList.getPatientList(12).getVisitHour();
+        String name = patientList.getPatientList(12).getFirstName()+" "+patientList.getPatientList(12).getLastName();
+        HashMap<String, String> h = new HashMap<>();
+        h.clear();
+        h.put(hour,name);
+        System.out.println(parser.dailyPatientList(h));
+    }
+
 }

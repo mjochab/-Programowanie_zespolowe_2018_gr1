@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Czas generowania: 01 Maj 2018, 08:57
+-- Czas generowania: 23 Maj 2018, 09:00
 -- Wersja serwera: 5.7.21
 -- Wersja PHP: 5.6.35
 
@@ -69,7 +69,7 @@ CREATE TABLE IF NOT EXISTS `administrators` (
 --
 
 INSERT INTO `administrators` (`id_administrator`, `first_name`, `last_name`, `PESEL`, `email`, `phone_number`, `password`) VALUES
-(1, 'Jan', 'Kowalski', '94568745125', 'jan@kowalski.pl', '568974523', 'cycki123');
+(1, 'Jan', 'Kówalski', '94568745125', 'jan@kowalski.pl', '568974523', 'cycki123');
 
 -- --------------------------------------------------------
 
@@ -102,18 +102,22 @@ CREATE TABLE IF NOT EXISTS `doctors` (
   `email` varchar(50) NOT NULL,
   `phone_number` varchar(9) NOT NULL,
   `password` varchar(100) NOT NULL,
-  `id_specialization` int(11) NOT NULL,
+  `id_specialization` int(11) DEFAULT NULL,
   PRIMARY KEY (`id_doctor`),
-  KEY `id_address` (`id_address`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+  KEY `id_address` (`id_address`),
+  KEY `id_specialization` (`id_specialization`)
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
 
 --
 -- Zrzut danych tabeli `doctors`
 --
 
 INSERT INTO `doctors` (`id_doctor`, `first_name`, `last_name`, `PESEL`, `id_address`, `email`, `phone_number`, `password`, `id_specialization`) VALUES
-(1, 'Eugeniusz', 'Zaborski', '92384547281', 1, 'eugeniusz@zaborski.pl', '665445645', 'password', 1),
-(2, 'Joanna', 'Mana', '78281732398', 1, 'joanna@mana.pl', '662224813', 'password', 2);
+(12, 'Edward', 'Ącki', '94563215864', 2, 'ea@op.pl', '456987452', 'password', 20),
+(13, 'Elżbieta', 'Krzywonóg', '87456987531', 1, 'elakrzywenogi@mam.pl', '698486512', 'password', 15),
+(14, 'Marian', 'Długonos', '35897456125', 2, 'duzedziury@op.pl', '569874532', 'password', 14),
+(15, 'Mirosława', 'Łopata', '68458974532', 1, 'ml@wp.pl', '456878987', 'password', 12),
+(16, 'Anna', 'Nowak', '89745896515', 1, 'an@op.pl', '987654321', 'password', 21);
 
 -- --------------------------------------------------------
 
@@ -129,9 +133,41 @@ CREATE TABLE IF NOT EXISTS `doctorworkingdays` (
   `hour_from` time NOT NULL,
   `hour_to` time NOT NULL,
   `hour_interval` varchar(2) NOT NULL,
+  `validate_date` date DEFAULT NULL,
   PRIMARY KEY (`id_doctor_working_day`),
   KEY `id_doctor` (`id_doctor`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
+
+--
+-- Zrzut danych tabeli `doctorworkingdays`
+--
+
+INSERT INTO `doctorworkingdays` (`id_doctor_working_day`, `id_doctor`, `day`, `hour_from`, `hour_to`, `hour_interval`, `validate_date`) VALUES
+(13, 12, 'wednesday', '11:00:00', '15:00:00', '30', '2022-06-20'),
+(14, 12, 'monday', '10:00:00', '12:00:00', '30', '2022-06-20');
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabeli dla tabeli `files`
+--
+
+DROP TABLE IF EXISTS `files`;
+CREATE TABLE IF NOT EXISTS `files` (
+  `id_file` int(11) NOT NULL AUTO_INCREMENT,
+  `id_patient` int(11) NOT NULL,
+  `id_doctor` int(11) NOT NULL,
+  `date` timestamp NOT NULL,
+  `history` mediumtext CHARACTER SET latin1 NOT NULL,
+  PRIMARY KEY (`id_file`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
+
+--
+-- Zrzut danych tabeli `files`
+--
+
+INSERT INTO `files` (`id_file`, `id_patient`, `id_doctor`, `date`, `history`) VALUES
+(1, 1, 12, '2018-05-21 22:00:00', 'huj dupa cipa!!');
 
 -- --------------------------------------------------------
 
@@ -148,7 +184,7 @@ CREATE TABLE IF NOT EXISTS `patients` (
   `id_address` int(11) NOT NULL,
   `email` varchar(50) NOT NULL,
   `phone_number` varchar(9) NOT NULL,
-  `id_firstcontact_doctor` int(11) NOT NULL,
+  `id_firstcontact_doctor` int(11) DEFAULT NULL,
   `password` varchar(100) NOT NULL,
   PRIMARY KEY (`id_patient`),
   KEY `id_firstcontact_doctor` (`id_firstcontact_doctor`),
@@ -160,8 +196,47 @@ CREATE TABLE IF NOT EXISTS `patients` (
 --
 
 INSERT INTO `patients` (`id_patient`, `first_name`, `last_name`, `PESEL`, `id_address`, `email`, `phone_number`, `id_firstcontact_doctor`, `password`) VALUES
-(1, 'Sebastian', 'Krzak', '9123123879', 2, 'bogumila@krzak.com', '92389237', 1, 'password'),
-(2, 'Krzysztof', 'Baca', '916273921', 1, 'krzysztof@baca.com', '261738273', 1, 'password');
+(1, 'Sebastian', 'Krzak', '9123123879', 2, 'bogumila@krzak.com', '92389237', 16, 'password'),
+(2, 'Krzysztof', 'Baca', '916273921', 1, 'krzysztof@baca.com', '261738273', 16, 'password');
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabeli dla tabeli `prescriptions`
+--
+
+DROP TABLE IF EXISTS `prescriptions`;
+CREATE TABLE IF NOT EXISTS `prescriptions` (
+  `id_prescription` int(11) NOT NULL AUTO_INCREMENT,
+  `id_patient` int(11) NOT NULL,
+  `id_doctor` int(11) NOT NULL,
+  `date` timestamp NOT NULL,
+  `content` varchar(65000) CHARACTER SET latin1 NOT NULL,
+  `html_content` mediumtext COLLATE utf8_polish_ci NOT NULL,
+  PRIMARY KEY (`id_prescription`),
+  KEY `id_doctor` (`id_doctor`),
+  KEY `id_patient` (`id_patient`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabeli dla tabeli `refferals`
+--
+
+DROP TABLE IF EXISTS `refferals`;
+CREATE TABLE IF NOT EXISTS `refferals` (
+  `id_refferal` int(11) NOT NULL AUTO_INCREMENT,
+  `id_patient` int(11) NOT NULL,
+  `id_doctor` int(11) NOT NULL,
+  `id_specialist` int(11) NOT NULL,
+  `date` timestamp NOT NULL,
+  `content` varchar(65000) CHARACTER SET latin1 NOT NULL,
+  PRIMARY KEY (`id_refferal`),
+  KEY `id_doctor` (`id_doctor`),
+  KEY `id_patient` (`id_patient`),
+  KEY `id_specialist` (`id_specialist`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
 
 -- --------------------------------------------------------
 
@@ -180,6 +255,36 @@ CREATE TABLE IF NOT EXISTS `singlevisits` (
   KEY `id_admission_day` (`id_admission_day`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+-- --------------------------------------------------------
+
+--
+-- Struktura tabeli dla tabeli `specializations`
+--
+
+DROP TABLE IF EXISTS `specializations`;
+CREATE TABLE IF NOT EXISTS `specializations` (
+  `id_specialization` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(300) COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`id_specialization`)
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Zrzut danych tabeli `specializations`
+--
+
+INSERT INTO `specializations` (`id_specialization`, `name`) VALUES
+(11, 'Urolog'),
+(12, 'Geriatra'),
+(13, 'Ginekolog'),
+(14, 'Laryngolog'),
+(15, 'Podolog'),
+(16, 'Chorób Wewnętrznych'),
+(17, 'Chirurg'),
+(18, 'Immunolog'),
+(19, 'Kardiolog'),
+(20, 'Nefrolog'),
+(21, 'First contact');
+
 --
 -- Ograniczenia dla zrzutów tabel
 --
@@ -194,20 +299,36 @@ ALTER TABLE `admissiondays`
 -- Ograniczenia dla tabeli `doctors`
 --
 ALTER TABLE `doctors`
-  ADD CONSTRAINT `Doctors_ibfk_2` FOREIGN KEY (`id_address`) REFERENCES `addresses` (`id_address`);
+  ADD CONSTRAINT `Doctors_ibfk_2` FOREIGN KEY (`id_address`) REFERENCES `addresses` (`id_address`) ON DELETE CASCADE,
+  ADD CONSTRAINT `doctors_ibfk_1` FOREIGN KEY (`id_specialization`) REFERENCES `specializations` (`id_specialization`) ON DELETE SET NULL;
 
 --
 -- Ograniczenia dla tabeli `doctorworkingdays`
 --
 ALTER TABLE `doctorworkingdays`
-  ADD CONSTRAINT `DoctorWorkingDays_ibfk_1` FOREIGN KEY (`id_doctor`) REFERENCES `doctors` (`id_doctor`);
+  ADD CONSTRAINT `DoctorWorkingDays_ibfk_1` FOREIGN KEY (`id_doctor`) REFERENCES `doctors` (`id_doctor`) ON DELETE CASCADE;
 
 --
 -- Ograniczenia dla tabeli `patients`
 --
 ALTER TABLE `patients`
-  ADD CONSTRAINT `Patients_ibfk_2` FOREIGN KEY (`id_firstcontact_doctor`) REFERENCES `doctors` (`id_doctor`),
-  ADD CONSTRAINT `Patients_ibfk_3` FOREIGN KEY (`id_address`) REFERENCES `addresses` (`id_address`);
+  ADD CONSTRAINT `Patients_ibfk_3` FOREIGN KEY (`id_address`) REFERENCES `addresses` (`id_address`) ON DELETE CASCADE,
+  ADD CONSTRAINT `patients_ibfk_1` FOREIGN KEY (`id_firstcontact_doctor`) REFERENCES `doctors` (`id_doctor`) ON DELETE SET NULL;
+
+--
+-- Ograniczenia dla tabeli `prescriptions`
+--
+ALTER TABLE `prescriptions`
+  ADD CONSTRAINT `prescriptions_ibfk_1` FOREIGN KEY (`id_doctor`) REFERENCES `doctors` (`id_doctor`),
+  ADD CONSTRAINT `prescriptions_ibfk_2` FOREIGN KEY (`id_patient`) REFERENCES `patients` (`id_patient`);
+
+--
+-- Ograniczenia dla tabeli `refferals`
+--
+ALTER TABLE `refferals`
+  ADD CONSTRAINT `refferals_ibfk_1` FOREIGN KEY (`id_doctor`) REFERENCES `doctors` (`id_doctor`) ON DELETE NO ACTION,
+  ADD CONSTRAINT `refferals_ibfk_2` FOREIGN KEY (`id_patient`) REFERENCES `patients` (`id_patient`),
+  ADD CONSTRAINT `refferals_ibfk_3` FOREIGN KEY (`id_specialist`) REFERENCES `doctors` (`id_doctor`);
 
 --
 -- Ograniczenia dla tabeli `singlevisits`

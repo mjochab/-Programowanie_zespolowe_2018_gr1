@@ -36,10 +36,10 @@ public class PatientAdministrationMapperTests {
         dbConnection.openSession();
         Patient result = dbConnection.getMapper().getPatient(2);
 
-        System.out.println(result.patientToString());
+        //System.out.println(result.patientToString());
 
         assertEquals("Krzysztof", result.getFirstName());
-        assertTrue(result.getPatientId() == 2);
+        assertTrue(result.getId() == 2);
     }
 
     @Disabled
@@ -56,14 +56,13 @@ public class PatientAdministrationMapperTests {
         a.setNumber(23);
 
         Patient p = new Patient();
-        p.setPatientId(0);
+        p.setId(0);
         p.setFirstName("Paweł");
         p.setLastName("Wołowicz");
         p.setPesel("95042411065");
         p.setAddress(a);
         p.setEmail("pawel@wolowicz.pl");
         p.setPhoneNumber("665554223");
-        p.setFirstContactDoctorId(1);
         p.setPassword("password");
 
 
@@ -113,25 +112,6 @@ public class PatientAdministrationMapperTests {
         dbConnection.closeSession();
     }
 
-    @Disabled
-    @Test
-    void update_firstcontactDoctorId_test() {
-        MyBatisDbConnection<PatientAdministrationMapper> dbConnection
-                = new MyBatisDbConnection<>(PatientAdministrationMapper.class);
-        dbConnection.openSession();
-
-        Patient patient = dbConnection.getMapper().getPatient(3);
-        int before = patient.getFirstContactDoctorId();
-
-        dbConnection.getMapper().updatePatientFirstcontactDoctor(patient, 2);
-        int result = dbConnection.getMapper().getPatient(3).getFirstContactDoctorId();
-
-        dbConnection.commit();
-        dbConnection.closeSession();
-
-        System.out.println(result);
-        assertNotEquals(before, result);
-    }
 
     @Disabled
     @Test

@@ -15,11 +15,24 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
+import pojo.Specialization;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Predicate;
 
+/**
+ * Doctors administration.
+ * Containing crud operations and governing fxml form behavior (inserting values
+ * into textfields etc).
+ *
+ * @see helpers.ControllerPagination is using to hold helpers, mostly for
+ *        changing pages.
+ * @author Szymon P
+ *
+ */
 public class DoctorAdministrationController implements ControllerPagination {
 
     @FXML
@@ -48,8 +61,7 @@ public class DoctorAdministrationController implements ControllerPagination {
             cityFieldAdd,
             zipFieldAdd,
             streetFieldAdd,
-            numberFieldAdd,
-            specializationFieldAdd;
+            numberFieldAdd;
 
     @FXML
     private TabPane tabPane;
@@ -61,29 +73,37 @@ public class DoctorAdministrationController implements ControllerPagination {
     @FXML
     private TableView<Doctor> doctorsTable;
     @FXML
-    private TableColumn<Doctor, Integer> idColumn,
-            specializationColumn;
+    private TableColumn<Doctor, Integer> idColumn;
     @FXML
     private TableColumn<Doctor, String> forenameColumn,
             nameColumn,
             peselColumn,
             emailColumn,
             phoneNumberColumn,
-            addressColumn;
+            addressColumn,
+            specializationColumn;
 
     @FXML
     private Tab editWorkingHoursTab;
 
+    @FXML
+    private ChoiceBox<String> specializationChoiceBox;
+
     private DoctorAdministrationDTO doctorAdministrationDTO;
 
     private FilteredList filteredList;
-
     ObservableList<Doctor> tableData;
+    private List<Specialization> specializations;
 
     public DoctorAdministrationController() {
         this.doctorAdministrationDTO = new DoctorAdministrationDTO();
+        specializations = FXCollections.observableArrayList(
+                doctorAdministrationDTO.getAllSpecializations());
     }
 
+    /**
+     * Setting factory relation between values in table and pojo class(es).
+     */
     @FXML
     private void initialize() {
 
@@ -95,17 +115,21 @@ public class DoctorAdministrationController implements ControllerPagination {
         emailColumn.setCellValueFactory(new PropertyValueFactory<Doctor, String>("email"));
         phoneNumberColumn.setCellValueFactory(new PropertyValueFactory<Doctor, String>("phoneNumber"));
         addressColumn.setCellValueFactory(new PropertyValueFactory<Doctor, String>("address"));
-        specializationColumn.setCellValueFactory(new PropertyValueFactory<Doctor, Integer>("specializationId"));
+        specializationColumn.setCellValueFactory(new PropertyValueFactory<Doctor, String>("specialization"));
 
         //load data
         loadDataToTable();
 
         filteredList = new FilteredList(tableData, e->true);    //list using to filter data
-
-
         editTabDisable(true);
+
+        specializationChoiceBox.setItems(FXCollections.observableArrayList(specializationsToString()));
     }
 
+    /**
+     * Loading/refreshing data in table. Also applying filteredList on table
+     * from method searchDoctorsByPeselAndName.
+     */
     private void loadDataToTable() {
 
         //if (tableData != null)
@@ -118,8 +142,11 @@ public class DoctorAdministrationController implements ControllerPagination {
     }
 
 
+    /**
+     * Filtering doctors in table using pesel or name.
+     */
     @FXML
-    private void searchDoctorsByPeselAndName(KeyEvent event) {
+    private void filterDoctorsByPeselAndName() {
         searchField.textProperty().addListener(((observable, oldValue, newValue) -> {
             filteredList.setPredicate((Predicate<? super Doctor>) (Doctor doctor)->{
                 if (newValue.isEmpty() || newValue == null) {
@@ -145,9 +172,11 @@ public class DoctorAdministrationController implements ControllerPagination {
     //--ACTION_METHODS--
 
 
-
+    /**
+     * Removing selected in table doctor from database.
+     */
     @FXML
-    private void removeDoctorClicked(ActionEvent event) {
+    private void removeDoctorClicked() {
         Doctor doctorToDelete = getSelectedDoctorInTable();
 
         if(getSelectedDoctorInTable() != null) {
@@ -162,8 +191,13 @@ public class DoctorAdministrationController implements ControllerPagination {
         }
     }
 
+    /**
+     * Editing doctor in database.
+     * Downloading selected to edit doctor from database and setting
+     * him data specified in doctor object created from textfields.
+     */
     @FXML
-    private void editDoctorClicked(ActionEvent event) {
+    private void editDoctorClicked() {
         if(getSelectedDoctorInTable() != null) {
 
             editTabDisable(false);
@@ -194,8 +228,12 @@ public class DoctorAdministrationController implements ControllerPagination {
         }
     }
 
+
+    /**
+     * Creating doctor from values in textfields and saving him to database.
+     */
     @FXML
-    private void createDoctorClicked(ActionEvent event) {
+    private void createDoctorClicked() {
         Doctor doctorToAdd = new Doctor();
         Address addressToAdd = new Address();
         try {
@@ -214,10 +252,10 @@ public class DoctorAdministrationController implements ControllerPagination {
             doctorToAdd.setAddress(addressToAdd);
             doctorToAdd.setEmail(emailFieldAdd.getText().toLowerCase());
             doctorToAdd.setPhoneNumber(phoneFieldAdd.getText());
-            if (specializationFieldAdd.getText().isEmpty()) {
+            if (specializationChoiceBox.getValue().isEmpty()) {
                 throw new ValidationException("Missing specialization id");
             } else {
-                doctorToAdd.setSpecializationId(Integer.parseInt(specializationFieldAdd.getText()));
+                doctorToAdd.setSpecialization(specializations.get(specializationChoiceBox.getSelectionModel().getSelectedIndex()));        //TODO nazwa to
             }
 
             doctorToAdd.setPassword(nameFieldAdd.getText());
@@ -236,16 +274,36 @@ public class DoctorAdministrationController implements ControllerPagination {
 
     }
 
+    /**
+     * Action for invoke method responsible for clearing textfields using
+     * for creating doctor.
+     */
     @FXML
-    private void clearDoctorClickedAdd(ActionEvent event) {
+    private void clearDoctorClickedAdd() {
         clearAddDoctorFields();
     }
 
+
+    /**
+     * Switching scene back to admin default screen after login.
+     *
+     * @param event         using by pagination helper for get current scene.
+     *                      It is necessary to switch from one scene to another.
+     * @see helpers.ControllerHelpers
+     * @throws IOException  throwing when fxml file wasn't found
+     */
     @FXML
     private void backButtonClicked(ActionEvent event) throws IOException {
         helpers.SwitchScene("admin/AdminHome", event);
     }
 
+
+    /**
+     * Creating doctor from textfields used to change values.
+     * @param doctor   old patient version (containing his id), which will be
+     *                  override.
+     * @return          doctor, which will be updated in database.
+     */
     private Doctor createDoctorForEditFromTextfields(Doctor doctor) {
         doctor.setFirstName(forenameField.getText());
         doctor.setLastName(nameField.getText());
@@ -256,6 +314,12 @@ public class DoctorAdministrationController implements ControllerPagination {
         return doctor;
     }
 
+    /**
+     * Creating address from textfields, which will be saved with an override
+     * patient in database.
+     * @param address   old address (containing unique id), which will be override.
+     * @return          address, which will be updated in database.
+     */
     private Address createAddressForEditFromTexfields(Address address) {
         Address addressToReturn = address;
 
@@ -268,6 +332,11 @@ public class DoctorAdministrationController implements ControllerPagination {
     }
 
 
+    /**
+     * Filling containing before-update doctor version textfields.
+     *
+     * @param doctor which data will be set to textfields.
+     */
     private void fillEditDoctorFields(Doctor doctor) {
         peselField.setText(doctor.getPesel());
         forenameField.setText(doctor.getFirstName());
@@ -278,6 +347,10 @@ public class DoctorAdministrationController implements ControllerPagination {
         specializationField.setText(String.valueOf(doctor.getSpecializationId()));
     }
 
+    /**
+     * Filling containing before-update address version textfields.
+     * @param address which data will be set to textfields.
+     */
     private void fillEditDoctorAddressFields(Address address) {
         cityField.setText(address.getCity());
         zipField.setText(address.getZip());
@@ -285,6 +358,9 @@ public class DoctorAdministrationController implements ControllerPagination {
         numberField.setText(String.valueOf(address.getNumber()));
     }
 
+    /**
+     * Clearing all textfields responsible for store doctor to create data.
+     */
     private void clearAddDoctorFields() {
         forenameFieldAdd.setText(null);
         nameFieldAdd.setText(null);
@@ -297,7 +373,7 @@ public class DoctorAdministrationController implements ControllerPagination {
         streetFieldAdd.setText(null);
         numberFieldAdd.setText(null);
 
-        specializationFieldAdd.setText(null);
+        specializationChoiceBox.getSelectionModel().selectFirst();
     }
 
 
@@ -306,12 +382,30 @@ public class DoctorAdministrationController implements ControllerPagination {
 
     //HELPER METHODS
 
+    /**
+     * Getting patient, which is currently selected in table.
+     *
+     * @return selected in table patient.
+     */
     private Doctor getSelectedDoctorInTable() {
         return doctorsTable.getSelectionModel().getSelectedItem();
     }
 
+    /**
+     * Setting edit tab in tabPane enabled or disabled.
+     *
+     * @param bool true if you want disable edit patient tab
+     */
     private void editTabDisable(boolean bool) {
         editDoctorTab.setDisable(bool);
+    }
+
+    private List<String> specializationsToString() {
+        List<String> listToReturn = new ArrayList<>();
+        for (Specialization s : specializations) {
+            listToReturn.add(s.getName());
+        }
+        return listToReturn;
     }
 
 }

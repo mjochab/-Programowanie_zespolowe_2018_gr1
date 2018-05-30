@@ -48,7 +48,7 @@ public class DoctorAdministrationDTOTests {
         address.setNumber(23);
 
         Doctor doctor = new Doctor();
-        doctor.setDoctorId(0);
+        doctor.setId(0);
         doctor.setFirstName("Alojzy");
         doctor.setLastName("Stasiewicz");
         doctor.setPesel("91821922813");
@@ -61,14 +61,12 @@ public class DoctorAdministrationDTOTests {
         doctorAdministrationDTO.add(doctor);
 
         assertEquals(3, doctorAdministrationDTO.getAll().size());
-        System.out.println(doctorAdministrationDTO.get(3).doctorToString());
     }
 
     @Disabled
     @Test
     void update_doctor_test() {
         Doctor before = doctorAdministrationDTO.get(3);
-        System.out.println(doctorAdministrationDTO.get(3).doctorToString());
         Doctor result = doctorAdministrationDTO.get(3);
         result.setFirstName("firstName");
         result.setLastName("lastName");
@@ -78,7 +76,6 @@ public class DoctorAdministrationDTOTests {
 
         doctorAdministrationDTO.update(result);
 
-        System.out.println(doctorAdministrationDTO.get(3).doctorToString());
     }
 
     @Disabled
@@ -114,7 +111,7 @@ public class DoctorAdministrationDTOTests {
         address.setNumber(3);
 
         Doctor doctor = new Doctor();
-        doctor.setDoctorId(0);
+        doctor.setId(0);
         doctor.setFirstName("Katarzyna");
         doctor.setLastName("Rak");
         doctor.setPesel("93728137212");
@@ -126,7 +123,7 @@ public class DoctorAdministrationDTOTests {
 
         doctorAdministrationDTO.add(doctor);
         int lastDoctorIndex = doctorAdministrationDTO.getAll()
-                .get(doctorAdministrationDTO.getAll().size()-1).getDoctorId();
+                .get(doctorAdministrationDTO.getAll().size()-1).getId();
         doctorAdministrationDTO.delete(lastDoctorIndex);
     }
 

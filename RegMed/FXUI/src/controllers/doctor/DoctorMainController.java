@@ -42,9 +42,9 @@ public class DoctorMainController implements ControllerPagination {
 
     @FXML
     AnchorPane anchorPane,
-                anchorEdit,
-                anchorReport,
-                anchorAdmissionTable;
+            anchorEdit,
+            anchorReport,
+            anchorAdmissionTable;
 
     private DoctorModuleDTO doctorModuleDTO;
 
@@ -53,7 +53,7 @@ public class DoctorMainController implements ControllerPagination {
     }
 
     @FXML public void initialize(){
-       //nameLabel.setText(doctorModuleDTO.get(1).getFirstName());
+        nameLabel.setText(doctorModuleDTO.getDoctor(12).getFirstName() + " " +doctorModuleDTO.getDoctor(12).getLastName());
     }
 
     @FXML void switchAdmissionModule(ActionEvent event) throws IOException{

@@ -5,6 +5,7 @@ public class Doctor extends User{
 
     private int specializationId;  //TODO: convert to foreign key
     private Address address;
+    private Specialization specialization;
 
 
 
@@ -24,17 +25,17 @@ public class Doctor extends User{
         this.address = address;
     }
 
-    public String doctorToString() {
-        return String.format("%s %s %s %s %s %s %s %s",
-                "patientId: " + getId(),
-                "firstName: " + getFirstName(),
-                "lastName: " + getLastName(),
-                "pesel: " + getPesel(),
-                "email: " + getEmail(),
-                "phone: " + getPhoneNumber(),
-                "doctor: " + getSpecializationId(),
-                "address: " + getAddress().toString()
-        );
+    public Specialization getSpecialization() {
+        return specialization;
     }
+
+    public void setSpecialization(Specialization specialization) {
+        this.specialization = specialization;
+    }
+
+
+//    public String toString() {
+//        return String.format("%s %s %s", getFirstName(), getLastName(), getSpecialization().getName());
+//    }
 
 }
