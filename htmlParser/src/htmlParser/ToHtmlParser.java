@@ -130,13 +130,6 @@ public class ToHtmlParser {
         return result;
     }
 
-    /**
-     *
-     *
-     * @param singleVisit
-     * @param date
-     * @return
-     */
 
     public String dailyPatientList(HashMap<String, String> visitOfDay){
         String result="";
