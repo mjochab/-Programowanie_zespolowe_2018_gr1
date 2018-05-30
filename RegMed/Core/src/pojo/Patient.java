@@ -50,15 +50,15 @@ public class Patient extends User {
         this.firstContactDoctor = firstContactDoctor;
     }
 
-    public String patientToString() {
-        return String.format("%s %s %s %s %s %s %s %s",
-                "patientId: " + getId(),
-                "firstName: " + getFirstName(),
-                "lastName: " + getLastName(),
-                "pesel: " + getPesel(),
-                "email: " + getEmail(),
-                "phone: " + getPhoneNumber(),
-                "address: " + getAddress().toString()
-        );
-    }
+//    public String patientToString() {
+//        return String.format("%s %s %s %s %s %s %s %s",
+//                "patientId: " + getId(),
+//                "firstName: " + getFirstName(),
+//                "lastName: " + getLastName(),
+//                "pesel: " + getPesel(),
+//                "email: " + getEmail(),
+//                "phone: " + getPhoneNumber(),
+//                "address: " + getAddress().toString()
+//        );
+//    }
 }
