@@ -2,10 +2,7 @@ package dto;
 
 import database.MyBatisDbConnection;
 import mappers.PatientAdministrationMapper;
-import pojo.Address;
-import pojo.Doctor;
-import pojo.Patient;
-import pojo.Specialization;
+import pojo.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -112,6 +109,35 @@ public class PatientAdministrationDTO {
         dbConnection.openSession();
         try {
             return new ArrayList<>(dbConnection.getMapper().getAllFirstContactDoctors());
+        } finally {
+            dbConnection.closeSession();
+        }
+    }
+
+    public List<SingleVisit> getVisitsForPatient(int patientId) {
+        dbConnection.openSession();
+        try {
+            return new ArrayList<>(dbConnection.getMapper().getVisitsForPatient(patientId));
+        } finally {
+            dbConnection.closeSession();
+        }
+    }
+
+    public void deleteVisit(int visitId) {
+        dbConnection.openSession();
+        try {
+            dbConnection.getMapper().deleteVisit(visitId);
+            dbConnection.commit();
+        } finally {
+            dbConnection.closeSession();
+        }
+    }
+
+    public void deleteAllVisits(int patientId) {
+        dbConnection.openSession();
+        try {
+            dbConnection.getMapper().deleteAllVisits(patientId);
+            dbConnection.commit();
         } finally {
             dbConnection.closeSession();
         }

@@ -225,6 +225,37 @@
                </AnchorPane>
             </content>
           </Tab>
+            <Tab fx:id="manageVisitsTab" onSelectionChanged="#manageVisitsTabClicked" text="Manage visits">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <TableView fx:id="visitTableView" layoutX="14.0" layoutY="45.0" prefHeight="316.0" prefWidth="431.0">
+                          <columns>
+                            <TableColumn fx:id="visitIdColumn" prefWidth="62.0" text="Id" />
+                            <TableColumn fx:id="visitDoctorColumn" prefWidth="135.0" text="Doctor" />
+                              <TableColumn fx:id="visitSpecializationColumn" prefWidth="95.0" text="Specialization" />
+                              <TableColumn fx:id="visitHourColumn" minWidth="0.0" prefWidth="55.0" text="Hour" />
+                              <TableColumn fx:id="visitDateColumn" prefWidth="82.0" text="Date" />
+                          </columns>
+                        </TableView>
+                        <Button fx:id="removeVisitButton" layoutX="14.0" layoutY="369.0" mnemonicParsing="false" onAction="#removeVisitButtonClicked" prefHeight="44.0" prefWidth="96.0" text="Remove">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Button>
+                        <Button fx:id="removeAllVisitsButton" layoutX="121.0" layoutY="369.0" mnemonicParsing="false" onAction="#removeAllVisitsButtonClicked" prefHeight="44.0" prefWidth="112.0" text="Remove all">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Button>
+                        <Button fx:id="addVisitButton" layoutX="247.0" layoutY="369.0" mnemonicParsing="false" onAction="#addVisitButtonClicked" prefHeight="44.0" prefWidth="96.0" text="Add visit">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Button>
+                     </children></AnchorPane>
+              </content>
+            </Tab>
         </tabs>
       </TabPane>
       <Button fx:id="removeButton" layoutX="379.0" layoutY="110.0" mnemonicParsing="false" onAction="#removePatientClicked" prefHeight="50.0" prefWidth="90.0" text="Remove">

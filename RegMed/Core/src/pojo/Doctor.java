@@ -34,8 +34,8 @@ public class Doctor extends User{
     }
 
 
-//    public String toString() {
-//        return String.format("%s %s %s", getFirstName(), getLastName(), getSpecialization().getName());
-//    }
+    public String toString() {
+        return String.format("%s %s", getFirstName(), getLastName());
+    }
 
 }

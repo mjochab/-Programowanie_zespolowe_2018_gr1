@@ -12,10 +12,8 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 import dto.PatientAdministrationDTO;
-import pojo.Address;
-import pojo.Doctor;
-import pojo.Patient;
-import pojo.Specialization;
+import models.VisitAdministrationModel;
+import pojo.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -64,7 +62,8 @@ public class PatientAdministrationController implements ControllerPagination {
 
     @FXML
     private Tab editPatientTab,
-            createPatientTab;
+            createPatientTab,
+            manageVisitsTab;
 
     @FXML
     private TableView<Patient> patientsTable;
@@ -75,12 +74,30 @@ public class PatientAdministrationController implements ControllerPagination {
             nameColumn,
             peselColumn,
             addressColumn,
-            emailColumn,
-            firstContactDoctorIdColumn;
+            emailColumn, firstContactDoctorIdColumn
+            ;
+
+//    @FXML
+//    private TableColumn<Doctor, String> ;
 
     @FXML
     private ChoiceBox<String> firstcontactDoctorChoiceBoxAdd,
             firstcontactDoctorChoiceBox;
+
+    @FXML
+    private TableView<VisitAdministrationModel> visitTableView;
+
+    @FXML
+    private TableColumn<VisitAdministrationModel, Integer> visitIdColumn;
+
+    @FXML
+    private TableColumn<VisitAdministrationModel, String> visitDoctorColumn,
+        visitSpecializationColumn,
+        visitHourColumn,
+        visitDateColumn;
+
+
+
 
     private PatientAdministrationDTO patientAdministrationDTO;
 
@@ -105,6 +122,9 @@ public class PatientAdministrationController implements ControllerPagination {
 
         firstcontactDoctorChoiceBoxAdd.setItems(FXCollections.observableArrayList(parseFirstcontactDoctorsToString()));
         firstcontactDoctorChoiceBox.setItems(FXCollections.observableArrayList(parseFirstcontactDoctorsToString()));
+
+        setupColumnsInTheVisitsTable();
+
     }
 
     /**
@@ -119,6 +139,16 @@ public class PatientAdministrationController implements ControllerPagination {
         emailColumn.setCellValueFactory(new PropertyValueFactory<Patient, String>("email"));
         firstContactDoctorIdColumn.setCellValueFactory(new PropertyValueFactory<Patient, String>("firstContactDoctor"));
     }
+
+
+    private void setupColumnsInTheVisitsTable() {
+        visitIdColumn.setCellValueFactory(new PropertyValueFactory<VisitAdministrationModel, Integer>("id"));
+        visitDoctorColumn.setCellValueFactory(new PropertyValueFactory<VisitAdministrationModel, String>("doctor"));
+        visitSpecializationColumn.setCellValueFactory(new PropertyValueFactory<VisitAdministrationModel, String>("specialization"));
+        visitHourColumn.setCellValueFactory(new PropertyValueFactory<VisitAdministrationModel, String>("hour"));
+        visitDateColumn.setCellValueFactory(new PropertyValueFactory<VisitAdministrationModel, String>("date"));
+    }
+
 
     /**
      * Loading/refreshing data in table. Also applying filteredList on table
@@ -275,6 +305,83 @@ public class PatientAdministrationController implements ControllerPagination {
         helpers.SwitchScene("admin/AdminHome", event);
     }
 
+
+
+    @FXML
+    private void manageVisitsTabClicked() {
+        loadDataToVisitTable();
+    }
+
+    private void loadDataToVisitTable() {
+        Patient selectedPatient;
+        List<SingleVisit> visits = new ArrayList<>();
+
+        try {
+            selectedPatient = getSelectedPatientInTable();
+            visits = patientAdministrationDTO.getVisitsForPatient(selectedPatient.getId());
+        } catch (NullPointerException ex) {
+            DialogBox.warningBox("Warning!", "Please first select patient in table.");
+            tabPane.getSelectionModel().selectFirst();
+        }
+
+        List<VisitAdministrationModel> administrationModels = new ArrayList<>();
+        for(SingleVisit visit : visits) {
+            VisitAdministrationModel model = new VisitAdministrationModel(visit.getId(),
+                    visit.getAdmissionDay2().getDoctor().toString(),
+                    visit.getAdmissionDay2().getDoctor().getSpecialization().toString(),
+                    visit.getVisitHour(),
+                    visit.getAdmissionDay2().getDate());
+            administrationModels.add(model);
+        }
+
+        visitTableView.setItems(FXCollections.observableArrayList(administrationModels));
+        visitTableView.refresh();
+    }
+
+    @FXML
+    public void removeVisitButtonClicked() {
+        VisitAdministrationModel visitModelSelected = getSelectedVisit();
+
+        if (DialogBox.choiceBox("Information", "Visit deletion",
+                String.format("Are you sure you want remove: \n%d, %s, %s, %s, %s ?",
+                        visitModelSelected.getId(),
+                        visitModelSelected.getDoctor(),
+                        visitModelSelected.getSpecialization(),
+                        visitModelSelected.getHour(),
+                        visitModelSelected.getDate()
+                )
+        )) {
+            patientAdministrationDTO.deleteVisit(visitModelSelected.getId());
+            loadDataToVisitTable();
+        }
+    }
+
+    @FXML
+    public void removeAllVisitsButtonClicked() {
+        Patient patient = getSelectedPatientInTable();
+
+        if (DialogBox.choiceBox("Information", "All patient visits deletion",
+            String.format("Are you sure you want remove all visits assingned to patient %s %s (id:%d)?",
+                    getSelectedPatientInTable().getFirstName(),
+                    getSelectedPatientInTable().getLastName(),
+                    getSelectedPatientInTable().getId()
+            )
+        )) {
+            patientAdministrationDTO.deleteAllVisits(getSelectedPatientInTable().getId());
+            loadDataToVisitTable();
+        }
+    }
+
+    @FXML
+    public void addVisitButtonClicked(ActionEvent event) throws IOException {
+        helpers.SwitchScene("views/patient/Registration", event);
+    }
+
+
+
+
+
+
     /**
      * Creating patient from textfields used to change values.
      * @param patient   old patient version (containing his id), which will be
@@ -367,6 +474,10 @@ public class PatientAdministrationController implements ControllerPagination {
      */
     private Patient getSelectedPatientInTable() {
         return patientsTable.getSelectionModel().getSelectedItem();
+    }
+
+    private VisitAdministrationModel getSelectedVisit() {
+        return visitTableView.getSelectionModel().getSelectedItem();
     }
 
     /**
