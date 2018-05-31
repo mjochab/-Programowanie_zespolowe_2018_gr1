@@ -1,9 +1,12 @@
 package dto;
 
+import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 import database.MyBatisDbConnection;
+import javafx.scene.control.ChoiceBox;
 import mappers.PatientModuleMapper;
 import pojo.*;
 
+import java.sql.SQLException;
 import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -140,6 +143,15 @@ public class PatientModuleDTO {
         }
     }
 
+    public SingleVisit getSingleVisitById(int singleVisitId) {
+        db.openSession();
+        try {
+            return db.getMapper().getSingleVisit(singleVisitId);
+        } finally {
+            db.closeSession();
+        }
+    }
+
     public List<SingleVisit> getSingleVisitsFromDate(LocalDate visitDate, int doctorId) {
         db.openSession();
         try {
@@ -228,9 +240,18 @@ public class PatientModuleDTO {
             }
         }
 
-
-
         return false;
+    }
+
+
+    public void addSingleVisit(SingleVisit singleVisit) {
+        db.openSession();
+        try {
+            db.getMapper().createNewSingleVisit(singleVisit);
+            db.commit();
+        } finally {
+            db.closeSession();
+        }
     }
 
 }

@@ -17,7 +17,6 @@
          </font>
       </Button>
       <DatePicker fx:id="visitDatePicker" layoutX="454.0" layoutY="65.0" />
-      <ChoiceBox fx:id="visitHourPicker" layoutX="647.0" layoutY="65.0" prefWidth="150.0" />
       <ChoiceBox fx:id="specializationChoiceBox" layoutX="43.0" layoutY="40.0" prefWidth="150.0" />
       <ChoiceBox fx:id="doctorChoiceBox" layoutX="43.0" layoutY="116.0" onMouseClicked="#doctorsChoiceBoxClicked" prefWidth="150.0" />
       <TableView fx:id="doctorWorkingDaysTable" layoutX="12.0" layoutY="231.0" prefHeight="235.0" prefWidth="215.0">
@@ -27,6 +26,11 @@
             <TableColumn fx:id="admissionHoursToColumn" prefWidth="69.0" text="To" />
         </columns>
       </TableView>
-      <ListView fx:id="hoursList" layoutX="908.0" layoutY="116.0" prefHeight="504.0" prefWidth="319.0" />
+      <ListView fx:id="hoursList" layoutX="908.0" layoutY="116.0" prefHeight="341.0" prefWidth="319.0" />
+      <Button fx:id="selectVisitButton" layoutX="908.0" layoutY="466.0" mnemonicParsing="false" onAction="#selectVisitButtonClicked" prefHeight="37.0" prefWidth="319.0" text="Choose this term" visible="false">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>

@@ -1,9 +1,11 @@
 package controllers.patient;
 
+import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 import com.sun.javafx.scene.control.skin.DatePickerContent;
 import com.sun.javafx.scene.control.skin.DatePickerSkin;
 import dto.PatientModuleDTO;
 import helpers.ControllerPagination;
+import helpers.DialogBox;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -15,10 +17,12 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.util.Callback;
+import org.apache.ibatis.exceptions.PersistenceException;
 import pojo.*;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.MonthDay;
 import java.util.ArrayList;
@@ -32,6 +36,8 @@ import java.util.ResourceBundle;
  */
 public class RegistrationController implements Initializable, ControllerPagination {
 
+    private static Patient patient;
+
     private PatientModuleDTO patientModuleDTO;
     private ObservableList<DoctorWorkingDays> doctorWorkingDaysTableData;
     private ObservableList<String> specializationsList;
@@ -39,8 +45,6 @@ public class RegistrationController implements Initializable, ControllerPaginati
     @FXML
     private DatePicker visitDatePicker;
 
-    @FXML
-    private ChoiceBox<SingleVisit> visitHourPicker;
 
     @FXML
     private ListView<String> hoursList;
@@ -57,10 +61,13 @@ public class RegistrationController implements Initializable, ControllerPaginati
     private ChoiceBox<String> doctorChoiceBox,
             specializationChoiceBox;
 
+    @FXML
+    private Button selectVisitButton;
 
 
     public RegistrationController() {
         patientModuleDTO = new PatientModuleDTO();
+        patient = patientModuleDTO.get(1);
     }
 
 
@@ -71,9 +78,7 @@ public class RegistrationController implements Initializable, ControllerPaginati
         loadDataIntoSpecializationAndDoctorsChoiceBoxes();
     }
 
-    /**
-     * TODO: incomplete
-     */
+
     private void setDoctorWorkingDaysTableDataConnection() {
         dayColumn.setCellValueFactory(new PropertyValueFactory<DoctorWorkingDays, String>("day"));
         admissionHoursFromColumn.setCellValueFactory(new PropertyValueFactory<DoctorWorkingDays, String>("hourFrom"));
@@ -184,6 +189,7 @@ public class RegistrationController implements Initializable, ControllerPaginati
         //Showing visits from selected day
         visitDatePicker.setOnAction(e -> {
             loadVisits();
+            selectVisitButton.setVisible(true);
         });
     }
 
@@ -209,7 +215,7 @@ public class RegistrationController implements Initializable, ControllerPaginati
 
         List<SingleVisit> visitsInDb = new ArrayList<>(patientModuleDTO.getSingleVisitsFromDate(visitDatePicker.getValue(), 12));
 
-        visitHourPicker.setItems(FXCollections.observableArrayList(visitsInDb));
+        //visitHourPicker.setItems(FXCollections.observableArrayList(visitsInDb));
         //hoursList.setItems(FXCollections.observableArrayList(parseVisitsToHour(visitsInDb)));
 
 
@@ -219,12 +225,43 @@ public class RegistrationController implements Initializable, ControllerPaginati
         hoursList.setItems(FXCollections.observableArrayList(parseVisitsToHour(allVisits)));
 
 
-
     }
 
 
+    @FXML
+    private void selectVisitButtonClicked() {
+        try {
+            SingleVisit selectedVisit = saveSelectedVisitToDatabase(getSelectedSingleVisitWithPatient(patient));
+            selectVisitButton.setVisible(false);
+            loadVisits();
+            visitDatePicker.getEditor().clear();
+            DialogBox.informationBox("Success", String.format("Successfully registered for the visit:\n\n %s %s, %s, %s.",
+                    selectedVisit.getAdmissionDay2().getDoctor().getFirstName(),
+                    selectedVisit.getAdmissionDay2().getDoctor().getLastName(),
+                    selectedVisit.getAdmissionDay2().getDate(),
+                    selectedVisit.getVisitHour()));
+        } catch (PersistenceException e) {
+            DialogBox.warningBox("Warning!", "This term is booked.");
+        }
+    }
 
+    private SingleVisit saveSelectedVisitToDatabase(SingleVisit selectedVisit) {
+            patientModuleDTO.addSingleVisit(selectedVisit);
+            return selectedVisit;
+    }
 
+    private SingleVisit getSelectedSingleVisitWithPatient(Patient patient) {
+        AdmissionDay2 admissionDay = patientModuleDTO.getAdmissionDayForVisitPicker(visitDatePicker.getValue());
+        List<SingleVisit> allVisits = new ArrayList<>(patientModuleDTO.getAllVisits(admissionDay));
+
+        int selectedIndex = hoursList.getSelectionModel().getSelectedIndex();
+        SingleVisit result = allVisits.get(selectedIndex);
+
+        result.setAdmissionDay2(admissionDay);
+        result.setPatient(patient);
+
+        return result;
+    }
 
     /**
      * Converting list with doctor objects to strings, containg doctors

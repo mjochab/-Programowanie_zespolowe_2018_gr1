@@ -222,6 +222,21 @@ public interface PatientModuleMapper {
     @Select("select s.id_single_visit, s.id_admission_day, visit_hour, id_patient, d.id_doctor from singlevisits s " +
             "JOIN admissiondays a on s.id_admission_day = a.id_admission_day " +
             "JOIN doctorworkingdays d on a.id_doctor_working_day = d.id_doctor_working_day " +
+            "WHERE s.id_single_visit = #{singleVisitId};")
+    @Results(value = {
+            @Result(property = "id", column = "id_single_visit"),
+            @Result(property = "visitHour", column = "visit_hour"),
+            @Result(property = "patient", column = "id_patient", javaType = Patient.class,
+                    one = @One(select = "getPatient_OnlyId", fetchType = FetchType.EAGER)),
+            @Result(property = "admissionDay2", column = "id_admission_day", javaType = AdmissionDay2.class,
+                    one = @One(select = "getAdmissionDay", fetchType = FetchType.EAGER)),
+    })
+    SingleVisit getSingleVisit(int singleVisitId);
+
+
+    @Select("select s.id_single_visit, s.id_admission_day, visit_hour, id_patient, d.id_doctor from singlevisits s " +
+            "JOIN admissiondays a on s.id_admission_day = a.id_admission_day " +
+            "JOIN doctorworkingdays d on a.id_doctor_working_day = d.id_doctor_working_day " +
             "WHERE a.date = #{date} AND id_doctor = #{doctorId};")
     @Results(value = {
             @Result(property = "id", column = "id_single_visit"),
@@ -258,5 +273,10 @@ public interface PatientModuleMapper {
             @Result(property = "id", column = "id_patient")
     })
     Patient getPatient_OnlyId(int patientId);
+
+    @Insert("Insert into singlevisits(id_single_visit, id_admission_day, visit_hour, id_patient) " +
+            "VALUES (#{id}, #{admissionDay2.id}, #{visitHour}, #{patient.id})")
+    @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id_single_visit")
+    void createNewSingleVisit(SingleVisit singleVisit);
 
 }
