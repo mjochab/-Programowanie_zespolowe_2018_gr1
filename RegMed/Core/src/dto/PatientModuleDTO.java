@@ -133,10 +133,10 @@ public class PatientModuleDTO {
         }
     }
 
-    public AdmissionDay2 getAdmissionDayForVisitPicker(LocalDate admissionDayDate) {
+    public AdmissionDay2 getAdmissionDayForVisitPicker(LocalDate admissionDayDate, int doctorId) {
         db.openSession();
         try {
-            AdmissionDay2 result = db.getMapper().getAdmissionDayByDate(admissionDayDate);
+            AdmissionDay2 result = db.getMapper().getAdmissionDayByDate(admissionDayDate, doctorId);
             return result;
         } finally {
             db.closeSession();
@@ -162,10 +162,7 @@ public class PatientModuleDTO {
         }
     }
 
-    //TODO: checkIfAdmissiondayHaveFreeVisits
-    public boolean checkIfAdmissiondayHaveFreeVisits() {
-        return false;
-    }
+
 
     public List<SingleVisit> getAllVisits(AdmissionDay2 admissionDay) {
         LocalDate visitsDate = admissionDay.getDate();
@@ -207,6 +204,94 @@ public class PatientModuleDTO {
 
         return allDayVisits;
     }
+
+    public List<SingleVisit> getAllFreeVisits(AdmissionDay2 admissionDay) {
+        LocalDate visitsDate = admissionDay.getDate();
+        int doctorId = admissionDay.getDoctor().getId();
+
+        List<SingleVisit> lockedVisits = new ArrayList<>(getSingleVisitsFromDate(visitsDate, doctorId));
+        List<SingleVisit> freeVisits = new ArrayList<>();
+        List<SingleVisit> allDayVisits = new ArrayList<>();
+
+        int interval = admissionDay.getHourInterval();
+
+        LocalTime hourFrom = admissionDay.getHourFrom();
+        LocalTime hourTo = admissionDay.getHourTo();
+        LocalTime currentTime = admissionDay.getHourFrom();
+
+        do {
+            SingleVisit singleVisit = new SingleVisit();
+            singleVisit.setVisitHour(currentTime);
+            freeVisits.add(singleVisit);
+
+            currentTime = currentTime.plusMinutes(interval);
+        } while(!currentTime.equals(hourTo));
+
+        for (SingleVisit lockedVisit : lockedVisits) {
+            for (int i = 0; i < freeVisits.size(); i++) {
+                if (lockedVisit.getVisitHour().getHour() == freeVisits.get(i).getVisitHour().getHour()
+                        && lockedVisit.getVisitHour().getMinute() == freeVisits.get(i).getVisitHour().getMinute()) {
+                    //allDayVisits.set(i, lockedVisit);
+                    freeVisits.remove(freeVisits.get(i));
+                    break;
+                }
+            }
+        }
+
+        return freeVisits;
+    }
+
+    public List<SingleVisit> getFirst10FreeSingleVisits(int doctorId) {
+        LocalDate date = LocalDate.now();
+        List<SingleVisit> result = new ArrayList<>();
+        //List<AdmissionDay2> admissionDays = new ArrayList<>(getAdmissionDaysForDoctor(doctorId));
+        List<AdmissionDay2> admissionDays = new ArrayList<>(
+                admissionDaysAfterDate(getAdmissionDaysForDoctor(doctorId), date));
+
+        int counter = 0;
+        while (result.size() < 9) {
+            List<SingleVisit> tempVisits = new ArrayList<>(getAllFreeVisits(admissionDays.get(counter)));
+            setAdmissionDayToFreeVisitList(tempVisits, admissionDays.get(counter));
+            result.addAll(tempVisits);
+
+            counter++;
+            date = date.plusDays(1);
+        }
+
+        if (result.size() > 10) {
+            int nOfElemToDelete = (10-result.size())*(-1);
+
+            for (int i = 0; i < nOfElemToDelete; i++) {
+                result.remove(result.size()-1);
+            }
+        }
+
+        return result;
+    }
+
+    private List<AdmissionDay2> admissionDaysAfterDate(List<AdmissionDay2> admissionDays, LocalDate date) {
+        List<AdmissionDay2> result = new ArrayList<>();
+
+        for (AdmissionDay2 aDay : admissionDays) {
+            if (!aDay.getDate().isBefore(date)) {
+                result.add(aDay);
+            }
+        }
+
+        result.sort((o1, o2) -> -1);
+        return result;
+    }
+
+    private void setAdmissionDayToFreeVisitList(List<SingleVisit> singleVisits, AdmissionDay2 admissionDay) {
+        for(SingleVisit visit : singleVisits) {
+            setAdmissionDayToFreeVisit(visit, admissionDay);
+        }
+    }
+
+    private void setAdmissionDayToFreeVisit(SingleVisit singleVisit, AdmissionDay2 admissionDay2) {
+        singleVisit.setAdmissionDay2(admissionDay2);
+    }
+
 
     public List<AdmissionDay2> admissionDaysBetweenDates(LocalDate start, LocalDate end, int doctorId) {
         db.openSession();
@@ -253,5 +338,7 @@ public class PatientModuleDTO {
             db.closeSession();
         }
     }
+
+
 
 }

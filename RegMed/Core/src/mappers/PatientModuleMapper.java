@@ -205,7 +205,7 @@ public interface PatientModuleMapper {
     @Select("select id_admission_day, a.date, d.id_doctor," +
             " d.hour_from, d.hour_to, d.hour_interval, d.validate_date " +
             "from admissiondays a JOIN doctorworkingdays d on a.id_doctor_working_day = d.id_doctor_working_day" +
-            " where a.date=#{date};")
+            " where a.date=#{date} AND d.id_doctor=#{doctorId};")
     @Results(value = {
             @Result(property = "id", column = "id_admission_day"),
             @Result(property = "date", column = "date"),
@@ -216,7 +216,7 @@ public interface PatientModuleMapper {
             @Result(property = "hourInterval", column = "hour_interval"),
             @Result(property = "validateDate", column = "validate_date")
     })
-    AdmissionDay2 getAdmissionDayByDate(LocalDate date);
+    AdmissionDay2 getAdmissionDayByDate(@Param("date") LocalDate date, @Param("doctorId") int doctorId);
 
 
     @Select("select s.id_single_visit, s.id_admission_day, visit_hour, id_patient, d.id_doctor from singlevisits s " +
@@ -278,5 +278,9 @@ public interface PatientModuleMapper {
             "VALUES (#{id}, #{admissionDay2.id}, #{visitHour}, #{patient.id})")
     @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id_single_visit")
     void createNewSingleVisit(SingleVisit singleVisit);
+
+
+
+
 
 }

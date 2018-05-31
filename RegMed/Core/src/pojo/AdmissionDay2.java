@@ -2,8 +2,9 @@ package pojo;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Comparator;
 
-public class AdmissionDay2 {
+public class AdmissionDay2 implements Comparator<AdmissionDay2> {
     private int id;
     private Doctor doctor;
     private LocalDate date;
@@ -66,5 +67,22 @@ public class AdmissionDay2 {
 
     public void setValidateDate(LocalDate validateDate) {
         this.validateDate = validateDate;
+    }
+
+    /**
+     * Comparing two dates.
+     *
+     * @param o1 first date.
+     * @param o2 second date.
+     * @return  0 - dates are same.
+     *          1 - higher date will be returned (ascending)
+     *          -1 - smaller date will be returned (descending)
+     */
+    @Override
+    public int compare(AdmissionDay2 o1, AdmissionDay2 o2) {
+        if (o1.getDate().isEqual(o2.getDate())) return 0;
+        if (o1.getDate().isBefore(o2.getDate())) {
+            return 1;
+        } else return -1;
     }
 }

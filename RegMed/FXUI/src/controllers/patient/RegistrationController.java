@@ -37,6 +37,7 @@ import java.util.ResourceBundle;
 public class RegistrationController implements Initializable, ControllerPagination {
 
     private static Patient patient;
+    private int selectedDoctorId;
 
     private PatientModuleDTO patientModuleDTO;
     private ObservableList<DoctorWorkingDays> doctorWorkingDaysTableData;
@@ -59,10 +60,16 @@ public class RegistrationController implements Initializable, ControllerPaginati
 
     @FXML
     private ChoiceBox<String> doctorChoiceBox,
-            specializationChoiceBox;
+            specializationChoiceBox,
+            termChoiceBox;
 
     @FXML
-    private Button selectVisitButton;
+    private Button selectVisitButton,
+            confirmChoiceVisitButton,
+            confirmFirstPossibleTermButton;
+
+    @FXML
+    private Label termLabel;
 
 
     public RegistrationController() {
@@ -74,7 +81,7 @@ public class RegistrationController implements Initializable, ControllerPaginati
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         setDoctorWorkingDaysTableDataConnection();
-        setDatiePickerFields();
+
         loadDataIntoSpecializationAndDoctorsChoiceBoxes();
     }
 
@@ -115,14 +122,77 @@ public class RegistrationController implements Initializable, ControllerPaginati
                 specializationChoiceBox.getValue()));
         doctorChoiceBox.getSelectionModel().selectedItemProperty().addListener((v, oldValue, newValue) -> {
             try {
+                hoursList.getItems().clear();
                 loadDoctorWorkingDaysDataToTable(d.get(doctorChoiceBox.getSelectionModel().getSelectedIndex()).getId());
+                selectedDoctorId = d.get(doctorChoiceBox.getSelectionModel().getSelectedIndex()).getId();
+                setDatiePickerFields();
             } catch (IndexOutOfBoundsException ex) {
                 System.err.print("Doctor havnt addmission days\n");
                 doctorWorkingDaysTable.setPlaceholder(new Label("Doctor have not admission days."));
             }
 
+            setFirstPossibleTerm();
+
         });
 
+    }
+
+    private void setFirstPossibleTerm() {
+        List<SingleVisit> listOfFreeVisits = new ArrayList<>(
+                patientModuleDTO.getFirst10FreeSingleVisits(selectedDoctorId));
+
+        termLabel.setText(String.format("%s, at: %s",
+                listOfFreeVisits.get(0).getAdmissionDay2().getDate(),
+                listOfFreeVisits.get(0).getVisitHour()));
+
+        termChoiceBox.setItems(FXCollections.observableArrayList(parseTermsToStringChoiceBox(listOfFreeVisits)));
+
+        confirmChoiceVisitButton.setOnAction(e -> {
+            int selectedIndex = termChoiceBox.getSelectionModel().getSelectedIndex();
+            SingleVisit selectedVisit = listOfFreeVisits.get(selectedIndex);
+            selectedVisit.setPatient(patient);
+            try {
+                patientModuleDTO.addSingleVisit(selectedVisit);
+                DialogBox.informationBox("Success", String.format("Successfully registered for the visit:\n\n %s %s, %s, %s.",
+                        selectedVisit.getAdmissionDay2().getDoctor().getFirstName(),
+                        selectedVisit.getAdmissionDay2().getDoctor().getLastName(),
+                        selectedVisit.getAdmissionDay2().getDate(),
+                        selectedVisit.getVisitHour()));
+            } catch (Exception ex) {
+                System.err.print(ex.getMessage());
+            }
+        });
+
+        confirmFirstPossibleTermButton.setOnAction(e -> {
+            SingleVisit visitToAdd = listOfFreeVisits.get(0);
+            visitToAdd.setPatient(patient);
+            try {
+                patientModuleDTO.addSingleVisit(visitToAdd);
+                DialogBox.informationBox("Success", String.format("Successfully registered for the visit:\n\n %s %s, %s, %s.",
+                        visitToAdd.getAdmissionDay2().getDoctor().getFirstName(),
+                        visitToAdd.getAdmissionDay2().getDoctor().getLastName(),
+                        visitToAdd.getAdmissionDay2().getDate(),
+                        visitToAdd.getVisitHour()));
+            } catch (Exception ex) {
+                System.err.print(ex.getMessage());
+            }
+        });
+
+
+
+    }
+
+    private List<String> parseTermsToStringChoiceBox(List<SingleVisit> singleVisits) {
+        List<String> result = new ArrayList<>();
+
+        for(SingleVisit visit : singleVisits) {
+            result.add(String.format("%s, at: %s",
+                    visit.getAdmissionDay2().getDate(),
+                    visit.getVisitHour()
+            )) ;
+        }
+
+        return result;
     }
 
     /**
@@ -142,12 +212,13 @@ public class RegistrationController implements Initializable, ControllerPaginati
      */
     private void setDatiePickerFields() {
         //https://stackoverflow.com/questions/42542312/javafx-datepicker-color-single-cell
-        List<AdmissionDay2> admissionDays = new ArrayList<>(patientModuleDTO.getAdmissionDaysForDoctor(12));
+
+        List<AdmissionDay2> admissionDays = new ArrayList<>(patientModuleDTO.getAdmissionDaysForDoctor(selectedDoctorId));
 
         LocalDate mthCurrent = LocalDate.now();
         LocalDate mthAfter = mthCurrent.plusMonths(1);
-        List<AdmissionDay2> list = new ArrayList<>(patientModuleDTO.admissionDaysBetweenDates(mthCurrent, mthAfter, 12));
-        List<AdmissionDay2> list2 = new ArrayList<>(patientModuleDTO.admissionDaysFullOfVisits(list, 12));
+        List<AdmissionDay2> list = new ArrayList<>(patientModuleDTO.admissionDaysBetweenDates(mthCurrent, mthAfter, selectedDoctorId));
+        List<AdmissionDay2> list2 = new ArrayList<>(patientModuleDTO.admissionDaysFullOfVisits(list, selectedDoctorId));
 
 
         final Callback<DatePicker, DateCell> dayCellFactory = new Callback<DatePicker, DateCell>() {
@@ -220,13 +291,14 @@ public class RegistrationController implements Initializable, ControllerPaginati
      */
     private void loadVisits() {
 
-        List<SingleVisit> visitsInDb = new ArrayList<>(patientModuleDTO.getSingleVisitsFromDate(visitDatePicker.getValue(), 12));
+        List<SingleVisit> visitsInDb = new ArrayList<>(patientModuleDTO.getSingleVisitsFromDate(visitDatePicker.getValue(), selectedDoctorId));
 
         //visitHourPicker.setItems(FXCollections.observableArrayList(visitsInDb));
         //hoursList.setItems(FXCollections.observableArrayList(parseVisitsToHour(visitsInDb)));
 
 
-        AdmissionDay2 admissionDay = patientModuleDTO.getAdmissionDayForVisitPicker(visitDatePicker.getValue());
+        AdmissionDay2 admissionDay = patientModuleDTO.getAdmissionDayForVisitPicker(visitDatePicker.getValue(), selectedDoctorId);
+
         List<SingleVisit> allVisits = new ArrayList<>(patientModuleDTO.getAllVisits(admissionDay));
 
 
@@ -271,6 +343,9 @@ public class RegistrationController implements Initializable, ControllerPaginati
         } catch (PersistenceException e) {
             DialogBox.warningBox("Warning!", "This term is booked.");
         }
+        catch (IndexOutOfBoundsException ex) {
+            DialogBox.warningBox("Warning!", "Please select visit!");
+        }
     }
 
     private SingleVisit saveSelectedVisitToDatabase(SingleVisit selectedVisit) {
@@ -279,7 +354,7 @@ public class RegistrationController implements Initializable, ControllerPaginati
     }
 
     private SingleVisit getSelectedSingleVisitWithPatient(Patient patient) {
-        AdmissionDay2 admissionDay = patientModuleDTO.getAdmissionDayForVisitPicker(visitDatePicker.getValue());
+        AdmissionDay2 admissionDay = patientModuleDTO.getAdmissionDayForVisitPicker(visitDatePicker.getValue(), selectedDoctorId);
         List<SingleVisit> allVisits = new ArrayList<>(patientModuleDTO.getAllVisits(admissionDay));
 
         int selectedIndex = hoursList.getSelectionModel().getSelectedIndex();
