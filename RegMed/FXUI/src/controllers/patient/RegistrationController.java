@@ -47,7 +47,7 @@ public class RegistrationController implements Initializable, ControllerPaginati
 
 
     @FXML
-    private ListView<String> hoursList;
+    private ListView<SingleVisit> hoursList;
 
     @FXML
     private TableView<DoctorWorkingDays> doctorWorkingDaysTable;
@@ -163,9 +163,9 @@ public class RegistrationController implements Initializable, ControllerPaginati
 
                         //all admission days are enabled
                         for (AdmissionDay2 admissionDay : admissionDays) {
-
                             if (MonthDay.from(item).equals(MonthDay.of(admissionDay.getDate().getMonth(),
-                                    admissionDay.getDate().getDayOfMonth()))) {
+                                    admissionDay.getDate().getDayOfMonth())) ){
+                                    //&& dateIsAfterToday(admissionDay) ) { //checking if date is after today
                                 setDisable(false);
                             }
                         }
@@ -178,7 +178,6 @@ public class RegistrationController implements Initializable, ControllerPaginati
                             }
                         }
 
-                        //Dorobic sprawdzanie czy dzien jest juz pelny
                     }
                 };
             }
@@ -191,6 +190,14 @@ public class RegistrationController implements Initializable, ControllerPaginati
             loadVisits();
             selectVisitButton.setVisible(true);
         });
+    }
+
+    private boolean dateIsAfterToday(AdmissionDay2 admissionDay) {
+        LocalDate today = LocalDate.now();
+        if (today.compareTo(admissionDay.getDate()) <= 0) {
+            return true;
+        }
+        return false;
     }
 
 
@@ -222,9 +229,30 @@ public class RegistrationController implements Initializable, ControllerPaginati
         AdmissionDay2 admissionDay = patientModuleDTO.getAdmissionDayForVisitPicker(visitDatePicker.getValue());
         List<SingleVisit> allVisits = new ArrayList<>(patientModuleDTO.getAllVisits(admissionDay));
 
-        hoursList.setItems(FXCollections.observableArrayList(parseVisitsToHour(allVisits)));
 
+        setVisitCellFactory();
+        hoursList.setItems(FXCollections.observableArrayList(allVisits));
 
+    }
+
+    private void setVisitCellFactory() {
+        hoursList.setCellFactory(param -> new ListCell<SingleVisit>() {
+            @Override
+            protected void updateItem(SingleVisit item, boolean empty) {
+                super.updateItem(item, empty);
+
+                if (empty || item == null) {
+                    setText(null);
+                } else if (item.getPatient() == null) {
+                    setText(String.format("%d:%d - termin is free", item.getVisitHour().getHour(), item.getVisitHour().getMinute()));
+                    setStyle("-fx-background-color: rgba(37,255,36,0.11);");
+                } else {
+                    setText(String.format("%d:%d - termin is booked", item.getVisitHour().getHour(), item.getVisitHour().getMinute()));
+                    setStyle("-fx-background-color: rgba(255,26,14,0.11);");
+
+                }
+            }
+        });
     }
 
 
@@ -280,28 +308,7 @@ public class RegistrationController implements Initializable, ControllerPaginati
     }
 
 
-    /**
-     * Converting list with visits as hours to string.
-     * @param visits    list of visits hours in datetime.
-     * @return          list of visits hours in string list.
-     */
-    private List<String> parseVisitsToHour(List<SingleVisit> visits) {
-        List<String> list = new ArrayList<>();
 
-        for (SingleVisit visit : visits) {
-            list.add(parseVisitToAvailabilityInformation(visit));
-        }
-
-        return list;
-    }
-
-    private String parseVisitToAvailabilityInformation(SingleVisit singleVisit) {
-        if (singleVisit.getPatient() != null) {
-            return String.format("%d:%d  -  Term is not free", singleVisit.getVisitHour().getHour(), singleVisit.getVisitHour().getMinute());
-        } else {
-            return String.format("%d:%d  -  Term is free", singleVisit.getVisitHour().getHour(), singleVisit.getVisitHour().getMinute());
-        }
-    }
 
     /**
      * Getting date from selected cell in callendar.
