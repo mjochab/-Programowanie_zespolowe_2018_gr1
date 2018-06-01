@@ -249,7 +249,7 @@ public class PatientModuleDTO {
                 admissionDaysAfterDate(getAdmissionDaysForDoctor(doctorId), date));
 
         int counter = 0;
-        while (result.size() < 9) {
+        while (result.size() < 9 && counter < admissionDays.size()) {
             List<SingleVisit> tempVisits = new ArrayList<>(getAllFreeVisits(admissionDays.get(counter)));
             setAdmissionDayToFreeVisitList(tempVisits, admissionDays.get(counter));
             result.addAll(tempVisits);
