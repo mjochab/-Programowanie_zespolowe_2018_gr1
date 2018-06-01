@@ -67,6 +67,8 @@ public interface DoctorAdministrationMapper {
     Doctor getDoctor(int doctorId);
 
 
+
+
     /**
      * Inserting specified doctor object into database.
      * Before adding doctor, you need to add address first, couse of constraints.
@@ -163,6 +165,8 @@ public interface DoctorAdministrationMapper {
             @Result(property = "name", column = "name")
     })
     Specialization selectDoctorSpecialization(int specializationId);
+
+
 
     @Select("SELECT * FROM specializations")@Results(value = {
             @Result(property = "id", column = "id_specialization"),

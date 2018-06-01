@@ -221,11 +221,7 @@
                            <Font size="18.0" />
                         </font>
                      </TextField>
-                     <TextField fx:id="specializationField" layoutX="121.0" layoutY="474.0" prefHeight="50.0" prefWidth="203.0" promptText="Specializaction id">
-                        <font>
-                           <Font size="18.0" />
-                        </font>
-                     </TextField>
+                        <ChoiceBox fx:id="specializationEditChoiceBox" layoutX="152.0" layoutY="486.0" prefWidth="150.0" />
                   </children>
                </AnchorPane>
             </content>

@@ -51,7 +51,6 @@ public class DoctorAdministrationController implements ControllerPagination {
             zipField,
             streetField,
             numberField,
-            specializationField,
 
             forenameFieldAdd,
             nameFieldAdd,
@@ -62,6 +61,9 @@ public class DoctorAdministrationController implements ControllerPagination {
             zipFieldAdd,
             streetFieldAdd,
             numberFieldAdd;
+
+    @FXML
+    private ChoiceBox<String> specializationEditChoiceBox;
 
     @FXML
     private TabPane tabPane;
@@ -198,6 +200,7 @@ public class DoctorAdministrationController implements ControllerPagination {
      */
     @FXML
     private void editDoctorClicked() {
+
         if(getSelectedDoctorInTable() != null) {
 
             editTabDisable(false);
@@ -208,11 +211,17 @@ public class DoctorAdministrationController implements ControllerPagination {
             fillEditDoctorAddressFields(doctorToEdit.getAddress());
 
             saveEditButton.setOnAction(e -> {
+
+                List<Specialization> specializations = doctorAdministrationDTO.getAllSpecializations();
+                int selectedIndex = specializationEditChoiceBox.getSelectionModel().getSelectedIndex();
+
                 doctorAdministrationDTO.update(createDoctorForEditFromTextfields(doctorToEdit));
                 doctorAdministrationDTO.updateAddress(
                         createAddressForEditFromTexfields(doctorToEdit.getAddress()));
                 doctorAdministrationDTO.updateSpecialization(
-                        doctorToEdit, Integer.parseInt(specializationField.getText()));
+                        doctorToEdit,
+                        specializations.get(selectedIndex).getId()
+                        );
 
                 loadDataToTable();
                 editTabDisable(true);
@@ -305,12 +314,19 @@ public class DoctorAdministrationController implements ControllerPagination {
      * @return          doctor, which will be updated in database.
      */
     private Doctor createDoctorForEditFromTextfields(Doctor doctor) {
+        List<Specialization> specializations = doctorAdministrationDTO.getAllSpecializations();
+
         doctor.setFirstName(forenameField.getText());
         doctor.setLastName(nameField.getText());
         doctor.setPesel(peselField.getText());
         doctor.setEmail(emailField.getText());
         doctor.setPhoneNumber(phoneField.getText());
-        doctor.setSpecializationId(Integer.parseInt(specializationField.getText()));
+        //doctor.setSpecializationId(Integer.parseInt(specializationField.getText()));
+
+        int specIndex = specializationEditChoiceBox.getSelectionModel().getSelectedIndex();
+        Specialization specSelected = specializations.get(specIndex);
+        doctor.setSpecializationId(specSelected.getId());
+
         return doctor;
     }
 
@@ -344,7 +360,8 @@ public class DoctorAdministrationController implements ControllerPagination {
         peselField.setText(doctor.getPesel());
         emailField.setText(doctor.getEmail());
         phoneField.setText(doctor.getPhoneNumber());
-        specializationField.setText(String.valueOf(doctor.getSpecializationId()));
+        loadSpecializationsToChoiceBox();
+        specializationEditChoiceBox.getSelectionModel().select(doctor.getSpecialization().getName());
     }
 
     /**
@@ -356,6 +373,16 @@ public class DoctorAdministrationController implements ControllerPagination {
         zipField.setText(address.getZip());
         streetField.setText(address.getStreet());
         numberField.setText(String.valueOf(address.getNumber()));
+    }
+
+    private void loadSpecializationsToChoiceBox() {
+        List<Specialization> specializations = doctorAdministrationDTO.getAllSpecializations();
+        List<String> stringSpecializations = new ArrayList<>();
+        for(Specialization spec : specializations) {
+            stringSpecializations.add(spec.getName());
+        }
+
+        specializationEditChoiceBox.setItems(FXCollections.observableArrayList(stringSpecializations));
     }
 
     /**
