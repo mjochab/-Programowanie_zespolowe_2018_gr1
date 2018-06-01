@@ -10,6 +10,7 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.admin.PatientAdministrationController">
@@ -225,6 +226,54 @@
                </AnchorPane>
             </content>
           </Tab>
+            <Tab fx:id="manageVisitsTab" onSelectionChanged="#manageVisitsTabClicked" text="Manage visits">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <TableView fx:id="visitTableView" layoutX="14.0" layoutY="45.0" prefHeight="316.0" prefWidth="431.0">
+                          <columns>
+                            <TableColumn fx:id="visitIdColumn" prefWidth="62.0" text="Id" />
+                            <TableColumn fx:id="visitDoctorColumn" prefWidth="135.0" text="Doctor" />
+                              <TableColumn fx:id="visitSpecializationColumn" prefWidth="95.0" text="Specialization" />
+                              <TableColumn fx:id="visitHourColumn" minWidth="0.0" prefWidth="55.0" text="Hour" />
+                              <TableColumn fx:id="visitDateColumn" prefWidth="82.0" text="Date" />
+                          </columns>
+                        </TableView>
+                        <HBox alignment="TOP_CENTER" layoutX="14.0" layoutY="371.0" prefHeight="50.0" prefWidth="432.0" spacing="10.0">
+                           <children>
+                              <Button fx:id="editVisitButton" mnemonicParsing="false" onAction="#editVisitButtonClicked" prefHeight="44.0" prefWidth="96.0" text="Edit visit">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Button>
+                              <Button fx:id="removeVisitButton" mnemonicParsing="false" onAction="#removeVisitButtonClicked" prefHeight="44.0" prefWidth="90.0" text="Remove">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Button>
+                              <Button fx:id="removeAllVisitsButton" mnemonicParsing="false" onAction="#removeAllVisitsButtonClicked" prefHeight="44.0" prefWidth="112.0" text="Remove all">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Button>
+                              <Button fx:id="addVisitButton" mnemonicParsing="false" onAction="#addVisitButtonClicked" prefHeight="44.0" prefWidth="96.0" text="Add visit">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Button>
+                           </children>
+                        </HBox>
+                        <AnchorPane fx:id="editVisitAnchorPane" layoutX="17.0" layoutY="421.0" prefHeight="164.0" prefWidth="421.0" visible="false">
+                           <children>
+                              <ChoiceBox fx:id="visitHourChoiceBox" layoutX="181.0" layoutY="34.0" prefHeight="25.0" prefWidth="96.0" />
+                              <ChoiceBox fx:id="visitDateChoiceBox" layoutX="30.0" layoutY="34.0" prefHeight="25.0" prefWidth="113.0" />
+                              <Button fx:id="saveVisitChangesButton" layoutX="294.0" layoutY="34.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="102.0" text="Save changes" />
+                              <Button layoutX="294.0" layoutY="70.0" mnemonicParsing="false" onAction="#declineChangesButtonClicked" text="Decline changes" />
+                           </children>
+                        </AnchorPane>
+                     </children></AnchorPane>
+              </content>
+            </Tab>
         </tabs>
       </TabPane>
       <Button fx:id="removeButton" layoutX="379.0" layoutY="110.0" mnemonicParsing="false" onAction="#removePatientClicked" prefHeight="50.0" prefWidth="90.0" text="Remove">

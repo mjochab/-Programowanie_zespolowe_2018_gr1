@@ -2,6 +2,7 @@ package pojo;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Comparator;
 
 public class AdmissionDay2 {
     private int id;
@@ -67,4 +68,6 @@ public class AdmissionDay2 {
     public void setValidateDate(LocalDate validateDate) {
         this.validateDate = validateDate;
     }
+
+
 }

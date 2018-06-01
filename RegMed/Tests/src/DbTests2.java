@@ -25,7 +25,6 @@ public class DbTests2 extends DatabaseTestingAbstractClass {
     }
 
 
-    @Disabled
     @Test
     void test() {
         dto.delete(1);
@@ -35,7 +34,6 @@ public class DbTests2 extends DatabaseTestingAbstractClass {
     }
 
 
-    @Disabled
     @Test
     void test2() {
         Administrator result = dto.get(1);

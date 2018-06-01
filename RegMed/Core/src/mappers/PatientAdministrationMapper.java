@@ -2,11 +2,9 @@ package mappers;
 
 import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.mapping.FetchType;
-import pojo.Address;
-import pojo.Doctor;
-import pojo.Patient;
-import pojo.Specialization;
+import pojo.*;
 
+import java.time.LocalTime;
 import java.util.List;
 
 /**
@@ -205,5 +203,114 @@ public interface PatientAdministrationMapper {
     List<Doctor> getAllFirstContactDoctors();
 
 
+    @Select("select * from singlevisits single JOIN admissiondays a on single.id_admission_day = a.id_admission_day " +
+            "JOIN doctorworkingdays d on a.id_doctor_working_day = d.id_doctor_working_day " +
+            "WHERE single.id_single_visit = #{visitId};")
+    @Results(value = {
+            @Result(property = "id", column = "id_single_visit"),
+            @Result(property = "visitHour", column = "visit_hour"),
+            @Result(property = "admissionDay2", column = "id_admission_day",
+                    javaType = AdmissionDay2.class,
+                    one = @One(select = "getAdmissionDay", fetchType = FetchType.EAGER)),
+            @Result(property = "patient", column = "id_patient", javaType = Patient.class,
+                    one = @One(select = "getPatient", fetchType = FetchType.EAGER))
+    })
+    SingleVisit getVisit(int visitId);
+
+
+    @Select("select * from singlevisits single JOIN admissiondays a on single.id_admission_day = a.id_admission_day " +
+            "JOIN doctorworkingdays d on a.id_doctor_working_day = d.id_doctor_working_day " +
+            "WHERE single.id_patient = #{patientId};")
+    @Results(value = {
+            @Result(property = "id", column = "id_single_visit"),
+            @Result(property = "visitHour", column = "visit_hour"),
+            @Result(property = "admissionDay2", column = "id_admission_day",
+                    javaType = AdmissionDay2.class,
+                    one = @One(select = "getAdmissionDay", fetchType = FetchType.EAGER))
+    })
+    List<SingleVisit> getVisitsForPatient(int patientId);
+
+
+    @Select("select id_admission_day, a.date, d.id_doctor," +
+            " d.hour_from, d.hour_to, d.hour_interval, d.validate_date " +
+            "from admissiondays a JOIN doctorworkingdays d on a.id_doctor_working_day = d.id_doctor_working_day" +
+            " where a.id_admission_day=#{admissionDayId};")
+    @Results(value = {
+            @Result(property = "id", column = "id_admission_day"),
+            @Result(property = "date", column = "date"),
+            @Result(property = "doctor", column = "id_doctor", javaType = Doctor.class,
+                    one = @One(select = "selectFirstcontactDoctor", fetchType = FetchType.EAGER)),
+            @Result(property = "hourFrom", column = "hour_from"),
+            @Result(property = "hourTo", column = "hour_to"),
+            @Result(property = "hourInterval", column = "hour_interval"),
+            @Result(property = "validateDate", column = "validate_date")
+    })
+    AdmissionDay2 getAdmissionDay(int admissionDayId);
+
+
+    @Delete("delete from singlevisits where id_single_visit = #{visitId};")
+    void deleteVisit(int visitId);
+
+
+    @Delete("delete from singlevisits where id_patient = #{patientId}")
+    void deleteAllVisits(int patientId);
+
+    @Select("select name from specializations")
+    @Results(@Result(property = "name", column = "name"))
+    List<Specialization> getSpecializations();
+
+
+    @Select("SELECT id_doctor, first_name, last_name, doc.id_specialization from doctors doc " +
+            "LEFT JOIN specializations spec on doc.id_specialization = spec.id_specialization " +
+            "WHERE spec.name = #{specializationName};")
+    @Results({
+            @Result(property = "id", column = "id_doctor"),
+            @Result(property = "firstName", column = "first_name"),
+            @Result(property = "lastName", column = "last_name"),
+            @Result(property = "specialization", column = "id_specialization",
+                    javaType = Specialization.class,
+                    one = @One(select = "selectFirstcontactDoctorSpecialization",
+                    fetchType = FetchType.EAGER))
+    })
+    List<Doctor> getDoctorsForVisitSpecialization(@Param("specializationName") String specializationName);
+
+
+
+    @Select("select id_admission_day, a.date, d.id_doctor," +
+            " d.hour_from, d.hour_to, d.hour_interval, d.validate_date " +
+            "from admissiondays a JOIN doctorworkingdays d on a.id_doctor_working_day = d.id_doctor_working_day" +
+            " where d.id_doctor = #{doctorId};")
+    @Results(value = {
+            @Result(property = "id", column = "id_admission_day"),
+            @Result(property = "date", column = "date"),
+            @Result(property = "doctor", column = "id_doctor", javaType = Doctor.class,
+                    one = @One(select = "selectFirstcontactDoctor", fetchType = FetchType.EAGER)),
+            @Result(property = "hourFrom", column = "hour_from"),
+            @Result(property = "hourTo", column = "hour_to"),
+            @Result(property = "hourInterval", column = "hour_interval"),
+            @Result(property = "validateDate", column = "validate_date")
+    })
+    List<AdmissionDay2> getAdmissionDaysForDoctor(int doctorId);
+
+    @Select("select s.id_single_visit, s.id_admission_day, visit_hour, id_patient, d.id_doctor from singlevisits s " +
+            "JOIN admissiondays a on s.id_admission_day = a.id_admission_day " +
+            "JOIN doctorworkingdays d on a.id_doctor_working_day = d.id_doctor_working_day " +
+            "WHERE a.date = #{date} AND id_doctor = #{admissionDay.date};")
+    @Results(value = {
+            @Result(property = "id", column = "id_single_visit"),
+            @Result(property = "visitHour", column = "visit_hour"),
+            @Result(property = "patient", column = "id_patient", javaType = Patient.class,
+                    one = @One(select = "getPatient_OnlyId", fetchType = FetchType.EAGER)),
+            @Result(property = "admissionDay2", column = "id_admission_day", javaType = AdmissionDay2.class,
+                    one = @One(select = "getAdmissionDay", fetchType = FetchType.EAGER)),
+    })
+    List<SingleVisit> getSingleVisitsFreeFromAdmissionDay(@Param("admissionDay") AdmissionDay2 admissionDay,
+                                                          @Param("doctorId") int doctorId);
+
+    @Update("update singlevisits set visit_hour = #{visitHour}, id_admission_day=#{admissionDayId} " +
+            "Where id_single_visit = #{singleVisitId};")
+    void updateVisitDateAndHour(@Param("singleVisitId") int singleVisitId,
+                                @Param("visitHour")LocalTime visitHour,
+                                @Param("admissionDayId") int admissionDayId);
 
 }
