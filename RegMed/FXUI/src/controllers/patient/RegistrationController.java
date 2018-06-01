@@ -15,6 +15,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.util.Callback;
 import org.apache.ibatis.exceptions.PersistenceException;
@@ -70,6 +71,9 @@ public class RegistrationController implements Initializable, ControllerPaginati
 
     @FXML
     private Label termLabel;
+
+    @FXML
+    private AnchorPane firstTermAnchor;
 
 
     public RegistrationController() {
@@ -161,6 +165,7 @@ public class RegistrationController implements Initializable, ControllerPaginati
             } catch (Exception ex) {
                 System.err.print(ex.getMessage());
             }
+            firstTermAnchor.setVisible(false);
         });
 
         confirmFirstPossibleTermButton.setOnAction(e -> {
@@ -176,6 +181,7 @@ public class RegistrationController implements Initializable, ControllerPaginati
             } catch (Exception ex) {
                 System.err.print(ex.getMessage());
             }
+            firstTermAnchor.setVisible(false);
         });
 
 

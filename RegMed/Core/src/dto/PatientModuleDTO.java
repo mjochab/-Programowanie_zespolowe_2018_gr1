@@ -12,6 +12,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -249,7 +250,7 @@ public class PatientModuleDTO {
                 admissionDaysAfterDate(getAdmissionDaysForDoctor(doctorId), date));
 
         int counter = 0;
-        while (result.size() < 9) {
+        while (result.size() < 9 && counter < admissionDays.size()) {
             List<SingleVisit> tempVisits = new ArrayList<>(getAllFreeVisits(admissionDays.get(counter)));
             setAdmissionDayToFreeVisitList(tempVisits, admissionDays.get(counter));
             result.addAll(tempVisits);
@@ -278,7 +279,8 @@ public class PatientModuleDTO {
             }
         }
 
-        result.sort((o1, o2) -> -1);
+        //result.sort((o1, o2) -> -1);
+        result.sort(Comparator.comparing(o -> o.getDate()));
         return result;
     }
 
