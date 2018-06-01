@@ -12,10 +12,13 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 import dto.PatientAdministrationDTO;
+import javafx.scene.layout.AnchorPane;
 import models.VisitAdministrationModel;
 import pojo.*;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,7 +35,8 @@ public class PatientAdministrationController implements ControllerPagination {
 
     @FXML
     private Button saveEditButton,
-            declineEditButton;
+            declineEditButton,
+            saveVisitChangesButton;
 
     @FXML
     private TextField searchField,
@@ -96,7 +100,15 @@ public class PatientAdministrationController implements ControllerPagination {
         visitHourColumn,
         visitDateColumn;
 
+    @FXML
+    private AnchorPane editVisitAnchorPane;
 
+
+    @FXML
+    private ChoiceBox<LocalTime> visitHourChoiceBox;
+
+    @FXML
+    private ChoiceBox<LocalDate> visitDateChoiceBox;
 
 
     private PatientAdministrationDTO patientAdministrationDTO;
@@ -375,6 +387,75 @@ public class PatientAdministrationController implements ControllerPagination {
     @FXML
     public void addVisitButtonClicked(ActionEvent event) throws IOException {
         helpers.SwitchScene("views/patient/Registration", event);
+        //TODO: later copy fxml from patientModule when will be fin, and little edit
+    }
+
+    @FXML
+    public void editVisitButtonClicked() {
+        if (visitDateChoiceBox.getItems().size() > 0) {
+            visitDateChoiceBox.getItems().clear();
+        }
+        if (visitHourChoiceBox.getItems().size() > 0) {
+            visitHourChoiceBox.getItems().clear();
+        }
+
+
+        VisitAdministrationModel visitModel = getSelectedVisit();
+        SingleVisit singleVisit = patientAdministrationDTO.getVisit(visitModel.getId());
+        editVisitAnchorPane.setVisible(true);
+
+        Doctor doctor = singleVisit.getAdmissionDay2().getDoctor();
+
+        List<AdmissionDay2> admissionDaysForSelectedDoctor =
+                new ArrayList<>(patientAdministrationDTO.getAdmissionDaysAfterToday(doctor.getId()));
+
+        List<LocalDate> admissionDates = new ArrayList<>();
+        for (AdmissionDay2 admDay : admissionDaysForSelectedDoctor) {
+            admissionDates.add(admDay.getDate());
+        }
+
+
+
+
+        visitDateChoiceBox.setItems(FXCollections.observableArrayList(admissionDates));
+        visitDateChoiceBox.getSelectionModel().select(visitModel.getDate());
+
+        try {
+            loadHoursForVisit(admissionDaysForSelectedDoctor, visitModel.getId());
+            visitHourChoiceBox.getSelectionModel().select(visitModel.getHour());
+            visitDateChoiceBox.getSelectionModel().selectedItemProperty().addListener((v, oldValue, newValue) -> {
+                loadHoursForVisit(admissionDaysForSelectedDoctor, visitModel.getId());
+            });
+        } catch (ArrayIndexOutOfBoundsException ex) {
+            DialogBox.warningBox("Error!", "This visit has already taken place . You can't edit it");
+        }
+
+        saveVisitChangesButton.setOnAction(e -> {
+            LocalTime newTime = visitHourChoiceBox.getSelectionModel().getSelectedItem();
+            int id = visitDateChoiceBox.getSelectionModel().getSelectedIndex();
+            int newAdmissionDayId = admissionDaysForSelectedDoctor.get(id).getId();
+            patientAdministrationDTO.updateVisitDateAndHour(visitModel.getId(), newTime, newAdmissionDayId);
+            System.out.println(String.format("new hour: %s; new id: %d", id, newAdmissionDayId));
+        });
+
+    }
+
+    private void loadHoursForVisit(List<AdmissionDay2> admissionDaysForSelectedDoctor, int currentVisitId) {
+        int selectedAdmissionDayIndex = visitDateChoiceBox.getSelectionModel().getSelectedIndex();
+        AdmissionDay2 selectedAdmissionDay = admissionDaysForSelectedDoctor.get(selectedAdmissionDayIndex);
+        List<SingleVisit> freeVisits = patientAdministrationDTO.getFreeVisits(selectedAdmissionDay);
+        List<LocalTime> freeVisitsHours = new ArrayList<>();
+        for(SingleVisit visit : freeVisits) {
+            freeVisitsHours.add(visit.getVisitHour());
+        }
+        freeVisitsHours.add(patientAdministrationDTO.getVisit(currentVisitId).getVisitHour());
+        visitHourChoiceBox.setItems(FXCollections.observableArrayList(freeVisitsHours));
+    }
+
+    @FXML
+    private void declineChangesButtonClicked() {
+        editVisitAnchorPane.setVisible(false);
+
     }
 
 

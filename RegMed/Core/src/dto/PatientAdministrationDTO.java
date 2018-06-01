@@ -4,6 +4,9 @@ import database.MyBatisDbConnection;
 import mappers.PatientAdministrationMapper;
 import pojo.*;
 
+import javax.print.Doc;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -142,6 +145,78 @@ public class PatientAdministrationDTO {
             dbConnection.closeSession();
         }
     }
+
+    public SingleVisit getVisit(int visitId) {
+        dbConnection.openSession();
+        try {
+            return dbConnection.getMapper().getVisit(visitId);
+        } finally {
+            dbConnection.closeSession();
+        }
+    }
+
+    public List<Specialization> getVisitDoctorSpecializations() {
+        dbConnection.openSession();
+        try {
+            return new ArrayList<>(dbConnection.getMapper().getSpecializations());
+        } finally {
+            dbConnection.closeSession();
+        }
+    }
+
+    public List<Doctor> getDoctorsForVisitSpecialization(String specializationName) {
+        dbConnection.openSession();
+        try {
+            return dbConnection.getMapper().getDoctorsForVisitSpecialization(specializationName);
+        } finally {
+            dbConnection.closeSession();
+        }
+    }
+
+    public List<AdmissionDay2> getAdmissionDaysForDoctor(int doctorId) {
+        dbConnection.openSession();
+        try {
+            return new ArrayList<>(dbConnection.getMapper().getAdmissionDaysForDoctor(doctorId));
+        } finally {
+            dbConnection.closeSession();
+        }
+    }
+
+    public List<AdmissionDay2> getAdmissionDaysAfterToday(int doctorId) {
+        List<AdmissionDay2> doctorAdmissionDays = getAdmissionDaysForDoctor(doctorId);
+        List<AdmissionDay2> result = new ArrayList<>();
+        LocalDate today = LocalDate.now();
+        LocalDate weekLater = today.plusWeeks(1);
+
+        for (int i = 0; i < doctorAdmissionDays.size(); i++) {
+            if (doctorAdmissionDays.get(i).getDate().equals(today)
+                    || doctorAdmissionDays.get(i).getDate().isAfter(today)
+               )
+            {
+                result.add(doctorAdmissionDays.get(i));
+            }
+        }
+
+        result.sort((o1, o2) -> -1);
+
+        return result;
+    }
+
+    public List<SingleVisit> getFreeVisits(AdmissionDay2 admissionDay) {
+        PatientModuleDTO patientModuleDTO = new PatientModuleDTO();
+        return patientModuleDTO.getAllFreeVisits(admissionDay);
+    }
+
+    public void updateVisitDateAndHour(int singleVisitId, LocalTime newTime, int admissionDayId) {
+        dbConnection.openSession();
+        try {
+            dbConnection.getMapper().updateVisitDateAndHour(singleVisitId, newTime, admissionDayId);
+            dbConnection.commit();
+        } finally {
+            dbConnection.closeSession();
+        }
+    }
+
 
 
 
