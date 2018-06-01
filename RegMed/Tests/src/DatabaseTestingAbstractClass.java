@@ -27,7 +27,7 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 public abstract class DatabaseTestingAbstractClass {
 
-    private static final String XML_PATH = "../../regmedtests _no_id_factory.sql";
+    private static final String XML_PATH = "../../regmedtests.sql";
     private static final String DB_LOGIN = "root";
     private static final String DB_PASSWORD = "";
     private static final String DB_NAME = "regmedIntegrationTests";    //You shouldn't change it.
