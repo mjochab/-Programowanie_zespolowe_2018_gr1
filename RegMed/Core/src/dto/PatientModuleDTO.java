@@ -12,6 +12,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -278,7 +279,8 @@ public class PatientModuleDTO {
             }
         }
 
-        result.sort((o1, o2) -> -1);
+        //result.sort((o1, o2) -> -1);
+        result.sort(Comparator.comparing(o -> o.getDate()));
         return result;
     }
 
