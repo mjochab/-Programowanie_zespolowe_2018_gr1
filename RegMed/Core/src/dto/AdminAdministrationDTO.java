@@ -1,7 +1,6 @@
 package dto;
 
 import database.MyBatisDbConnection;
-import exceptions.ValidationException;
 import mappers.AdminAdministrationMapper;
 import pojo.Administrator;
 
@@ -54,7 +53,6 @@ public class AdminAdministrationDTO {
      * Adding administrator object to database using methods from mapped interface.
      *
      * @param administrator         administrator to add.
-     * @throws ValidationException  wrong data format tried to add to database.
      */
     public void add(Administrator administrator)  {
         //validateAdmin(administrator);
@@ -107,20 +105,5 @@ public class AdminAdministrationDTO {
         }
     }
 
-    /**
-     * Administrator validation before save to database.
-     *
-     * @param admin                 administrator which data you want validate.
-     * @return                      returning true, when administrator which you want add to database
-     *                              is correct with data policy.
-     * @throws ValidationException  wrong data format tried to add to database.
-     */
-//    private boolean validateAdmin(Administrator admin) throws ValidationException{
-//        if (!AdministrationValidators.userValidation(admin)) {
-//            throw new ValidationException(AdministrationValidators.userValidationErrors(admin));
-//        }
-//
-//        return true;
-//    }
 
 }

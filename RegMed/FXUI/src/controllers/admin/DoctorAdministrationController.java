@@ -1,7 +1,7 @@
 package controllers.admin;
 
+import customControls.CustomControlsException;
 import dto.DoctorAdministrationDTO;
-import exceptions.ValidationException;
 import pojo.Address;
 import pojo.Doctor;
 import helpers.ControllerPagination;
@@ -14,11 +14,9 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.KeyEvent;
 import pojo.Specialization;
 
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
@@ -249,11 +247,7 @@ public class DoctorAdministrationController implements ControllerPagination {
             addressToAdd.setCity(cityFieldAdd.getText());
             addressToAdd.setZip(zipFieldAdd.getText());
             addressToAdd.setStreet(streetFieldAdd.getText());
-            if (numberFieldAdd.getText().isEmpty()) {
-                throw new ValidationException("Missing address number");
-            } else {
-                addressToAdd.setNumber(Integer.parseInt(numberFieldAdd.getText()));
-            }
+            addressToAdd.setNumber(Integer.parseInt(numberFieldAdd.getText()));
 
             doctorToAdd.setFirstName(forenameFieldAdd.getText());
             doctorToAdd.setLastName(nameFieldAdd.getText());
@@ -261,11 +255,7 @@ public class DoctorAdministrationController implements ControllerPagination {
             doctorToAdd.setAddress(addressToAdd);
             doctorToAdd.setEmail(emailFieldAdd.getText().toLowerCase());
             doctorToAdd.setPhoneNumber(phoneFieldAdd.getText());
-            if (specializationChoiceBox.getValue().isEmpty()) {
-                throw new ValidationException("Missing specialization id");
-            } else {
-                doctorToAdd.setSpecialization(specializations.get(specializationChoiceBox.getSelectionModel().getSelectedIndex()));        //TODO nazwa to
-            }
+            doctorToAdd.setSpecialization(specializations.get(specializationChoiceBox.getSelectionModel().getSelectedIndex()));
 
             doctorToAdd.setPassword(nameFieldAdd.getText());
 
@@ -274,7 +264,7 @@ public class DoctorAdministrationController implements ControllerPagination {
             loadDataToTable();
             //clearAddDoctorFields();
         }
-        catch (ValidationException ex) {
+        catch (Exception ex) {  //TODO: CustomControllsException
             DialogBox.validationErrorBox("Wrong doctor data", ex.getMessage());
         }
 
