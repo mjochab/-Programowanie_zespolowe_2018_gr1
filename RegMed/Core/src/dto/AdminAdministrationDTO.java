@@ -56,8 +56,8 @@ public class AdminAdministrationDTO {
      * @param administrator         administrator to add.
      * @throws ValidationException  wrong data format tried to add to database.
      */
-    public void add(Administrator administrator) throws ValidationException {
-        validateAdmin(administrator);
+    public void add(Administrator administrator)  {
+        //validateAdmin(administrator);
 
         dbConnection.openSession();
         try {
@@ -115,12 +115,12 @@ public class AdminAdministrationDTO {
      *                              is correct with data policy.
      * @throws ValidationException  wrong data format tried to add to database.
      */
-    private boolean validateAdmin(Administrator admin) throws ValidationException{
-        if (!AdministrationValidators.userValidation(admin)) {
-            throw new ValidationException(AdministrationValidators.userValidationErrors(admin));
-        }
-
-        return true;
-    }
+//    private boolean validateAdmin(Administrator admin) throws ValidationException{
+//        if (!AdministrationValidators.userValidation(admin)) {
+//            throw new ValidationException(AdministrationValidators.userValidationErrors(admin));
+//        }
+//
+//        return true;
+//    }
 
 }

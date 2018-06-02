@@ -1,6 +1,6 @@
 package controllers.admin;
 
-import exceptions.ValidationException;
+import customControls.NameTextField;
 import pojo.Administrator;
 import helpers.ControllerPagination;
 import helpers.DialogBox;
@@ -13,7 +13,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.KeyEvent;
 import dto.AdminAdministrationDTO;
 
 import java.io.IOException;
@@ -36,6 +35,9 @@ public class AdminAdministrationController implements Initializable, ControllerP
             saveEditButton,
             declineEditButton;
 
+    //@FXML
+   // private NameTextField forenameFieldAdd;
+
     @FXML
     private TextField
             idField,
@@ -46,11 +48,15 @@ public class AdminAdministrationController implements Initializable, ControllerP
             emailField,
             phoneNumberField,
 
-            forenameFieldAdd,
-            nameFieldAdd,
+
             peselFieldAdd,
             emailFieldAdd,
             phoneNumberFieldAdd;
+
+    @FXML
+    private NameTextField forenameFieldAdd,
+            nameFieldAdd;
+
 
     @FXML
     private TabPane
@@ -204,23 +210,25 @@ public class AdminAdministrationController implements Initializable, ControllerP
     @FXML
     private void createAdministratorClicked() {
         Administrator administratorToAdd = new Administrator();
-        administratorToAdd.setFirstName(forenameFieldAdd.getText());
-        administratorToAdd.setLastName(nameFieldAdd.getText());
+        administratorToAdd.setFirstName(forenameFieldAdd.getTextFormatted());
+        administratorToAdd.setLastName(nameFieldAdd.getTextFormatted());
         administratorToAdd.setPesel(peselFieldAdd.getText());
         administratorToAdd.setEmail(emailFieldAdd.getText());
         administratorToAdd.setPhoneNumber(phoneNumberFieldAdd.getText());
         administratorToAdd.setPassword(nameFieldAdd.getText());
 
-        try {
+
             adminAdministrationDTO.add(administratorToAdd);
 
             loadDataToTable();
             clearAddAdministratorFields();
-        } catch (ValidationException ex) {
-            DialogBox.validationErrorBox("Wrong administrator data", ex.getMessage());
-        }
+
 
     }
+
+
+
+
 
     /**
      * Action for invoke method responsible for clearing textfields using
