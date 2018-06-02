@@ -10,7 +10,8 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<?import customControls.NameTextField?>
+<?import customControls.*?>
+<?import views.admin.TestTextField?>
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.admin.AdminAdministrationController">
    <children>
       <TextField fx:id="searchField" layoutX="14.0" layoutY="110.0" onKeyReleased="#filterAdministratorsByPeselAndName" prefHeight="50.0" prefWidth="350.0">
@@ -44,11 +45,11 @@
                               <Font size="18.0" />
                            </font>
                         </NameTextField>
-                        <TextField fx:id="peselFieldAdd" layoutX="136.0" layoutY="149.0" prefHeight="50.0" prefWidth="257.0">
+                        <PeselTextField fx:id="peselFieldAdd" layoutX="136.0" layoutY="149.0" prefHeight="50.0" prefWidth="257.0">
                            <font>
                               <Font size="18.0" />
                            </font>
-                        </TextField>
+                        </PeselTextField>
                         <Label layoutX="17.0" layoutY="88.0" text="Lastname:">
                            <font>
                               <Font size="24.0" />
@@ -88,21 +89,21 @@
                               <Font size="24.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="emailFieldAdd" layoutX="136.0" layoutY="217.0" prefHeight="50.0" prefWidth="257.0">
+                        <EmailTextField fx:id="emailFieldAdd" layoutX="136.0" layoutY="217.0" prefHeight="50.0" prefWidth="257.0">
                            <font>
                               <Font size="18.0" />
                            </font>
-                        </TextField>
+                        </EmailTextField>
                         <Label layoutX="35.0" layoutY="288.0" text="Phone:">
                            <font>
                               <Font size="24.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="phoneNumberFieldAdd" layoutX="136.0" layoutY="280.0" prefHeight="50.0" prefWidth="257.0">
+                        <PhoneTextField fx:id="phoneNumberFieldAdd" layoutX="136.0" layoutY="280.0" prefHeight="50.0" prefWidth="257.0">
                            <font>
                               <Font size="18.0" />
                            </font>
-                        </TextField>
+                        </PhoneTextField>
                      </children>
                   </AnchorPane>
             </content>
@@ -111,11 +112,11 @@
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <TextField fx:id="peselField" layoutX="125.0" layoutY="144.0" onAction="#editAdministratorClicked" prefHeight="50.0" prefWidth="257.0">
+                        <PeselTextField fx:id="peselField" layoutX="125.0" layoutY="144.0" onAction="#editAdministratorClicked" prefHeight="50.0" prefWidth="257.0">
                            <font>
                               <Font size="18.0" />
                            </font>
-                        </TextField>
+                        </PeselTextField>
                         <Label layoutX="40.0" layoutY="152.0" text="Pesel:">
                            <font>
                               <Font size="24.0" />
@@ -131,16 +132,16 @@
                               <Font size="24.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="forenameField" layoutX="125.0" layoutY="22.0" prefHeight="50.0" prefWidth="257.0">
+                        <NameTextField fx:id="forenameField" layoutX="125.0" layoutY="22.0" prefHeight="50.0" prefWidth="257.0">
                            <font>
                               <Font size="18.0" />
                            </font>
-                        </TextField>
-                        <TextField fx:id="nameField" layoutX="125.0" layoutY="83.0" prefHeight="50.0" prefWidth="257.0">
+                        </NameTextField>
+                        <NameTextField fx:id="nameField" layoutX="125.0" layoutY="83.0" prefHeight="50.0" prefWidth="257.0">
                            <font>
                               <Font size="18.0" />
                            </font>
-                        </TextField>
+                        </NameTextField>
                         <Button fx:id="saveEditButton" layoutX="125.0" layoutY="434.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="96.0" text="Save">
                            <font>
                               <Font size="18.0" />
@@ -149,11 +150,11 @@
                            <font>
                               <Font size="18.0" />
                            </font></Button>
-                        <TextField fx:id="emailField" layoutX="125.0" layoutY="211.0" onAction="#editAdministratorClicked" prefHeight="50.0" prefWidth="257.0">
+                        <EmailTextField fx:id="emailField" layoutX="125.0" layoutY="211.0" onAction="#editAdministratorClicked" prefHeight="50.0" prefWidth="257.0">
                            <font>
                               <Font size="18.0" />
                            </font>
-                        </TextField>
+                        </EmailTextField>
                         <Label layoutX="40.0" layoutY="219.0" text="Email:">
                            <font>
                               <Font size="24.0" />
@@ -164,11 +165,11 @@
                               <Font size="24.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="phoneNumberField" layoutX="125.0" layoutY="273.0" onAction="#editAdministratorClicked" prefHeight="50.0" prefWidth="257.0">
+                        <PhoneTextField fx:id="phoneNumberField" layoutX="125.0" layoutY="273.0" onAction="#editAdministratorClicked" prefHeight="50.0" prefWidth="257.0">
                            <font>
                               <Font size="18.0" />
                            </font>
-                        </TextField>
+                        </PhoneTextField>
                      </children>
                   </AnchorPane>
             </content>

@@ -3,7 +3,7 @@ package customControls;
 import com.sun.xml.internal.ws.util.StringUtils;
 import javafx.scene.control.TextField;
 
-public class NameTextField extends TextField {
+public class NameTextField extends TextField implements ValidatedTextField{
 
 
     @Override
@@ -13,12 +13,15 @@ public class NameTextField extends TextField {
         }
     }
 
-    public String getTextFormatted() {
+
+    @Override
+    public String getTextValidated() throws CustomControlsException {
         String result = getText().toLowerCase();
         result = StringUtils.capitalize(result);
+        if (result.length() < 2) {
+            throw new CustomControlsException("Name must have at least two characters!");
+        }
 
         return result;
     }
-
-
 }
