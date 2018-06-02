@@ -1,6 +1,6 @@
 package controllers.admin;
 
-import customControls.CustomControlsException;
+import customControls.*;
 import dto.DoctorAdministrationDTO;
 import pojo.Address;
 import pojo.Doctor;
@@ -38,27 +38,44 @@ public class DoctorAdministrationController implements ControllerPagination {
             declineEditButton;
 
     @FXML
-    private TextField idField,
-            searchField,
-            peselField,
-            forenameField,
-            nameField,
-            emailField,
-            phoneField,
-            cityField,
-            zipField,
-            streetField,
-            numberField,
+    private TextField searchField;
 
+    @FXML
+    private NameTextField forenameField,
+            nameField,
             forenameFieldAdd,
-            nameFieldAdd,
-            peselFieldAdd,
-            emailFieldAdd,
-            phoneFieldAdd,
-            cityFieldAdd,
-            zipFieldAdd,
-            streetFieldAdd,
+            nameFieldAdd;
+
+    @FXML
+    private PeselTextField peselField,
+            peselFieldAdd;
+
+    @FXML
+    private EmailTextField emailField,
+            emailFieldAdd;
+
+    @FXML
+    private PhoneTextField phoneField,
+            phoneFieldAdd;
+
+    @FXML
+    private CityTextField cityField,
+            cityFieldAdd;
+
+    @FXML
+    private ZipTextField zipField,
+            zipFieldAdd;
+
+    @FXML
+    private StreetTextField streetField,
+            streetFieldAdd;
+
+    @FXML
+    private NumberTextField numberField,
             numberFieldAdd;
+
+
+
 
     @FXML
     private ChoiceBox<String> specializationEditChoiceBox;
@@ -94,11 +111,13 @@ public class DoctorAdministrationController implements ControllerPagination {
     private FilteredList filteredList;
     ObservableList<Doctor> tableData;
     private List<Specialization> specializations;
+    private boolean[] editionSuccess;
 
     public DoctorAdministrationController() {
         this.doctorAdministrationDTO = new DoctorAdministrationDTO();
         specializations = FXCollections.observableArrayList(
                 doctorAdministrationDTO.getAllSpecializations());
+        editionSuccess = new boolean[2];
     }
 
     /**
@@ -221,9 +240,15 @@ public class DoctorAdministrationController implements ControllerPagination {
                         specializations.get(selectedIndex).getId()
                         );
 
-                loadDataToTable();
-                editTabDisable(true);
-                tabPane.getSelectionModel().select(createDoctorTab);
+
+                //if both edit sections (address and patient == true)
+                if(editionSuccess[0] && editionSuccess[1]) {
+                    loadDataToTable();
+                    editTabDisable(true);
+                    tabPane.getSelectionModel().select(createDoctorTab);
+                }
+
+
             });
 
             declineEditButton.setOnAction(e -> {
@@ -244,27 +269,27 @@ public class DoctorAdministrationController implements ControllerPagination {
         Doctor doctorToAdd = new Doctor();
         Address addressToAdd = new Address();
         try {
-            addressToAdd.setCity(cityFieldAdd.getText());
-            addressToAdd.setZip(zipFieldAdd.getText());
-            addressToAdd.setStreet(streetFieldAdd.getText());
-            addressToAdd.setNumber(Integer.parseInt(numberFieldAdd.getText()));
-
-            doctorToAdd.setFirstName(forenameFieldAdd.getText());
-            doctorToAdd.setLastName(nameFieldAdd.getText());
-            doctorToAdd.setPesel(peselFieldAdd.getText());
+            doctorToAdd.setFirstName(forenameFieldAdd.getTextValidated());
+            doctorToAdd.setLastName(nameFieldAdd.getTextValidated());
+            doctorToAdd.setPesel(peselFieldAdd.getTextValidated());
             doctorToAdd.setAddress(addressToAdd);
-            doctorToAdd.setEmail(emailFieldAdd.getText().toLowerCase());
-            doctorToAdd.setPhoneNumber(phoneFieldAdd.getText());
+            doctorToAdd.setEmail(emailFieldAdd.getTextValidated());
+            doctorToAdd.setPhoneNumber(phoneFieldAdd.getTextValidated());
             doctorToAdd.setSpecialization(specializations.get(specializationChoiceBox.getSelectionModel().getSelectedIndex()));
 
-            doctorToAdd.setPassword(nameFieldAdd.getText());
+            doctorToAdd.setPassword(nameFieldAdd.getTextValidated());
 
+
+            addressToAdd.setCity(cityFieldAdd.getTextValidated());
+            addressToAdd.setZip(zipFieldAdd.getTextValidated());
+            addressToAdd.setStreet(streetFieldAdd.getTextValidated());
+            addressToAdd.setNumber(Integer.parseInt(numberFieldAdd.getTextValidated()));
 
             doctorAdministrationDTO.add(doctorToAdd);
             loadDataToTable();
             //clearAddDoctorFields();
         }
-        catch (Exception ex) {  //TODO: CustomControllsException
+        catch (CustomControlsException ex) {
             DialogBox.validationErrorBox("Wrong doctor data", ex.getMessage());
         }
 
@@ -306,16 +331,22 @@ public class DoctorAdministrationController implements ControllerPagination {
     private Doctor createDoctorForEditFromTextfields(Doctor doctor) {
         List<Specialization> specializations = doctorAdministrationDTO.getAllSpecializations();
 
-        doctor.setFirstName(forenameField.getText());
-        doctor.setLastName(nameField.getText());
-        doctor.setPesel(peselField.getText());
-        doctor.setEmail(emailField.getText());
-        doctor.setPhoneNumber(phoneField.getText());
-        //doctor.setSpecializationId(Integer.parseInt(specializationField.getText()));
+        try {
+            doctor.setFirstName(forenameField.getTextValidated());
+            doctor.setLastName(nameField.getTextValidated());
+            doctor.setPesel(peselField.getTextValidated());
+            doctor.setEmail(emailField.getTextValidated());
+            doctor.setPhoneNumber(phoneField.getTextValidated());
+            //doctor.setSpecializationId(Integer.parseInt(specializationField.getText()));
 
-        int specIndex = specializationEditChoiceBox.getSelectionModel().getSelectedIndex();
-        Specialization specSelected = specializations.get(specIndex);
-        doctor.setSpecializationId(specSelected.getId());
+            int specIndex = specializationEditChoiceBox.getSelectionModel().getSelectedIndex();
+            Specialization specSelected = specializations.get(specIndex);
+            doctor.setSpecializationId(specSelected.getId());
+            editionSuccess[0] = true;
+        } catch (CustomControlsException ex) {
+            DialogBox.validationErrorBox("Wrong doctor data", ex.getMessage());
+            editionSuccess[0] = false;
+        }
 
         return doctor;
     }
@@ -328,11 +359,17 @@ public class DoctorAdministrationController implements ControllerPagination {
      */
     private Address createAddressForEditFromTexfields(Address address) {
         Address addressToReturn = address;
-
-        addressToReturn.setCity(cityField.getText());
-        addressToReturn.setZip(zipField.getText());
-        addressToReturn.setStreet(streetField.getText());
-        addressToReturn.setNumber(Integer.parseInt(String.valueOf(numberField.getText())));
+        try {
+            addressToReturn.setCity(cityField.getTextValidated());
+            addressToReturn.setZip(zipField.getTextValidated());
+            addressToReturn.setStreet(streetField.getTextValidated());
+            addressToReturn.setNumber(Integer.parseInt(String.valueOf(
+                    numberField.getTextValidated())));
+            editionSuccess[1] = true;
+        } catch (CustomControlsException ex) {
+            DialogBox.validationErrorBox("Wrong doctor data", ex.getMessage());
+            editionSuccess[1] = false;
+        }
 
         return addressToReturn;
     }

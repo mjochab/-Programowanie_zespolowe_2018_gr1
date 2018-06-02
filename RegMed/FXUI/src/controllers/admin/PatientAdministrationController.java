@@ -282,7 +282,7 @@ public class PatientAdministrationController implements ControllerPagination {
                 patientAdministrationDTO.update(createPatientForEditFromTextfields(patientToEdit));
                 patientAdministrationDTO.updateAddress(createAddressForEditFromTexfields(patientToEdit.getAddress()));
                 patientAdministrationDTO.updateFirstcontactDoctorId(patientToEdit, firstContactDoctors
-                        .get(firstcontactDoctorChoiceBox.getSelectionModel().getSelectedIndex()).getId());
+                          .get(firstcontactDoctorChoiceBox.getSelectionModel().getSelectedIndex()).getId());
 
                 //if both edit sections (address and patient == true)
                 if(editionSuccess[0] && editionSuccess[1]) {
