@@ -284,6 +284,22 @@ public class PatientModuleDTO {
         return result;
     }
 
+    public List<SingleVisit> getVisitsAfterToday(Patient patient) {
+        LocalDate today = LocalDate.now();
+        List<SingleVisit> result = new ArrayList<>();
+        List<SingleVisit> allPatientVisits = new ArrayList<>(getSingleVisitsForPatient(patient));
+
+        for(SingleVisit visit : allPatientVisits) {
+            if (visit.getAdmissionDay2().getDate().isAfter(today) ||
+                    visit.getAdmissionDay2().getDate().isEqual(today)) {
+                result.add(visit);
+            }
+        }
+
+        result.sort(Comparator.comparing(o -> o.getAdmissionDay2().getDate()));
+        return result;
+    }
+
     private void setAdmissionDayToFreeVisitList(List<SingleVisit> singleVisits, AdmissionDay2 admissionDay) {
         for(SingleVisit visit : singleVisits) {
             setAdmissionDayToFreeVisit(visit, admissionDay);
@@ -336,6 +352,15 @@ public class PatientModuleDTO {
         try {
             db.getMapper().createNewSingleVisit(singleVisit);
             db.commit();
+        } finally {
+            db.closeSession();
+        }
+    }
+
+    public List<SingleVisit> getSingleVisitsForPatient(Patient patient) {
+        db.openSession();
+        try {
+            return new ArrayList<>(db.getMapper().getSingleVisitsForPatient(patient));
         } finally {
             db.closeSession();
         }
