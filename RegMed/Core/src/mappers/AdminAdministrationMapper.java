@@ -10,12 +10,13 @@ import java.util.List;
 @Mapper
 public interface AdminAdministrationMapper {
 
-    @Select("select id_administrator, first_name, last_name, PESEL, email, phone_number " +
+    @Select("select id_administrator, first_name, last_name,password, PESEL, email, phone_number " +
             "from administrators")
     @Results({
             @Result(property = "adminId", column = "id_administrator"),
             @Result(property = "firstName", column = "first_name"),
             @Result(property = "lastName", column = "last_name"),
+            @Result(property = "password", column = "password"),
             @Result(property = "pesel", column = "PESEL"),
             @Result(property = "email", column = "email"),
             @Result(property = "phoneNumber", column = "phone_number"),

@@ -11,12 +11,13 @@ import java.util.List;
 public interface PatientAdministrationMapper {
 
 
-    @Select("SELECT id_patient, first_name, last_name, PESEL, id_address," +
+    @Select("SELECT id_patient, first_name, last_name, password, PESEL, id_address," +
             " email, phone_number,id_firstcontact_doctor FROM patients;")
     @Results({
             @Result(property = "patientId", column = "id_patient"),
             @Result(property = "firstName", column = "first_name"),
             @Result(property = "lastName", column = "last_name"),
+            @Result(property = "password", column = "password"),
             @Result(property = "pesel", column = "PESEL"),
             @Result(property = "address", column = "id_address",
                     javaType = Address.class, one = @One(select = "selectAddress",

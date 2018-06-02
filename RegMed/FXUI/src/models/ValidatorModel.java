@@ -40,7 +40,7 @@ public class ValidatorModel {
     }
 
     public static Boolean streetValidator(String text){
-        return text.matches("[A-Za-zżźćńółęąśŻŹĆĄŚĘŁÓŃ]+.*[A-Za-zżźćńółęąśŻŹĆĄŚĘŁÓŃ]+.*[0-9][0-9]");
+        return text.matches("[A-Za-zżźćńółęąśŻŹĆĄŚĘŁÓŃ]+.*");
     }
 
     public static Boolean peselValidator(String text) {
@@ -49,6 +49,7 @@ public class ValidatorModel {
         } else {
             return false;
         }
+
     }
 
     public static boolean intervalValidation(String minutes) {
@@ -75,5 +76,14 @@ public class ValidatorModel {
 
     public static boolean postalCodeValidator (String code){
         return code.matches("[0-9][0-9]-[0-9][0-9][0-9]");
+    }
+
+
+    public static Boolean phoneValidator(String text) {
+        if (text.length() == 9 && text.matches("\\d+")) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

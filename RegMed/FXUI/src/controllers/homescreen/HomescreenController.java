@@ -96,7 +96,7 @@ public class HomescreenController implements Initializable, ControllerPagination
 
         if (!sprawdzenie) {
             for (pojo.Patient u1 : listaU) {
-                if (u1.getFirstName().equals(txtLogin.getText()) && u1.getPassword().equals(tfPassword.getText())) {
+                if (txtLogin.getText().equals(u1.getFirstName())  && tfPassword.getText().equals(u1.getPassword())) {
                     sprawdzenie = true;
                     rola = "patient";
 
@@ -132,19 +132,23 @@ public class HomescreenController implements Initializable, ControllerPagination
         }
 
         switch (rola) {
-            case ("admin"):
+            case "admin":
                 helpers.SwitchScene("admin/AdminHome", event);
                 break;
-            case ("patient"):
+            case "patient":
                 //helpers.SwitchScene("AdminPatient", event);
                 DialogBox.warningBox("Warning!", "Pawel L. incomplete module");
 
                 break;
-            case ("doctor"):
+            case "doctor":
                 helpers.SwitchScene("doctor/DoctorMain", event);
                 break;
+            default:
+                System.out.println("Nic");
+                break;
+
         }
-        if (!sprawdzenie) {
+        if (rola=="") {
             DialogBox.informationBox("Błędne dane", "Podaj poprawne dane do logowanie");
         }
 

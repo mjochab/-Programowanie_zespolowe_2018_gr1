@@ -10,12 +10,13 @@ import java.util.List;
 @Mapper
 public interface DoctorAdministrationMapper {
 
-    @Select("select id_doctor, first_name, last_name, PESEL, id_address, email, phone_number, " +
+    @Select("select id_doctor, first_name, last_name,password, PESEL, id_address, email, phone_number, " +
             "id_specialization from doctors")
     @Results({
             @Result(property = "doctorId", column = "id_doctor"),
             @Result(property = "firstName", column = "first_name"),
             @Result(property = "lastName", column = "last_name"),
+            @Result(property = "password", column = "password"),
             @Result(property = "pesel", column = "PESEL"),
             @Result(property = "address", column = "id_address",
                     javaType = Address.class, one = @One(select = "selectAddress",

@@ -5,12 +5,14 @@ package controllers.homescreen;
 import dto.DoctorAdministrationDTO;
 import dto.PatientAdministrationDTO;
 import helpers.ControllerPagination;
+import helpers.DialogBox;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.util.Callback;
+import javafx.util.StringConverter;
 import models.ValidatorModel;
 import pojo.Address;
 import pojo.Doctor;
@@ -72,15 +74,20 @@ public class RegisterController implements Initializable, ControllerPagination {
     @FXML
     void register(ActionEvent event) {
 
-        if (ValidatorModel.containsOnlyLetters(tfCity.getText()) && ValidatorModel.containsOnlyLetters(tfName.getText()) && ValidatorModel.containsOnlyLetters(tfSurname.getText()) && ValidatorModel.peselValidator(tfPesel.getText()) && ValidatorModel.postalCodeValidator(tfPostalCode.getText()) && ValidatorModel.emailValidator(tfEmail.getText())) {
+        if (ValidatorModel.containsOnlyLetters(tfCity.getText()) && ValidatorModel.containsOnlyLetters(tfName.getText())
+                && ValidatorModel.containsOnlyLetters(tfSurname.getText()) && ValidatorModel.peselValidator(tfPesel.getText())
+                && ValidatorModel.postalCodeValidator(tfPostalCode.getText()) && ValidatorModel.phoneValidator(tfPhone.getText())
+                && ValidatorModel.emailValidator(tfEmail.getText())) {
             if (tfPassword1.getText().equals(tfPassword2.getText())) {
-                if (ValidatorModel.containsOnlyLetters(tfStreet.getText()) && ValidatorModel.containsOnlyNumbers(tfNumber.getText())) {
+                if (ValidatorModel.streetValidator(tfStreet.getText()) &&
+                        ValidatorModel.containsOnlyNumbers(tfNumber.getText())) {
                     PatientAdministrationDTO newPatient = new PatientAdministrationDTO();
                     Patient p = new Patient();
                     p.setEmail(tfEmail.getText());
                     p.setFirstName(tfName.getText());
                     p.setLastName(tfSurname.getText());
                     p.setPassword(tfPassword1.getText());
+                    p.setPassword(tfPassword2.getText());
                     p.setPesel(tfPesel.getText());
                     p.setPhoneNumber(tfPhone.getText());
                     Address ad = new Address();
@@ -91,9 +98,19 @@ public class RegisterController implements Initializable, ControllerPagination {
                     p.setAddress(ad);
                     p.setFirstContactDoctorId(cbDoctor.getSelectionModel().getSelectedItem().getDoctorId());
                     newPatient.add(p);
-
+                    try {
+                        ControllerPagination.helpers.SwitchScene("homescreen/Homescreen", event);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    DialogBox.informationBox("Błędne dane", "Błąd w adresie.");
                 }
+            } else {
+                DialogBox.informationBox("Błędne dane", "Hasła są różne.");
             }
+        } else {
+            DialogBox.informationBox("Błędne dane", "Wystąpił błąd podczas rejestracji.");
         }
     }
 
@@ -133,6 +150,23 @@ public class RegisterController implements Initializable, ControllerPagination {
                                         }
                     }
                 } ;
+            }
+        });
+
+
+        cbDoctor.setConverter(new StringConverter<Doctor>() {
+            @Override
+            public String toString(Doctor user) {
+                if (user == null){
+                    return null;
+                } else {
+                    return user.getFirstName() + " " + user.getLastName();
+                }
+            }
+
+            @Override
+            public Doctor fromString(String userId) {
+                return null;
             }
         });
 
