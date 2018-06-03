@@ -8,6 +8,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
+import pojo.PatientList;
 
 
 import java.util.HashMap;
@@ -34,7 +35,9 @@ public class DoctorReportController implements ControllerPagination {
     }
 
     @FXML void dailyPatientListOnClick(ActionEvent event){
-        reportWebView.getEngine().loadContent(dailyPatientList(), "text/html");
+        String test = dailyPatientList();
+        System.out.println(test);
+        reportWebView.getEngine().loadContent(test);
     }
 
     @FXML void weeklyScheduleOnClick(ActionEvent event){
@@ -45,11 +48,12 @@ public class DoctorReportController implements ControllerPagination {
     private String dailyPatientList(){
         PatientListDTO patientList = new PatientListDTO();
         ToHtmlParser parser = new ToHtmlParser();
-        String hour = patientList.getPatientList(12).getVisitHour();
-        String name = patientList.getPatientList(12).getFirstName()+" "+patientList.getPatientList(12).getLastName();
         HashMap<String, String> h = new HashMap<>();
-        h.put(hour,name);
-        System.out.println(parser.dailyPatientList(h));
+        for (PatientList patient: patientList.getPatientList(12)) {
+            String hour = patient.getVisitHour();
+            String name = patient.getFirstName()+" "+patient.getLastName();
+            h.put(hour,name);
+        }
         return parser.dailyPatientList(h);
     }
 }

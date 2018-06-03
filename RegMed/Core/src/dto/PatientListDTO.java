@@ -5,6 +5,8 @@ import mappers.PatientListMapper;
 import pojo.Patient;
 import pojo.PatientList;
 
+import java.util.ArrayList;
+
 public class PatientListDTO {
     private MyBatisDbConnection<PatientListMapper> dbConnection;
 
@@ -12,10 +14,10 @@ public class PatientListDTO {
         this.dbConnection = new MyBatisDbConnection<>(PatientListMapper.class);
     }
 
-    public PatientList getPatientList(int doctorId) {
+    public ArrayList<PatientList> getPatientList(int doctorId) {
         dbConnection.openSession();
         try {
-            return dbConnection.getMapper().getPatientList(doctorId);
+            return new ArrayList<PatientList>(dbConnection.getMapper().getPatientList(doctorId));
         } finally {
             dbConnection.closeSession();
         }
