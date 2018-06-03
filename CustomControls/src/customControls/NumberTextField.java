@@ -14,12 +14,12 @@ public class NumberTextField extends TextField implements ValidatedTextField {
 
     }
 
-    public String getTextValidated() {
+    public String getTextValidated() throws CustomControlsException {
         String result = getText().toLowerCase();
         int len = result.length();
 
         if (len < 1 || result.isEmpty() || result.equals("")) {
-            System.out.println("Nie dziala");
+            throw new CustomControlsException("Missing number.");
         }
 
         return result;
