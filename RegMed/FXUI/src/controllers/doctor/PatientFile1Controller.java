@@ -31,6 +31,7 @@ public class PatientFile1Controller implements Initializable {
     private ObservableList tableData;
     private PatientDataDTO patientDataDTO;
     private int selectedPatientId;
+    public static int getSelectedPatientId;
 
     public PatientFile1Controller() {
         this.patientDataDTO =  new PatientDataDTO();
@@ -51,7 +52,7 @@ public class PatientFile1Controller implements Initializable {
         tableID.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if(newValue!=null){
                 selectedPatientId = tableID.getSelectionModel().getSelectedItem().patientId;
-                System.out.println(selectedPatientId);
+                 getSelectedPatientId = selectedPatientId;
             }
         });
     }
