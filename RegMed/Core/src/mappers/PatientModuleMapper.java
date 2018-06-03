@@ -80,9 +80,20 @@ public interface PatientModuleMapper {
             @Result(property = "firstName", column = "first_name"),
             @Result(property = "lastName", column = "last_name"),
             @Result(property = "phoneNumber", column = "phone_number"),
-            @Result(property = "specializationId", column = "id_specialization")
+            @Result(property = "specializationId", column = "id_specialization"),
+            @Result(property = "specialization", column = "id_specialization",
+                    javaType = Specialization.class,
+                    one = @One(select = "getSpecialization", fetchType = FetchType.EAGER))
     })
     Doctor selectFirstcontactDoctor(int doctorId);
+
+
+    @Select("Select * from specializations WHERE id_specialization=#{specializationId}")
+    @Results(value = {
+            @Result(property = "id", column = "id_specialization"),
+            @Result(property = "name", column = "name")
+    })
+    Specialization getSpecialization(int specializationId);
 
 
     /**
@@ -205,7 +216,7 @@ public interface PatientModuleMapper {
     @Select("select id_admission_day, a.date, d.id_doctor," +
             " d.hour_from, d.hour_to, d.hour_interval, d.validate_date " +
             "from admissiondays a JOIN doctorworkingdays d on a.id_doctor_working_day = d.id_doctor_working_day" +
-            " where a.date=#{date};")
+            " where a.date=#{date} AND d.id_doctor=#{doctorId};")
     @Results(value = {
             @Result(property = "id", column = "id_admission_day"),
             @Result(property = "date", column = "date"),
@@ -216,7 +227,22 @@ public interface PatientModuleMapper {
             @Result(property = "hourInterval", column = "hour_interval"),
             @Result(property = "validateDate", column = "validate_date")
     })
-    AdmissionDay2 getAdmissionDayByDate(LocalDate date);
+    AdmissionDay2 getAdmissionDayByDate(@Param("date") LocalDate date, @Param("doctorId") int doctorId);
+
+
+    @Select("select s.id_single_visit, s.id_admission_day, visit_hour, id_patient, d.id_doctor from singlevisits s " +
+            "JOIN admissiondays a on s.id_admission_day = a.id_admission_day " +
+            "JOIN doctorworkingdays d on a.id_doctor_working_day = d.id_doctor_working_day " +
+            "WHERE s.id_single_visit = #{singleVisitId};")
+    @Results(value = {
+            @Result(property = "id", column = "id_single_visit"),
+            @Result(property = "visitHour", column = "visit_hour"),
+            @Result(property = "patient", column = "id_patient", javaType = Patient.class,
+                    one = @One(select = "getPatient_OnlyId", fetchType = FetchType.EAGER)),
+            @Result(property = "admissionDay2", column = "id_admission_day", javaType = AdmissionDay2.class,
+                    one = @One(select = "getAdmissionDay", fetchType = FetchType.EAGER)),
+    })
+    SingleVisit getSingleVisit(int singleVisitId);
 
 
     @Select("select s.id_single_visit, s.id_admission_day, visit_hour, id_patient, d.id_doctor from singlevisits s " +
@@ -258,5 +284,22 @@ public interface PatientModuleMapper {
             @Result(property = "id", column = "id_patient")
     })
     Patient getPatient_OnlyId(int patientId);
+
+    @Insert("Insert into singlevisits(id_single_visit, id_admission_day, visit_hour, id_patient) " +
+            "VALUES (#{id}, #{admissionDay2.id}, #{visitHour}, #{patient.id})")
+    @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id_single_visit")
+    void createNewSingleVisit(SingleVisit singleVisit);
+
+
+    @Select("select * from singlevisits s JOIN admissiondays a on s.id_admission_day = a.id_admission_day " +
+            "where id_patient = #{id}")
+    @Results(value = {
+            @Result(property = "id", column = "id_single_visit"),
+            @Result(property = "visitHour", column = "visit_hour"),
+            @Result(property = "admissionDay2", column = "id_admission_day", javaType = AdmissionDay2.class,
+                    one = @One(select = "getAdmissionDay", fetchType = FetchType.EAGER)),
+    })
+    List<SingleVisit> getSingleVisitsForPatient(Patient patient);
+
 
 }

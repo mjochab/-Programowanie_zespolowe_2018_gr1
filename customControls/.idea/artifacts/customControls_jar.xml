@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="customControls:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/customControls_jar</output-path>
+    <root id="archive" name="customControls.jar">
+      <element id="module-output" name="customControls" />
+    </root>
+  </artifact>
+</component>

@@ -1,6 +1,6 @@
 package controllers.admin;
 
-import exceptions.ValidationException;
+import customControls.*;
 import pojo.Administrator;
 import helpers.ControllerPagination;
 import helpers.DialogBox;
@@ -13,8 +13,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.KeyEvent;
 import dto.AdminAdministrationDTO;
+import views.admin.TestTextField;
 
 import java.io.IOException;
 import java.net.URL;
@@ -36,21 +36,38 @@ public class AdminAdministrationController implements Initializable, ControllerP
             saveEditButton,
             declineEditButton;
 
-    @FXML
-    private TextField
-            idField,
-            searchField,
-            peselField,
-            forenameField,
-            nameField,
-            emailField,
-            phoneNumberField,
+    //@FXML
+   // private NameTextField forenameFieldAdd;
 
-            forenameFieldAdd,
+    @FXML
+    private TextField searchField;
+
+
+
+
+
+    @FXML
+    private NameTextField forenameFieldAdd,
             nameFieldAdd,
-            peselFieldAdd,
-            emailFieldAdd,
-            phoneNumberFieldAdd;
+            forenameField,
+            nameField;
+
+    @FXML
+    private PeselTextField peselFieldAdd,
+            peselField;
+
+
+
+    @FXML
+    private PhoneTextField phoneNumberFieldAdd,
+            phoneNumberField;
+
+    @FXML
+    private EmailTextField emailFieldAdd,
+            emailField;
+
+
+
 
     @FXML
     private TabPane
@@ -183,10 +200,9 @@ public class AdminAdministrationController implements Initializable, ControllerP
             fillEditAdministratorFields(administratorToEdit);
 
             saveEditButton.setOnAction(e -> {
+
                 adminAdministrationDTO.update(createAdministratorForEditFromTextfields(administratorToEdit));
                 loadDataToTable();
-                editTabDisable(true);
-                tabPane.getSelectionModel().select(createAdministratorTab);
             });
 
             declineEditButton.setOnAction(e -> {
@@ -203,24 +219,27 @@ public class AdminAdministrationController implements Initializable, ControllerP
      */
     @FXML
     private void createAdministratorClicked() {
-        Administrator administratorToAdd = new Administrator();
-        administratorToAdd.setFirstName(forenameFieldAdd.getText());
-        administratorToAdd.setLastName(nameFieldAdd.getText());
-        administratorToAdd.setPesel(peselFieldAdd.getText());
-        administratorToAdd.setEmail(emailFieldAdd.getText());
-        administratorToAdd.setPhoneNumber(phoneNumberFieldAdd.getText());
-        administratorToAdd.setPassword(nameFieldAdd.getText());
-
         try {
+            Administrator administratorToAdd = new Administrator();
+            administratorToAdd.setFirstName(forenameFieldAdd.getTextValidated());
+            administratorToAdd.setLastName(nameFieldAdd.getTextValidated());
+            administratorToAdd.setPesel(peselFieldAdd.getTextValidated());
+            administratorToAdd.setEmail(emailFieldAdd.getTextValidated());
+            administratorToAdd.setPhoneNumber(phoneNumberFieldAdd.getTextValidated());
+            administratorToAdd.setPassword(nameFieldAdd.getTextValidated());
             adminAdministrationDTO.add(administratorToAdd);
-
             loadDataToTable();
             clearAddAdministratorFields();
-        } catch (ValidationException ex) {
-            DialogBox.validationErrorBox("Wrong administrator data", ex.getMessage());
+        } catch (CustomControlsException ex) {
+            DialogBox.validationErrorBox("Validation error!", ex.getMessage());
         }
 
+
     }
+
+
+
+
 
     /**
      * Action for invoke method responsible for clearing textfields using
@@ -269,11 +288,18 @@ public class AdminAdministrationController implements Initializable, ControllerP
      */
     private Administrator createAdministratorForEditFromTextfields(Administrator administrator) {
         Administrator administratorToReturn = administrator;
-        administratorToReturn.setFirstName(forenameField.getText());
-        administratorToReturn.setLastName(nameField.getText());
-        administratorToReturn.setPesel(peselField.getText());
-        administratorToReturn.setEmail(emailField.getText());
-        administratorToReturn.setPhoneNumber(phoneNumberField.getText());
+        try {
+            administratorToReturn.setFirstName(forenameField.getTextValidated());
+            administratorToReturn.setLastName(nameField.getTextValidated());
+            administratorToReturn.setPesel(peselField.getTextValidated());
+            administratorToReturn.setEmail(emailField.getTextValidated());
+            administratorToReturn.setPhoneNumber(phoneNumberField.getTextValidated());
+
+            editTabDisable(true);
+            tabPane.getSelectionModel().select(createAdministratorTab);
+        } catch (CustomControlsException ex) {
+            DialogBox.validationErrorBox("Validation Error!", ex.getMessage());
+        }
 
         return administratorToReturn;
     }

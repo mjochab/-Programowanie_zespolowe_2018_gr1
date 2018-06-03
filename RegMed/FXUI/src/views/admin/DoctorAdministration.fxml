@@ -12,6 +12,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
+<?import customControls.*?>
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.admin.DoctorAdministrationController">
    <children>
       <TextField fx:id="searchField" layoutX="14.0" layoutY="110.0" onKeyReleased="#filterDoctorsByPeselAndName" prefHeight="50.0" prefWidth="350.0">
@@ -42,16 +43,16 @@
             <content>
                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                   <children>
-                     <TextField fx:id="nameFieldAdd" layoutX="126.0" layoutY="80.0" prefHeight="50.0" prefWidth="257.0">
+                     <NameTextField fx:id="nameFieldAdd" layoutX="126.0" layoutY="80.0" prefHeight="50.0" prefWidth="257.0">
                         <font>
                            <Font size="18.0" />
                         </font>
-                     </TextField>
-                     <TextField fx:id="peselFieldAdd" layoutX="126.0" layoutY="148.0" prefHeight="50.0" prefWidth="257.0">
+                     </NameTextField>
+                     <PeselTextField fx:id="peselFieldAdd" layoutX="126.0" layoutY="148.0" prefHeight="50.0" prefWidth="257.0">
                         <font>
                            <Font size="18.0" />
                         </font>
-                     </TextField>
+                     </PeselTextField>
                      <Label layoutX="14.0" layoutY="88.0" text="Last name:">
                         <font>
                            <Font size="24.0" />
@@ -67,11 +68,11 @@
                            <Font size="24.0" />
                         </font>
                      </Label>
-                     <TextField fx:id="forenameFieldAdd" layoutX="126.0" layoutY="14.0" onAction="#editDoctorClicked" prefHeight="50.0" prefWidth="257.0">
+                     <NameTextField fx:id="forenameFieldAdd" layoutX="126.0" layoutY="14.0" onAction="#editDoctorClicked" prefHeight="50.0" prefWidth="257.0">
                         <font>
                            <Font size="18.0" />
                         </font>
-                     </TextField>
+                     </NameTextField>
                      <Label layoutX="116.0" layoutY="589.0" text="Password will be same like name">
                         <font>
                            <Font size="14.0" />
@@ -86,11 +87,11 @@
                            <Font size="18.0" />
                         </font>
                      </Button>
-                     <TextField fx:id="emailFieldAdd" layoutX="126.0" layoutY="218.0" prefHeight="50.0" prefWidth="257.0">
+                     <EmailTextField fx:id="emailFieldAdd" layoutX="126.0" layoutY="218.0" prefHeight="50.0" prefWidth="257.0">
                         <font>
                            <Font size="18.0" />
                         </font>
-                     </TextField>
+                     </EmailTextField>
                      <Label layoutX="40.0" layoutY="226.0" text="Email:">
                         <font>
                            <Font size="24.0" />
@@ -101,32 +102,32 @@
                            <Font size="24.0" />
                         </font>
                      </Label>
-                     <TextField fx:id="phoneFieldAdd" layoutX="126.0" layoutY="277.0" prefHeight="50.0" prefWidth="257.0">
+                     <PhoneTextField fx:id="phoneFieldAdd" layoutX="126.0" layoutY="277.0" prefHeight="50.0" prefWidth="257.0">
                         <font>
                            <Font size="18.0" />
                         </font>
-                     </TextField>
+                     </PhoneTextField>
                      <Separator layoutX="30.0" layoutY="342.0" prefHeight="17.0" prefWidth="391.0" />
-                     <TextField fx:id="cityFieldAdd" layoutX="49.0" layoutY="359.0" prefHeight="50.0" prefWidth="203.0" promptText="City">
+                     <CityTextField fx:id="cityFieldAdd" layoutX="49.0" layoutY="359.0" prefHeight="50.0" prefWidth="203.0" promptText="City">
                         <font>
                            <Font size="18.0" />
                         </font>
-                     </TextField>
-                     <TextField fx:id="zipFieldAdd" layoutX="274.0" layoutY="359.0" prefHeight="50.0" prefWidth="121.0" promptText="Zip-code">
+                     </CityTextField>
+                     <ZipTextField fx:id="zipFieldAdd" layoutX="274.0" layoutY="359.0" prefHeight="50.0" prefWidth="121.0" promptText="Zip-code">
                         <font>
                            <Font size="18.0" />
                         </font>
-                     </TextField>
-                     <TextField fx:id="streetFieldAdd" layoutX="49.0" layoutY="415.0" prefHeight="50.0" prefWidth="203.0" promptText="Street">
+                     </ZipTextField>
+                     <StreetTextField fx:id="streetFieldAdd" layoutX="49.0" layoutY="415.0" prefHeight="50.0" prefWidth="203.0" promptText="Street">
                         <font>
                            <Font size="18.0" />
                         </font>
-                     </TextField>
-                     <TextField fx:id="numberFieldAdd" layoutX="274.0" layoutY="415.0" prefHeight="50.0" prefWidth="121.0" promptText="Number">
+                     </StreetTextField>
+                     <NumberTextField fx:id="numberFieldAdd" layoutX="274.0" layoutY="415.0" prefHeight="50.0" prefWidth="121.0" promptText="Number">
                         <font>
                            <Font size="18.0" />
                         </font>
-                     </TextField>
+                     </NumberTextField>
                         <ChoiceBox fx:id="specializationChoiceBox" layoutX="199.0" layoutY="489.0" prefWidth="150.0" />
                   </children>
                </AnchorPane>
@@ -136,16 +137,16 @@
             <content>
                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                   <children>
-                     <TextField fx:id="nameField" layoutX="126.0" layoutY="80.0" prefHeight="50.0" prefWidth="257.0">
+                     <NameTextField fx:id="nameField" layoutX="126.0" layoutY="80.0" prefHeight="50.0" prefWidth="257.0">
                         <font>
                            <Font size="18.0" />
                         </font>
-                     </TextField>
-                     <TextField fx:id="peselField" layoutX="126.0" layoutY="148.0" prefHeight="50.0" prefWidth="257.0">
+                     </NameTextField>
+                     <PeselTextField fx:id="peselField" layoutX="126.0" layoutY="148.0" prefHeight="50.0" prefWidth="257.0">
                         <font>
                            <Font size="18.0" />
                         </font>
-                     </TextField>
+                     </PeselTextField>
                      <Label layoutX="14.0" layoutY="88.0" text="Last name:">
                         <font>
                            <Font size="24.0" />
@@ -161,11 +162,11 @@
                            <Font size="24.0" />
                         </font>
                      </Label>
-                     <TextField fx:id="forenameField" layoutX="126.0" layoutY="14.0" onAction="#editDoctorClicked" prefHeight="50.0" prefWidth="257.0">
+                     <NameTextField fx:id="forenameField" layoutX="126.0" layoutY="14.0" onAction="#editDoctorClicked" prefHeight="50.0" prefWidth="257.0">
                         <font>
                            <Font size="18.0" />
                         </font>
-                     </TextField>
+                     </NameTextField>
                      <Label layoutX="116.0" layoutY="589.0" text="Password will be same like name">
                         <font>
                            <Font size="14.0" />
@@ -180,11 +181,11 @@
                            <Font size="18.0" />
                         </font>
                      </Button>
-                     <TextField fx:id="emailField" layoutX="126.0" layoutY="218.0" prefHeight="50.0" prefWidth="257.0">
+                     <EmailTextField fx:id="emailField" layoutX="126.0" layoutY="218.0" prefHeight="50.0" prefWidth="257.0">
                         <font>
                            <Font size="18.0" />
                         </font>
-                     </TextField>
+                     </EmailTextField>
                      <Label layoutX="40.0" layoutY="226.0" text="Email:">
                         <font>
                            <Font size="24.0" />
@@ -195,37 +196,33 @@
                            <Font size="24.0" />
                         </font>
                      </Label>
-                     <TextField fx:id="phoneField" layoutX="126.0" layoutY="277.0" prefHeight="50.0" prefWidth="257.0">
+                     <PhoneTextField fx:id="phoneField" layoutX="126.0" layoutY="277.0" prefHeight="50.0" prefWidth="257.0">
                         <font>
                            <Font size="18.0" />
                         </font>
-                     </TextField>
+                     </PhoneTextField>
                      <Separator layoutX="30.0" layoutY="342.0" prefHeight="17.0" prefWidth="391.0" />
-                     <TextField fx:id="cityField" layoutX="49.0" layoutY="359.0" prefHeight="50.0" prefWidth="203.0" promptText="City">
+                     <CityTextField fx:id="cityField" layoutX="49.0" layoutY="359.0" prefHeight="50.0" prefWidth="203.0" promptText="City">
                         <font>
                            <Font size="18.0" />
                         </font>
-                     </TextField>
-                     <TextField fx:id="zipField" layoutX="274.0" layoutY="359.0" prefHeight="50.0" prefWidth="121.0" promptText="Zip-code">
+                     </CityTextField>
+                     <ZipTextField fx:id="zipField" layoutX="274.0" layoutY="359.0" prefHeight="50.0" prefWidth="121.0" promptText="Zip-code">
                         <font>
                            <Font size="18.0" />
                         </font>
-                     </TextField>
-                     <TextField fx:id="streetField" layoutX="49.0" layoutY="415.0" prefHeight="50.0" prefWidth="203.0" promptText="Street">
+                     </ZipTextField>
+                     <StreetTextField fx:id="streetField" layoutX="49.0" layoutY="415.0" prefHeight="50.0" prefWidth="203.0" promptText="Street">
                         <font>
                            <Font size="18.0" />
                         </font>
-                     </TextField>
-                     <TextField fx:id="numberField" layoutX="274.0" layoutY="415.0" prefHeight="50.0" prefWidth="121.0" promptText="Number">
+                     </StreetTextField>
+                     <NumberTextField fx:id="numberField" layoutX="274.0" layoutY="415.0" prefHeight="50.0" prefWidth="121.0" promptText="Number">
                         <font>
                            <Font size="18.0" />
                         </font>
-                     </TextField>
-                     <TextField fx:id="specializationField" layoutX="121.0" layoutY="474.0" prefHeight="50.0" prefWidth="203.0" promptText="Specializaction id">
-                        <font>
-                           <Font size="18.0" />
-                        </font>
-                     </TextField>
+                     </NumberTextField>
+                        <ChoiceBox fx:id="specializationEditChoiceBox" layoutX="152.0" layoutY="486.0" prefWidth="150.0" />
                   </children>
                </AnchorPane>
             </content>

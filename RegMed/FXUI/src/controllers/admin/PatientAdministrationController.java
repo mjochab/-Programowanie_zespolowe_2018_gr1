@@ -1,5 +1,6 @@
 package controllers.admin;
 
+import customControls.*;
 import helpers.ControllerPagination;
 import helpers.DialogBox;
 import javafx.collections.FXCollections;
@@ -12,12 +13,16 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 import dto.PatientAdministrationDTO;
-import pojo.Address;
-import pojo.Doctor;
-import pojo.Patient;
-import pojo.Specialization;
+import javafx.scene.layout.AnchorPane;
+import models.VisitAdministrationModel;
+import org.apache.ibatis.exceptions.PersistenceException;
+import pojo.*;
+import views.admin.TestTextField;
 
 import java.io.IOException;
+import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,29 +39,49 @@ public class PatientAdministrationController implements ControllerPagination {
 
     @FXML
     private Button saveEditButton,
-            declineEditButton;
+            declineEditButton,
+            saveVisitChangesButton;
 
     @FXML
-    private TextField searchField,
-            peselField,
-            forenameField,
-            nameField,
-            emailField,
-            phoneField,
-            cityField,
-            zipField,
-            streetField,
-            numberField,
+    private TextField searchField;
 
+
+    @FXML
+    private NameTextField forenameField,
+            nameField,
             forenameFieldAdd,
-            nameFieldAdd,
-            peselFieldAdd,
-            emailFieldAdd,
-            phoneFieldAdd,
-            cityFieldAdd,
-            zipFieldAdd,
-            streetFieldAdd,
-            numberFieldAdd;
+            nameFieldAdd;
+
+    @FXML
+    private PeselTextField peselField,
+            peselFieldAdd;
+
+    @FXML
+    private EmailTextField emailField,
+            emailFieldAdd;
+
+    @FXML
+    private PhoneTextField phoneField,
+            phoneFieldAdd;
+
+
+
+    @FXML
+    private CityTextField cityFieldAdd,
+            cityField;
+
+    @FXML
+    private StreetTextField streetFieldAdd,
+            streetField;
+
+
+    @FXML
+    private ZipTextField zipFieldAdd,
+        zipField;
+
+    @FXML
+    private NumberTextField numberField,
+    numberFieldAdd;
 
 
     @FXML
@@ -64,7 +89,8 @@ public class PatientAdministrationController implements ControllerPagination {
 
     @FXML
     private Tab editPatientTab,
-            createPatientTab;
+            createPatientTab,
+            manageVisitsTab;
 
     @FXML
     private TableView<Patient> patientsTable;
@@ -78,15 +104,42 @@ public class PatientAdministrationController implements ControllerPagination {
             emailColumn,
             firstContactDoctorIdColumn;
 
+//    @FXML
+//    private TableColumn<Doctor, String> ;
+
     @FXML
     private ChoiceBox<String> firstcontactDoctorChoiceBoxAdd,
             firstcontactDoctorChoiceBox;
+
+    @FXML
+    private TableView<VisitAdministrationModel> visitTableView;
+
+    @FXML
+    private TableColumn<VisitAdministrationModel, Integer> visitIdColumn;
+
+    @FXML
+    private TableColumn<VisitAdministrationModel, String> visitDoctorColumn,
+        visitSpecializationColumn,
+        visitHourColumn,
+        visitDateColumn;
+
+    @FXML
+    private AnchorPane editVisitAnchorPane;
+
+
+    @FXML
+    private ChoiceBox<LocalTime> visitHourChoiceBox;
+
+    @FXML
+    private ChoiceBox<LocalDate> visitDateChoiceBox;
+
 
     private PatientAdministrationDTO patientAdministrationDTO;
 
     private FilteredList filteredList;
     ObservableList<Patient> tableData;
     private List<Doctor> firstContactDoctors;
+    private boolean[] editionSuccess;
 
 
     public PatientAdministrationController() {
@@ -105,6 +158,10 @@ public class PatientAdministrationController implements ControllerPagination {
 
         firstcontactDoctorChoiceBoxAdd.setItems(FXCollections.observableArrayList(parseFirstcontactDoctorsToString()));
         firstcontactDoctorChoiceBox.setItems(FXCollections.observableArrayList(parseFirstcontactDoctorsToString()));
+
+        setupColumnsInTheVisitsTable();
+
+        editionSuccess = new boolean[2];
     }
 
     /**
@@ -119,6 +176,16 @@ public class PatientAdministrationController implements ControllerPagination {
         emailColumn.setCellValueFactory(new PropertyValueFactory<Patient, String>("email"));
         firstContactDoctorIdColumn.setCellValueFactory(new PropertyValueFactory<Patient, String>("firstContactDoctor"));
     }
+
+
+    private void setupColumnsInTheVisitsTable() {
+        visitIdColumn.setCellValueFactory(new PropertyValueFactory<VisitAdministrationModel, Integer>("id"));
+        visitDoctorColumn.setCellValueFactory(new PropertyValueFactory<VisitAdministrationModel, String>("doctor"));
+        visitSpecializationColumn.setCellValueFactory(new PropertyValueFactory<VisitAdministrationModel, String>("specialization"));
+        visitHourColumn.setCellValueFactory(new PropertyValueFactory<VisitAdministrationModel, String>("hour"));
+        visitDateColumn.setCellValueFactory(new PropertyValueFactory<VisitAdministrationModel, String>("date"));
+    }
+
 
     /**
      * Loading/refreshing data in table. Also applying filteredList on table
@@ -179,8 +246,14 @@ public class PatientAdministrationController implements ControllerPagination {
             if ( DialogBox.choiceBox("Remove confirmation", String.format("%s %s will be removed.",
                     patientToDelete.getFirstName(), patientToDelete.getLastName()), "Are you sure?") ) {
 
-                patientAdministrationDTO.delete(patientToDelete.getId());
-                loadDataToTable();
+                try {
+                    patientAdministrationDTO.delete(patientToDelete.getId());
+                    loadDataToTable();
+                } catch (PersistenceException exc) {
+                    DialogBox.warningBox("Patient still have booked visits",
+                            "Please remove patient visits before.");
+                }
+
             }
         } else {
             DialogBox.warningBox("Information", "Please select patient to remove in table");
@@ -209,11 +282,15 @@ public class PatientAdministrationController implements ControllerPagination {
                 patientAdministrationDTO.update(createPatientForEditFromTextfields(patientToEdit));
                 patientAdministrationDTO.updateAddress(createAddressForEditFromTexfields(patientToEdit.getAddress()));
                 patientAdministrationDTO.updateFirstcontactDoctorId(patientToEdit, firstContactDoctors
-                        .get(firstcontactDoctorChoiceBox.getSelectionModel().getSelectedIndex()).getId());
+                          .get(firstcontactDoctorChoiceBox.getSelectionModel().getSelectedIndex()).getId());
 
-                loadDataToTable();
-                editTabDisable(true);
-                tabPane.getSelectionModel().select(createPatientTab);
+                //if both edit sections (address and patient == true)
+                if(editionSuccess[0] && editionSuccess[1]) {
+                    loadDataToTable();
+                    editTabDisable(true);
+                    tabPane.getSelectionModel().select(createPatientTab);
+                }
+
             });
 
             declineEditButton.setOnAction(e -> {
@@ -233,25 +310,35 @@ public class PatientAdministrationController implements ControllerPagination {
         Patient patientToAdd = new Patient();
         Address addressToAdd= new Address();
 
-        addressToAdd.setCity(cityFieldAdd.getText());
-        addressToAdd.setZip(zipFieldAdd.getText());
-        addressToAdd.setStreet(streetFieldAdd.getText());
-        addressToAdd.setNumber(Integer.parseInt(numberFieldAdd.getText()));
+        try {
+            patientToAdd.setFirstName(forenameFieldAdd.getTextValidated());
+            patientToAdd.setLastName(nameFieldAdd.getTextValidated());
+            patientToAdd.setPesel(peselFieldAdd.getTextValidated());
+            patientToAdd.setAddress(addressToAdd);
+            patientToAdd.setEmail(emailFieldAdd.getTextValidated());
+            patientToAdd.setPhoneNumber(phoneFieldAdd.getTextValidated());
+            patientToAdd.setPassword(nameFieldAdd.getTextValidated());
+            patientToAdd.setFirstContactDoctor(firstContactDoctors
+                    .get(firstcontactDoctorChoiceBoxAdd.getSelectionModel()
+                    .getSelectedIndex()));
 
-        patientToAdd.setFirstName(forenameFieldAdd.getText());
-        patientToAdd.setLastName(nameFieldAdd.getText());
-        patientToAdd.setPesel(peselFieldAdd.getText());
-        patientToAdd.setAddress(addressToAdd);
-        patientToAdd.setEmail(emailFieldAdd.getText());
-        patientToAdd.setPhoneNumber(phoneFieldAdd.getText());
-        patientToAdd.setFirstContactDoctor(firstContactDoctors.get(firstcontactDoctorChoiceBoxAdd.getSelectionModel().getSelectedIndex()));
-        patientToAdd.setPassword(nameFieldAdd.getText());
 
-        patientAdministrationDTO.add(patientToAdd);
+            addressToAdd.setCity(cityFieldAdd.getTextValidated());
+            addressToAdd.setZip(zipFieldAdd.getTextValidated());
+            addressToAdd.setStreet(streetFieldAdd.getTextValidated());
+            addressToAdd.setNumber(Integer.parseInt(numberFieldAdd.getTextValidated()));
 
-        loadDataToTable();
-        clearAddPatientFields();
+            patientAdministrationDTO.add(patientToAdd);
+
+            loadDataToTable();
+            clearAddPatientFields();
+
+        } catch (CustomControlsException ex) {
+            DialogBox.validationErrorBox("Error!", ex.getMessage());
+        }
     }
+
+
 
     /**
      * Action for invoke method responsible for clearing textfields using in
@@ -275,6 +362,152 @@ public class PatientAdministrationController implements ControllerPagination {
         helpers.SwitchScene("admin/AdminHome", event);
     }
 
+
+
+    @FXML
+    private void manageVisitsTabClicked() {
+        loadDataToVisitTable();
+    }
+
+    private void loadDataToVisitTable() {
+        Patient selectedPatient;
+        List<SingleVisit> visits = new ArrayList<>();
+
+        try {
+            selectedPatient = getSelectedPatientInTable();
+            visits = patientAdministrationDTO.getVisitsForPatient(selectedPatient.getId());
+        } catch (NullPointerException ex) {
+            DialogBox.warningBox("Warning!", "Please first select patient in table.");
+            tabPane.getSelectionModel().selectFirst();
+        }
+
+        List<VisitAdministrationModel> administrationModels = new ArrayList<>();
+        for(SingleVisit visit : visits) {
+            VisitAdministrationModel model = new VisitAdministrationModel(visit.getId(),
+                    visit.getAdmissionDay2().getDoctor().toString(),
+                    visit.getAdmissionDay2().getDoctor().getSpecialization().toString(),
+                    visit.getVisitHour(),
+                    visit.getAdmissionDay2().getDate());
+            administrationModels.add(model);
+        }
+
+        visitTableView.setItems(FXCollections.observableArrayList(administrationModels));
+        visitTableView.refresh();
+    }
+
+    @FXML
+    public void removeVisitButtonClicked() {
+        VisitAdministrationModel visitModelSelected = getSelectedVisit();
+
+        if (DialogBox.choiceBox("Information", "Visit deletion",
+                String.format("Are you sure you want remove: \n%d, %s, %s, %s, %s ?",
+                        visitModelSelected.getId(),
+                        visitModelSelected.getDoctor(),
+                        visitModelSelected.getSpecialization(),
+                        visitModelSelected.getHour(),
+                        visitModelSelected.getDate()
+                )
+        )) {
+            patientAdministrationDTO.deleteVisit(visitModelSelected.getId());
+            loadDataToVisitTable();
+        }
+    }
+
+    @FXML
+    public void removeAllVisitsButtonClicked() {
+        Patient patient = getSelectedPatientInTable();
+
+        if (DialogBox.choiceBox("Information", "All patient visits deletion",
+            String.format("Are you sure you want remove all visits assingned to patient %s %s (id:%d)?",
+                    getSelectedPatientInTable().getFirstName(),
+                    getSelectedPatientInTable().getLastName(),
+                    getSelectedPatientInTable().getId()
+            )
+        )) {
+            patientAdministrationDTO.deleteAllVisits(getSelectedPatientInTable().getId());
+            loadDataToVisitTable();
+        }
+    }
+
+    @FXML
+    public void addVisitButtonClicked(ActionEvent event) throws IOException {
+        helpers.SwitchScene("views/patient/Registration", event);
+        //TODO: later copy fxml from patientModule when will be fin, and little edit
+    }
+
+    @FXML
+    public void editVisitButtonClicked() {
+        if (visitDateChoiceBox.getItems().size() > 0) {
+            visitDateChoiceBox.getItems().clear();
+        }
+        if (visitHourChoiceBox.getItems().size() > 0) {
+            visitHourChoiceBox.getItems().clear();
+        }
+
+
+        VisitAdministrationModel visitModel = getSelectedVisit();
+        SingleVisit singleVisit = patientAdministrationDTO.getVisit(visitModel.getId());
+        editVisitAnchorPane.setVisible(true);
+
+        Doctor doctor = singleVisit.getAdmissionDay2().getDoctor();
+
+        List<AdmissionDay2> admissionDaysForSelectedDoctor =
+                new ArrayList<>(patientAdministrationDTO.getAdmissionDaysAfterToday(doctor.getId()));
+
+        List<LocalDate> admissionDates = new ArrayList<>();
+        for (AdmissionDay2 admDay : admissionDaysForSelectedDoctor) {
+            admissionDates.add(admDay.getDate());
+        }
+
+
+
+
+        visitDateChoiceBox.setItems(FXCollections.observableArrayList(admissionDates));
+        visitDateChoiceBox.getSelectionModel().select(visitModel.getDate());
+
+        try {
+            loadHoursForVisit(admissionDaysForSelectedDoctor, visitModel.getId());
+            visitHourChoiceBox.getSelectionModel().select(visitModel.getHour());
+            visitDateChoiceBox.getSelectionModel().selectedItemProperty().addListener((v, oldValue, newValue) -> {
+                loadHoursForVisit(admissionDaysForSelectedDoctor, visitModel.getId());
+            });
+        } catch (ArrayIndexOutOfBoundsException ex) {
+            DialogBox.warningBox("Error!", "This visit has already taken place . You can't edit it");
+        }
+
+        saveVisitChangesButton.setOnAction(e -> {
+            LocalTime newTime = visitHourChoiceBox.getSelectionModel().getSelectedItem();
+            int id = visitDateChoiceBox.getSelectionModel().getSelectedIndex();
+            int newAdmissionDayId = admissionDaysForSelectedDoctor.get(id).getId();
+            patientAdministrationDTO.updateVisitDateAndHour(visitModel.getId(), newTime, newAdmissionDayId);
+            System.out.println(String.format("new hour: %s; new id: %d", id, newAdmissionDayId));
+        });
+
+    }
+
+    private void loadHoursForVisit(List<AdmissionDay2> admissionDaysForSelectedDoctor, int currentVisitId) {
+        int selectedAdmissionDayIndex = visitDateChoiceBox.getSelectionModel().getSelectedIndex();
+        AdmissionDay2 selectedAdmissionDay = admissionDaysForSelectedDoctor.get(selectedAdmissionDayIndex);
+        List<SingleVisit> freeVisits = patientAdministrationDTO.getFreeVisits(selectedAdmissionDay);
+        List<LocalTime> freeVisitsHours = new ArrayList<>();
+        for(SingleVisit visit : freeVisits) {
+            freeVisitsHours.add(visit.getVisitHour());
+        }
+        freeVisitsHours.add(patientAdministrationDTO.getVisit(currentVisitId).getVisitHour());
+        visitHourChoiceBox.setItems(FXCollections.observableArrayList(freeVisitsHours));
+    }
+
+    @FXML
+    private void declineChangesButtonClicked() {
+        editVisitAnchorPane.setVisible(false);
+
+    }
+
+
+
+
+
+
     /**
      * Creating patient from textfields used to change values.
      * @param patient   old patient version (containing his id), which will be
@@ -283,13 +516,19 @@ public class PatientAdministrationController implements ControllerPagination {
      */
     private Patient createPatientForEditFromTextfields(Patient patient) {
         Patient patientToReturn = patient;
+        try {
+            patientToReturn.setFirstName(forenameField.getTextValidated());
+            patientToReturn.setLastName(nameField.getTextValidated());
+            patientToReturn.setPesel(peselField.getTextValidated());
+            patientToReturn.setEmail(emailField.getTextValidated());
+            patientToReturn.setPhoneNumber(phoneField.getTextValidated());
+            patientToReturn.setFirstContactDoctor(firstContactDoctors.get(firstcontactDoctorChoiceBox.getSelectionModel().getSelectedIndex()));
+            editionSuccess[0] = true;
+        } catch (CustomControlsException ex) {
+            DialogBox.validationErrorBox("Validation error!", ex.getMessage());
+            editionSuccess[0] = false;
+        }
 
-        patientToReturn.setFirstName(forenameField.getText());
-        patientToReturn.setLastName(nameField.getText());
-        patientToReturn.setPesel(peselField.getText());
-        patientToReturn.setEmail(emailField.getText());
-        patientToReturn.setPhoneNumber(phoneField.getText());
-        patientToReturn.setFirstContactDoctor(firstContactDoctors.get(firstcontactDoctorChoiceBox.getSelectionModel().getSelectedIndex()));
         return patientToReturn;
     }
 
@@ -302,10 +541,16 @@ public class PatientAdministrationController implements ControllerPagination {
     private Address createAddressForEditFromTexfields(Address address) {
         Address addressToReturn = address;
 
-        addressToReturn.setCity(cityField.getText());
-        addressToReturn.setZip(zipField.getText());
-        addressToReturn.setStreet(streetField.getText());
-        addressToReturn.setNumber(Integer.parseInt(String.valueOf(numberField.getText())));
+        try {
+            addressToReturn.setCity(cityField.getTextValidated());
+            addressToReturn.setZip(zipField.getTextValidated());
+            addressToReturn.setStreet(streetField.getTextValidated());
+            addressToReturn.setNumber(Integer.parseInt(String.valueOf(numberField.getTextValidated())));
+            editionSuccess[1] = true;
+        } catch (CustomControlsException ex) {
+            DialogBox.validationErrorBox("Validation error!", ex.getMessage());
+            editionSuccess[1] = false;
+        }
 
         return addressToReturn;
     }
@@ -367,6 +612,10 @@ public class PatientAdministrationController implements ControllerPagination {
      */
     private Patient getSelectedPatientInTable() {
         return patientsTable.getSelectionModel().getSelectedItem();
+    }
+
+    private VisitAdministrationModel getSelectedVisit() {
+        return visitTableView.getSelectionModel().getSelectedItem();
     }
 
     /**

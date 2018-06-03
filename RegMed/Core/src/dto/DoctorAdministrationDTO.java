@@ -1,7 +1,6 @@
 package dto;
 
 import database.MyBatisDbConnection;
-import exceptions.ValidationException;
 import mappers.DoctorAdministrationMapper;
 import pojo.Address;
 import pojo.Doctor;
@@ -43,9 +42,7 @@ public class DoctorAdministrationDTO {
         }
     }
 
-    public void add(Doctor doctor) throws ValidationException {
-        validateDoctor(doctor);
-        validateAddress(doctor.getAddress());
+    public void add(Doctor doctor){
 
         dbConnection.openSession();
         try {
@@ -122,22 +119,6 @@ public class DoctorAdministrationDTO {
         }
     }
 
-
-    private boolean validateDoctor(Doctor doctor) throws ValidationException {
-        if (!AdministrationValidators.userValidation(doctor)) {
-            throw new ValidationException(AdministrationValidators.userValidationErrors(doctor));
-        }
-
-        return true;
-    }
-
-    private boolean validateAddress(Address address) throws ValidationException {
-        if (!AdministrationValidators.addressValidation(address)) {
-            throw new ValidationException(AdministrationValidators.addressValidationErrors(address));
-        }
-
-        return true;
-    }
 
 
 }
