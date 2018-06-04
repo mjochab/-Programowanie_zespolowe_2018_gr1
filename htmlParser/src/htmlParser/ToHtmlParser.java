@@ -1,7 +1,9 @@
 package htmlParser;
 
+import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.TreeMap;
 
 public class ToHtmlParser {
 
@@ -15,7 +17,6 @@ public class ToHtmlParser {
     public String patietFile(ToHtmlPatient patient, ToHtmlDoctor doctor, HashMap<String, String> patientHistory){
         String result = "";
         result += createPatientDataHtml(patient, doctor) + createPatientHistoryHtml(patientHistory);
-
         return result;
     }
 
@@ -131,13 +132,24 @@ public class ToHtmlParser {
     }
 
 
-    public String dailyPatientList(HashMap<String, String> visitOfDay){
+    /**
+     *
+     * @param visitOfDay
+     * @return
+     */
+    public String dailyPatientList(TreeMap<LocalTime, String> visitOfDay){
         String result="";
         result += createDailyPatientListHtml(visitOfDay);
         return result;
     }
 
-    private String createDailyPatientListHtml(HashMap<String, String> visitOfDay){
+
+    /**
+     *
+     * @param visitOfDay
+     * @return
+     */
+    private String createDailyPatientListHtml(TreeMap<LocalTime, String> visitOfDay){
         String result = "";
 
         Iterator it = visitOfDay.entrySet().iterator();
@@ -152,10 +164,4 @@ public class ToHtmlParser {
         return result;
     }
 
-    /**
-     *
-     */
-    public void test(){
-        System.out.println("test");
-    }
 }

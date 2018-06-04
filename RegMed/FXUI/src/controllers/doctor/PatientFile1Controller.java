@@ -19,9 +19,9 @@ import java.util.ResourceBundle;
 public class PatientFile1Controller implements Initializable {
 
     @FXML
-    private TableView<PatientData> tableID ;
+    private TableView<PatientData> tableID;
     @FXML
-    private TableColumn<PatientData, Integer> patientId ;
+    private TableColumn<PatientData, Integer> patientId;
     @FXML
     private TableColumn<PatientData, String> firstName;
     @FXML
@@ -31,10 +31,11 @@ public class PatientFile1Controller implements Initializable {
     private ObservableList tableData;
     private PatientDataDTO patientDataDTO;
     private int selectedPatientId;
-    public static int getSelectedPatientId;
+    protected static Integer getSelectedPatientId;
+
 
     public PatientFile1Controller() {
-        this.patientDataDTO =  new PatientDataDTO();
+        this.patientDataDTO = new PatientDataDTO();
     }
 
     @Override
@@ -45,14 +46,17 @@ public class PatientFile1Controller implements Initializable {
         lastName.setCellValueFactory(new PropertyValueFactory<PatientData, String>("lastName"));
         tableData = FXCollections.observableArrayList(patientDataDTO.getAll());
         tableID.setItems(tableData);
+        tableOnChange();
+    }
 
-        /**
-         * Listener special for listen which patient from table was selected
-         */
+    /**
+     * Listener special for listen which patient from table was selected
+     */
+    public void tableOnChange() {
         tableID.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            if(newValue!=null){
+            if (newValue != null) {
                 selectedPatientId = tableID.getSelectionModel().getSelectedItem().patientId;
-                 getSelectedPatientId = selectedPatientId;
+                getSelectedPatientId = selectedPatientId;
             }
         });
     }

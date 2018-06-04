@@ -11,7 +11,9 @@ import javafx.scene.web.WebView;
 import pojo.PatientList;
 
 
+import java.time.LocalTime;
 import java.util.HashMap;
+import java.util.TreeMap;
 
 public class DoctorReportController implements ControllerPagination {
 
@@ -34,26 +36,24 @@ public class DoctorReportController implements ControllerPagination {
         this.patientListDTO = new PatientListDTO();
     }
 
-    @FXML void dailyPatientListOnClick(ActionEvent event){
+    @FXML
+    private void initialize() {
         String test = dailyPatientList();
         System.out.println(test);
         reportWebView.getEngine().loadContent(test);
     }
 
-    @FXML void weeklyScheduleOnClick(ActionEvent event){
-
-        reportWebView.getEngine().loadContent("<p>dupa</p>");
-    }
 
     private String dailyPatientList(){
         PatientListDTO patientList = new PatientListDTO();
         ToHtmlParser parser = new ToHtmlParser();
-        HashMap<String, String> h = new HashMap<>();
+        TreeMap<LocalTime, String> h = new TreeMap<>();
         for (PatientList patient: patientList.getPatientList(12)) {
-            String hour = patient.getVisitHour();
+            LocalTime hour = patient.getVisitHour();
             String name = patient.getFirstName()+" "+patient.getLastName();
             h.put(hour,name);
         }
+
         return parser.dailyPatientList(h);
     }
 }

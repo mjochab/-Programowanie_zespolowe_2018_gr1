@@ -1,10 +1,12 @@
 package pojo;
 
+import java.time.LocalTime;
+
 public class PatientList {
     private int id;
     private Patient patient;
     private AdmissionDay admissionDay;
-    private String visitHour;
+    private LocalTime visitHour;
     private String firstName;
     private String lastName;
 
@@ -48,11 +50,11 @@ public class PatientList {
         this.admissionDay = admissionDay;
     }
 
-    public String getVisitHour() {
+    public LocalTime getVisitHour() {
         return visitHour;
     }
 
-    public void setVisitHour(String visitHour) {
+    public void setVisitHour(LocalTime visitHour) {
         this.visitHour = visitHour;
     }
 }
