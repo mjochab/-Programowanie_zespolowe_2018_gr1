@@ -33,7 +33,6 @@
       <Label layoutX="248.0" layoutY="6.0" text="REGISTER" />
       <Button layoutX="204.0" layoutY="494.0" mnemonicParsing="false" onAction="#register" text="Register" />
       <Button fx:id="bBack" layoutX="312.0" layoutY="494.0" mnemonicParsing="false" onAction="#exit" text="Back" />
-      <Text layoutX="-11.0" layoutY="86.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
       <Text layoutX="148.0" layoutY="226.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Number" />
       <Text fx:id="t" layoutX="157.0" layoutY="267.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Phone" />
       <Text layoutX="148.0" layoutY="453.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Doctor" />

@@ -74,43 +74,64 @@ public class RegisterController implements Initializable, ControllerPagination {
     @FXML
     void register(ActionEvent event) {
 
-        if (ValidatorModel.containsOnlyLetters(tfCity.getText()) && ValidatorModel.containsOnlyLetters(tfName.getText())
-                && ValidatorModel.containsOnlyLetters(tfSurname.getText()) && ValidatorModel.peselValidator(tfPesel.getText())
-                && ValidatorModel.postalCodeValidator(tfPostalCode.getText()) && ValidatorModel.phoneValidator(tfPhone.getText())
-                && ValidatorModel.emailValidator(tfEmail.getText())) {
-            if (tfPassword1.getText().equals(tfPassword2.getText())) {
-                if (ValidatorModel.streetValidator(tfStreet.getText()) &&
-                        ValidatorModel.containsOnlyNumbers(tfNumber.getText())) {
-                    PatientAdministrationDTO newPatient = new PatientAdministrationDTO();
-                    Patient p = new Patient();
-                    p.setEmail(tfEmail.getText());
-                    p.setFirstName(tfName.getText());
-                    p.setLastName(tfSurname.getText());
-                    p.setPassword(tfPassword1.getText());
-                    p.setPassword(tfPassword2.getText());
-                    p.setPesel(tfPesel.getText());
-                    p.setPhoneNumber(tfPhone.getText());
-                    Address ad = new Address();
-                    ad.setCity(tfCity.getText());
-                    ad.setStreet(tfStreet.getText());
-                    ad.setZip(tfPostalCode.getText());
-                    ad.setNumber(Integer.parseInt(tfNumber.getText()));
-                    p.setAddress(ad);
-                    p.setFirstContactDoctorId(cbDoctor.getSelectionModel().getSelectedItem().getDoctorId());
-                    newPatient.add(p);
-                    try {
-                        ControllerPagination.helpers.SwitchScene("homescreen/Homescreen", event);
-                    } catch (IOException e) {
-                        e.printStackTrace();
+        if (ValidatorModel.containsOnlyLetters(tfCity.getText())) {
+            if (ValidatorModel.containsOnlyLetters(tfName.getText())) {
+                if (ValidatorModel.containsOnlyLetters(tfSurname.getText())) {
+                    if (ValidatorModel.peselValidator(tfPesel.getText())) {
+                        if (ValidatorModel.postalCodeValidator(tfPostalCode.getText())) {
+                            if (ValidatorModel.phoneValidator(tfPhone.getText())) {
+                                if (ValidatorModel.emailValidator(tfEmail.getText())) {
+                                    if (tfPassword1.getText().equals(tfPassword2.getText())) {
+                                        if (ValidatorModel.streetValidator(tfStreet.getText()) &&
+                                                ValidatorModel.containsOnlyNumbers(tfNumber.getText())) {
+                                            PatientAdministrationDTO newPatient = new PatientAdministrationDTO();
+                                            Patient p = new Patient();
+                                            p.setEmail(tfEmail.getText());
+                                            p.setFirstName(tfName.getText());
+                                            p.setLastName(tfSurname.getText());
+                                            p.setPassword(tfPassword1.getText());
+                                            p.setPassword(tfPassword2.getText());
+                                            p.setPesel(tfPesel.getText());
+                                            p.setPhoneNumber(tfPhone.getText());
+                                            Address ad = new Address();
+                                            ad.setCity(tfCity.getText());
+                                            ad.setStreet(tfStreet.getText());
+                                            ad.setZip(tfPostalCode.getText());
+                                            ad.setNumber(Integer.parseInt(tfNumber.getText()));
+                                            p.setAddress(ad);
+                                            p.setFirstContactDoctorId(cbDoctor.getSelectionModel().getSelectedItem().getDoctorId());
+                                            newPatient.add(p);
+                                            try {
+                                                ControllerPagination.helpers.SwitchScene("homescreen/Homescreen", event);
+                                            } catch (IOException e) {
+                                                e.printStackTrace();
+                                            }
+                                        } else {
+                                            DialogBox.informationBox("Błędne dane", "Złe miasto");
+                                        }
+                                    } else {
+                                        DialogBox.informationBox("Błędne dane", "Nieprawidłowe Imie");
+                                    }
+                                } else {
+                                    DialogBox.informationBox("Błędne dane", "Nieprawidłowe Nazwisko");
+                                }
+                            } else {
+                                DialogBox.informationBox("Błędne dane", "Nieprawidłowy pesel");
+                            }
+                        } else {
+                            DialogBox.informationBox("Błędne dane", "Nieprawidłowy kod pocztowy");
+                        }
+                    } else {
+                        DialogBox.informationBox("Błędne dane", "Nieprawidłowy numer telefonu");
                     }
                 } else {
-                    DialogBox.informationBox("Błędne dane", "Błąd w adresie.");
+                    DialogBox.informationBox("Błędne dane", "Nieprawidłowy adres E-mail.");
                 }
             } else {
-                DialogBox.informationBox("Błędne dane", "Hasła są różne.");
+                DialogBox.informationBox("Błędne dane", "Hasła różnią się!" );
             }
         } else {
-            DialogBox.informationBox("Błędne dane", "Wystąpił błąd podczas rejestracji.");
+            DialogBox.informationBox("Błędne dane", "Nieprawidłowa ulica lub numer");
         }
     }
 
@@ -132,9 +153,13 @@ public class RegisterController implements Initializable, ControllerPagination {
         DoctorAdministrationDTO dadto = new DoctorAdministrationDTO();
 
         dataDoctors = FXCollections.observableArrayList();
-
-
         dataDoctors.addAll(dadto.getAll());
+
+        for (Doctor doct : dataDoctors){
+            if (doct.getSpecializationId()!=21) dataDoctors.remove(doct);
+        }
+
+        //dataDoctors.addAll(dadto.getAll());
         cbDoctor.setItems(dataDoctors);
 
 

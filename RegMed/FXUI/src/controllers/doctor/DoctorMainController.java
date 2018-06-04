@@ -13,7 +13,7 @@ import javafx.scene.layout.BorderPane;
 
 import java.io.IOException;
 import javafx.util.*;
-
+import pojo.Doctor;
 
 
 public class DoctorMainController implements ControllerPagination {
@@ -44,6 +44,10 @@ public class DoctorMainController implements ControllerPagination {
                 anchorEdit,
                 anchorReport,
                 anchorAdmissionTable;
+
+
+    public static Doctor d;
+
 
     @FXML public void initialize(){
         //helpers.getCurrentDateTime(dateLabel, timeLabel);

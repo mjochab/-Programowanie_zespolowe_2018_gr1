@@ -1,5 +1,7 @@
 package controllers.homescreen;
 
+import controllers.admin.AdminHomeController;
+import controllers.doctor.DoctorMainController;
 import dto.AdminAdministrationDTO;
 import dto.DoctorAdministrationDTO;
 import dto.PatientAdministrationDTO;
@@ -112,6 +114,7 @@ public class HomescreenController implements Initializable, ControllerPagination
                 if (dl.getFirstName().equals(txtLogin.getText()) && dl.getPassword().equals(tfPassword.getText())) {
                     sprawdzenie = true;
                     rola = "doctor";
+                    DoctorMainController.d = dl;
                     // String rol2 = u1.getClass().getName();
                     break;
                 }
@@ -125,6 +128,7 @@ public class HomescreenController implements Initializable, ControllerPagination
                 if (a1.getFirstName().equals(txtLogin.getText()) && a1.getPassword().equals(tfPassword.getText())) {
                     sprawdzenie = true;
                     rola = "admin";
+                    AdminHomeController.a = a1;
                     // String rol2 = u1.getClass().getName();
                     break;
                 }
@@ -133,6 +137,7 @@ public class HomescreenController implements Initializable, ControllerPagination
 
         switch (rola) {
             case "admin":
+
                 helpers.SwitchScene("admin/AdminHome", event);
                 break;
             case "patient":

@@ -3,11 +3,26 @@ package controllers.admin;
 import helpers.ControllerPagination;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.control.Label;
+import pojo.Administrator;
 
 
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
-public class AdminHomeController implements ControllerPagination {
+
+public class AdminHomeController implements ControllerPagination,Initializable {
+
+    @FXML
+    private Label lLogged;
+
+
+
+
+
+    public static Administrator a;
 
     //ControllerHelpers helpers = new ControllerHelpers();
 
@@ -25,5 +40,11 @@ public class AdminHomeController implements ControllerPagination {
 
     public void doctorsModuleButtonClicked(ActionEvent event) throws IOException {
         helpers.SwitchScene("doctor/DoctorMain", event);
+    }
+
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        lLogged.setText(a.getFirstName() + " " + a.getLastName());
     }
 }
