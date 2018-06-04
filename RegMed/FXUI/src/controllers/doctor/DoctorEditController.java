@@ -137,6 +137,7 @@ public class DoctorEditController implements ControllerPagination {
 
     public void getDaysIfExist() {
         days = doctorModuleDTO.getDoctorWorkingDays(12);
+        System.out.println(days);
     }
 
     public void fillHours() {

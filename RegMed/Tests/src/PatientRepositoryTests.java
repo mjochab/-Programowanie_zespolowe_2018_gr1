@@ -118,16 +118,16 @@ public class PatientRepositoryTests {
         System.out.println(parser.patietFile(patient,doctor,h));
     }
 
-    @Test
-    void dailyPatientListTest(){
-        PatientListDTO patientList = new PatientListDTO();
-        ToHtmlParser parser = new ToHtmlParser();
-        String hour = patientList.getPatientList(12).getVisitHour();
-        String name = patientList.getPatientList(12).getFirstName()+" "+patientList.getPatientList(12).getLastName();
-        HashMap<String, String> h = new HashMap<>();
-        h.clear();
-        h.put(hour,name);
-        System.out.println(parser.dailyPatientList(h));
-    }
+//    @Test
+//    void dailyPatientListTest(){
+//        PatientListDTO patientList = new PatientListDTO();
+//        ToHtmlParser parser = new ToHtmlParser();
+//        String hour = patientList.getPatientList(12).getVisitHour();
+//        String name = patientList.getPatientList(12).getFirstName()+" "+patientList.getPatientList(12).getLastName();
+//        HashMap<String, String> h = new HashMap<>();
+//        h.clear();
+//        h.put(hour,name);
+//        System.out.println(parser.dailyPatientList(h));
+//    }
 
 }

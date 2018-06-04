@@ -9,10 +9,15 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Labeled;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import javafx.util.*;
 
 
@@ -23,9 +28,7 @@ public class DoctorMainController implements ControllerPagination {
     Label
             nameLabel,
             dateLabel,
-            timeLabel,
-            hourLabel,
-            minuteLabel;
+            hourLabel;
 
     @FXML
     Button
@@ -54,6 +57,7 @@ public class DoctorMainController implements ControllerPagination {
 
     @FXML public void initialize(){
         nameLabel.setText(doctorModuleDTO.getDoctor(12).getFirstName() + " " +doctorModuleDTO.getDoctor(12).getLastName());
+        getCurrentDateTime(dateLabel, hourLabel);
     }
 
     @FXML void switchAdmissionModule(ActionEvent event) throws IOException{
@@ -91,5 +95,21 @@ public class DoctorMainController implements ControllerPagination {
         anchorEdit.setVisible(false);
         file_2.setVisible(false);
         anchorAdmissionTable.setVisible(false);
+    }
+
+    private void getCurrentDateTime(Labeled dateLabel, Labeled timeLabel){
+        Timeline clock = new Timeline( new KeyFrame(Duration.ZERO, e-> {
+            DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+            DateFormat timeFormat = new SimpleDateFormat("HH:mm");
+            Date date = new Date();
+            String dateShow = dateFormat.format(date);
+            String timeShow = timeFormat.format(date);
+            dateLabel.setText(dateShow);
+            timeLabel.setText(timeShow);
+        }),
+                new KeyFrame(Duration.seconds(60))
+        );
+        clock.setCycleCount(Animation.INDEFINITE);
+        clock.play();
     }
 }
