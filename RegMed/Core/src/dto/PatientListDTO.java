@@ -20,7 +20,6 @@ public class PatientListDTO {
         dbConnection.openSession();
         try {
             ArrayList<PatientList> result = new ArrayList<PatientList>(dbConnection.getMapper().getPatientList(doctorId));
-            result.sort(Comparator.comparing(o -> o.getVisitHour()));
             return result;
         } finally {
             dbConnection.closeSession();

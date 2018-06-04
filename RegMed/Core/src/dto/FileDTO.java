@@ -7,6 +7,7 @@ import pojo.File;
 import pojo.Patient;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class FileDTO {
@@ -19,7 +20,9 @@ public class FileDTO {
     public List<File> getFiles(int patientId) {
         dbConnection.openSession();
         try {
-            return new ArrayList<>(dbConnection.getMapper().getPatientFiles(patientId));
+            ArrayList<File> result = new ArrayList<>(dbConnection.getMapper().getPatientFiles(patientId));
+            result.sort(Comparator.comparing(o -> o.getDate()));
+            return result;
         } finally {
             dbConnection.closeSession();
         }

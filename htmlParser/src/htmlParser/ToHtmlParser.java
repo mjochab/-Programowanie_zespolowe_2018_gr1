@@ -1,5 +1,7 @@
 package htmlParser;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -14,7 +16,7 @@ public class ToHtmlParser {
      * @param patientHistory
      * @return
      */
-    public String patietFile(ToHtmlPatient patient, ToHtmlDoctor doctor, HashMap<String, String> patientHistory){
+    public String patietFile(ToHtmlPatient patient, ToHtmlDoctor doctor, TreeMap<LocalDateTime, String> patientHistory){
         String result = "";
         result += createPatientDataHtml(patient, doctor) + createPatientHistoryHtml(patientHistory);
         return result;
@@ -46,14 +48,14 @@ public class ToHtmlParser {
      * @param patientHistory
      * @return
      */
-    private String createPatientHistoryHtml(HashMap<String, String> patientHistory) {
-        String result = null;
-
+    private String createPatientHistoryHtml(TreeMap<LocalDateTime, String> patientHistory) {
+        String result = "";
         Iterator it = patientHistory.entrySet().iterator();
         while (it.hasNext()) {
             HashMap.Entry pair = (HashMap.Entry) it.next();
-            String h2 = String.format("<h2>%s</h2>", pair.getKey()),
+            String h2 = String.format("<h2>%s", pair.getKey()).substring(0,14),
                     p = String.format("<p>%s</p><br><hr>", pair.getValue());
+            h2+="</h2>";
             result += (h2 + p);
             it.remove();
         }

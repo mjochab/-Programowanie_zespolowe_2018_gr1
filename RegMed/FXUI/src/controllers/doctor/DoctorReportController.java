@@ -39,7 +39,6 @@ public class DoctorReportController implements ControllerPagination {
     @FXML
     private void initialize() {
         String test = dailyPatientList();
-        System.out.println(test);
         reportWebView.getEngine().loadContent(test);
     }
 

@@ -1,10 +1,13 @@
 package pojo;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 public class File {
     private int id;
     private Patient patient;
     private Doctor doctor;
-    private String date;
+    private LocalDateTime date;
     private String history;
 
     public int getId() {
@@ -31,11 +34,11 @@ public class File {
         this.doctor = doctor;
     }
 
-    public String getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(LocalDateTime date) {
         this.date = date;
     }
 

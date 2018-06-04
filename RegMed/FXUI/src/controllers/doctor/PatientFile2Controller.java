@@ -18,9 +18,12 @@ import pojo.PatientsHistory;
 import javafx.fxml.Initializable;
 
 import java.net.URL;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.TreeMap;
 
 import static controllers.doctor.PatientFile1Controller.getSelectedPatientId;
 
@@ -87,7 +90,11 @@ public class PatientFile2Controller implements Initializable {
 
     public void addTextButtonClicked(ActionEvent event) {
         String reco = recognition.getText();
-        insertPatientsFile(getSelectedPatientId, reco);
+        if(getSelectedPatientId!=null){
+            if(reco.length()!=0){
+                insertPatientsFile(getSelectedPatientId, reco);
+            }
+        }
         recognition.clear();
     }
 
@@ -108,7 +115,7 @@ public class PatientFile2Controller implements Initializable {
         ToHtmlPatient patient = null;
         ToHtmlDoctor doctor = null;
         ToHtmlParser toHtmlParser = new ToHtmlParser();
-        HashMap<String, String> h = new HashMap<>();
+        TreeMap<LocalDateTime, String> h = new TreeMap<>();
         String out = "";
         try {
             patient = new ToHtmlPatient(patientData.getFirstName(),
@@ -126,11 +133,9 @@ public class PatientFile2Controller implements Initializable {
 
             FileDTO file = new FileDTO();
             List<File> fileData = file.getFiles(getSelectedPatientId);
-
-            for(int i=0;i<fileData.size();i++){
-                h.put(fileData.get(i).getDate(), fileData.get(i).getHistory());
+            for(File fileTemp: fileData){
+                h.put(fileTemp.getDate(),fileTemp.getHistory());
             }
-
             out = toHtmlParser.patietFile(patient, doctor, h);
         } catch (NullPointerException | IndexOutOfBoundsException e) {
             historyOfPatient.getEngine().loadContent("History is empty");
