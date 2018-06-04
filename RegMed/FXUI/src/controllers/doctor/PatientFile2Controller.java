@@ -42,8 +42,6 @@ public class PatientFile2Controller implements Initializable {
             addTextButton,
             historyButton;
 
-
-
     @FXML
     TabPane
             tabPane;
