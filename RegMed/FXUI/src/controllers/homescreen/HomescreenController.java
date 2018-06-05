@@ -20,6 +20,7 @@ import javafx.stage.Stage;
 import pojo.Administrator;
 import pojo.Doctor;
 import pojo.Patient;
+import pojo.User;
 import repositories.AdministratorRepository;
 import repositories.DoctorRepository;
 import repositories.PatientRepository;
@@ -85,7 +86,8 @@ public class HomescreenController implements ControllerPagination {
 
     @FXML
     void Login(ActionEvent event) throws IOException {
-       loggedUser = checkUser(txtLogin.getText(), tfPassword.getText(), event);
+        checkUser(txtLogin.getText(), tfPassword.getText(), event);
+
     }
 
     /**
@@ -112,44 +114,56 @@ public class HomescreenController implements ControllerPagination {
         System.exit(0);
     }
 
-    private int checkUser(String pesel, String password, ActionEvent event) throws IOException {
-        int user = 0;
-            boolean exit = false;
-            for (Patient patient : patients) {
-                if (patient.getPesel().equals(pesel) && patient.getPassword().equals(password)) {
-                    user = patient.getId();
+    private void checkUser(String pesel, String password, ActionEvent event) throws IOException {
+        Patient loggedPatient = null;
+        Doctor loggedDoctor = null;
+        Administrator loggedAdministrator = null;
+
+        boolean exit = false;
+
+        for (Patient patient : patients) {
+            if (patient.getPesel().equals(pesel) && patient.getPassword().equals(password)) {
+                loggedPatient = patient;
+                exit = true;
+
+                break;
+            }
+        }
+        if (!exit) {
+            for (Doctor doctor : doctors) {
+                if (doctor.getPesel().equals(pesel) && doctor.getPassword().equals(password)) {
+                    loggedDoctor = doctor;
                     exit = true;
-                    helpers.SwitchScene("patient/PatientHome", event);
 
                     break;
                 }
             }
-            if (!exit) {
-                for (Doctor doctor : doctors) {
-                    if (doctor.getPesel().equals(pesel) && doctor.getPassword().equals(password)) {
-                        user = doctor.getId();
-                        exit = true;
-                        helpers.SwitchScene("doctor/DoctorMain", event);
+        }
+        if (!exit) {
+            for (Administrator admin : administrators) {
+                if (admin.getPesel().equals(pesel) && admin.getPassword().equals(password)) {
+                    loggedAdministrator = admin;
+                    exit = true;
 
-                        break;
-                    }
+                    break;
                 }
             }
-            if (!exit) {
-                for (Administrator admin : administrators) {
-                    if (admin.getPesel().equals(pesel) && admin.getPassword().equals(password)) {
-                        user = admin.getId();
-                        helpers.SwitchScene("admin/AdminHome", event);
-                        exit = true;
-
-                        break;
-                    }
-                }
-            }
-            if(!exit){
-                DialogBox.warningBox("Attention!", "Wrong user Login or Password");
-            }
-        return user;
+        }
+        if (!exit) {
+            DialogBox.warningBox("Attention!", "Wrong user Login or Password");
+        }
+        if (loggedPatient != null) {
+            loggedUser=loggedPatient.getId();
+            helpers.SwitchScene("patient/PatientHome", event);
+        }
+        if (loggedDoctor != null) {
+            loggedUser=loggedDoctor.getId();
+            helpers.SwitchScene("doctor/DoctorMain", event);
+        }
+        if (loggedAdministrator != null) {
+            loggedUser=loggedAdministrator.getId();
+            helpers.SwitchScene("admin/AdminHome", event);
+        }
     }
 }
 

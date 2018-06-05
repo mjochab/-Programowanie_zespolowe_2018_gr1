@@ -18,6 +18,8 @@ import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 
+import static controllers.homescreen.HomescreenController.loggedUser;
+
 public class DoctorEditController implements ControllerPagination {
 
 
@@ -122,7 +124,7 @@ public class DoctorEditController implements ControllerPagination {
 
     public void insertWorkingDays(String day, String hourFrom, String hourTo, String hourInterval, String validateDay) {
         DoctorWorkingDays dayToAdd = new DoctorWorkingDays();
-        dayToAdd.setId(12);
+        dayToAdd.setId(loggedUser);
         dayToAdd.setDay(day);
         dayToAdd.setHourFrom(hourFrom);
         dayToAdd.setHourTo(hourTo);
@@ -132,7 +134,7 @@ public class DoctorEditController implements ControllerPagination {
     }
 
     public void getDaysIfExist() {
-        days = doctorModuleDTO.getDoctorWorkingDays(12);
+        days = doctorModuleDTO.getDoctorWorkingDays(loggedUser);
     }
 
     public void fillHours() {
