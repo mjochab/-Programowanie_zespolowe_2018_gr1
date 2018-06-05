@@ -114,12 +114,8 @@ public class DoctorEditController implements ControllerPagination {
         if (ValidatorModel.doctorEditDayValidator(fridayBox.isSelected(), fridayFromTextField.getText(), fridayToTextField.getText())) {
             hours.put("friday", new DoctorEditModel(fridayBox.isSelected(), fridayFromTextField.getText(), fridayToTextField.getText()));
         }
-        if (ValidatorModel.intervalValidation(intervalTextField.getText())) {
-            System.out.println(intervalTextField.getText());
-        }
 
-        hours.forEach((k, v) -> System.out.println("day: " + k + " hour: " + v.getFrom() + " " + v.getTo() + " " + v.getActive()));
-        hours.forEach((k, v) -> insertWorkingDays(k, v.getFrom(), v.getTo(), intervalTextField.getText(), vadilityDatePicker.getEditor().getText()));
+        hours.forEach((k, v) -> insertWorkingDays(k, v.getFrom(), v.getTo(), intervalTextField.getText(), vadilityDatePicker.getValue().toString()));
 
 
     }

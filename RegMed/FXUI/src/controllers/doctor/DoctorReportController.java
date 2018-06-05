@@ -8,9 +8,12 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
+import pojo.PatientList;
 
 
+import java.time.LocalTime;
 import java.util.HashMap;
+import java.util.TreeMap;
 
 public class DoctorReportController implements ControllerPagination {
 
@@ -33,23 +36,23 @@ public class DoctorReportController implements ControllerPagination {
         this.patientListDTO = new PatientListDTO();
     }
 
-    @FXML void dailyPatientListOnClick(ActionEvent event){
-        reportWebView.getEngine().loadContent(dailyPatientList(), "text/html");
+    @FXML
+    private void initialize() {
+        String test = dailyPatientList();
+        reportWebView.getEngine().loadContent(test);
     }
 
-    @FXML void weeklyScheduleOnClick(ActionEvent event){
-
-        reportWebView.getEngine().loadContent("<p>dupa</p>");
-    }
 
     private String dailyPatientList(){
         PatientListDTO patientList = new PatientListDTO();
         ToHtmlParser parser = new ToHtmlParser();
-        String hour = patientList.getPatientList(12).getVisitHour();
-        String name = patientList.getPatientList(12).getFirstName()+" "+patientList.getPatientList(12).getLastName();
-        HashMap<String, String> h = new HashMap<>();
-        h.put(hour,name);
-        System.out.println(parser.dailyPatientList(h));
+        TreeMap<LocalTime, String> h = new TreeMap<>();
+        for (PatientList patient: patientList.getPatientList(12)) {
+            LocalTime hour = patient.getVisitHour();
+            String name = patient.getFirstName()+" "+patient.getLastName();
+            h.put(hour,name);
+        }
+
         return parser.dailyPatientList(h);
     }
 }

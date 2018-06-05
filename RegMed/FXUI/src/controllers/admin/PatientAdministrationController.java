@@ -333,8 +333,13 @@ public class PatientAdministrationController implements ControllerPagination {
             loadDataToTable();
             clearAddPatientFields();
 
-        } catch (CustomControlsException ex) {
-            DialogBox.validationErrorBox("Error!", ex.getMessage());
+        } catch (CustomControlsException | ArrayIndexOutOfBoundsException ex) {
+            if(ex.getClass() == ArrayIndexOutOfBoundsException.class) {
+                DialogBox.validationErrorBox("Wrong patient data!",
+                        "Please choose firstcontact doctor");
+            } else {
+                DialogBox.validationErrorBox("Wrong patient data!", ex.getMessage());
+            }
         }
     }
 
@@ -524,9 +529,14 @@ public class PatientAdministrationController implements ControllerPagination {
             patientToReturn.setPhoneNumber(phoneField.getTextValidated());
             patientToReturn.setFirstContactDoctor(firstContactDoctors.get(firstcontactDoctorChoiceBox.getSelectionModel().getSelectedIndex()));
             editionSuccess[0] = true;
-        } catch (CustomControlsException ex) {
-            DialogBox.validationErrorBox("Validation error!", ex.getMessage());
+        } catch (CustomControlsException | ArrayIndexOutOfBoundsException ex) {
             editionSuccess[0] = false;
+            if(ex.getClass() == ArrayIndexOutOfBoundsException.class) {
+                DialogBox.validationErrorBox("Wrong patient data!",
+                        "Please choose firstcontact doctor");
+            } else {
+                DialogBox.validationErrorBox("Wrong patient data!", ex.getMessage());
+            }
         }
 
         return patientToReturn;
