@@ -15,6 +15,8 @@ import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.TreeMap;
 
+import static controllers.homescreen.HomescreenController.loggedUser;
+
 public class DoctorReportController implements ControllerPagination {
 
     @FXML
@@ -47,7 +49,7 @@ public class DoctorReportController implements ControllerPagination {
         PatientListDTO patientList = new PatientListDTO();
         ToHtmlParser parser = new ToHtmlParser();
         TreeMap<LocalTime, String> h = new TreeMap<>();
-        for (PatientList patient: patientList.getPatientList(12)) {
+        for (PatientList patient: patientList.getPatientList(loggedUser)) {
             LocalTime hour = patient.getVisitHour();
             String name = patient.getFirstName()+" "+patient.getLastName();
             h.put(hour,name);
