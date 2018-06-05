@@ -1,8 +1,7 @@
 package controllers.patient;
 
 import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
-import com.sun.javafx.scene.control.skin.DatePickerContent;
-import com.sun.javafx.scene.control.skin.DatePickerSkin;
+
 import dto.PatientModuleDTO;
 import helpers.ControllerPagination;
 import helpers.DialogBox;
