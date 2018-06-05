@@ -23,7 +23,7 @@ public interface DoctorAdministrationMapper {
      * @return all doctors from database written to list.
      */
     @Select("select id_doctor, first_name, last_name, PESEL, id_address, email, phone_number, " +
-            "id_specialization from doctors")
+            "password, id_specialization from doctors")
     @Results({
             @Result(property = "id", column = "id_doctor"),
             @Result(property = "firstName", column = "first_name"),
@@ -34,6 +34,7 @@ public interface DoctorAdministrationMapper {
                     fetchType = FetchType.EAGER)),
             @Result(property = "email", column = "email"),
             @Result(property = "phoneNumber", column = "phone_number"),
+            @Result(property = "password", column = "password"),
             @Result(property = "specialization", column = "id_specialization",
                     javaType = Specialization.class, one = @One(select = "selectDoctorSpecialization",
                     fetchType = FetchType.EAGER))
