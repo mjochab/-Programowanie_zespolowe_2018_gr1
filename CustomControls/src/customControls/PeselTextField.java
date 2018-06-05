@@ -2,19 +2,20 @@ package customControls;
 
 import javafx.scene.control.TextField;
 
-public class PeselTextField extends TextField implements ValidatedTextField{
+public class PeselTextField extends TextField implements ValidatedTextField {
 
     @Override
     public void replaceText(int start, int end, String text) {
         if (text.matches("[0-9]") && getText().length() < 11 || text.isEmpty()) {
-                super.replaceText(start, end, text);
-            } else {
-                //last value, which i removed
-                String removedDigit = getText().substring(getText().length()-1);
-                String s = removeLastDigit(getText());
-                setText(s + removedDigit);
-                super.positionCaret(getText().length());
-            }
+            setStyle("-fx-text-fill: black;");
+            super.replaceText(start, end, text);
+        } else {
+            //last value, which i removed
+            String removedDigit = getText().substring(getText().length() - 1);
+            String s = removeLastDigit(getText());
+            setText(s + removedDigit);
+            super.positionCaret(getText().length());
+        }
 
 
     }
@@ -27,7 +28,9 @@ public class PeselTextField extends TextField implements ValidatedTextField{
     }
 
     public String getTextValidated() throws CustomControlsException {
-        if(getText().length() < 11) {
+        if (getText().length() < 11) {
+            setStyle("-fx-text-fill: red;" +
+                    "-fx-text-box-border: red ;");
             throw new CustomControlsException("PESEL must have 11 digits!");
         }
 

@@ -289,12 +289,14 @@ public class DoctorAdministrationController implements ControllerPagination {
             loadDataToTable();
             //clearAddDoctorFields();
         }
-        catch (CustomControlsException ex) {
-            DialogBox.validationErrorBox("Wrong doctor data", ex.getMessage());
+        catch (CustomControlsException | ArrayIndexOutOfBoundsException ex) {
+            if(ex.getClass() == ArrayIndexOutOfBoundsException.class) {
+                DialogBox.validationErrorBox("Wrong patient data!",
+                        "Please choose specialization");
+            } else {
+                DialogBox.validationErrorBox("Wrong doctor data!", ex.getMessage());
+            }
         }
-
-
-
 
     }
 
@@ -343,11 +345,15 @@ public class DoctorAdministrationController implements ControllerPagination {
             Specialization specSelected = specializations.get(specIndex);
             doctor.setSpecializationId(specSelected.getId());
             editionSuccess[0] = true;
-        } catch (CustomControlsException ex) {
-            DialogBox.validationErrorBox("Wrong doctor data", ex.getMessage());
+        } catch (CustomControlsException | ArrayIndexOutOfBoundsException ex) {
             editionSuccess[0] = false;
+            if(ex.getClass() == ArrayIndexOutOfBoundsException.class) {
+                DialogBox.validationErrorBox("Wrong doctor data!",
+                        "Please choose specialization");
+            } else {
+                DialogBox.validationErrorBox("Wrong doctor data!", ex.getMessage());
+            }
         }
-
         return doctor;
     }
 
