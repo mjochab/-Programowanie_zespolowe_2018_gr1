@@ -59,6 +59,31 @@
                             </children></AnchorPane>
                     </content>
                 </Tab>
+            <Tab fx:id="refferalsTab" text="Refferals">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <BorderPane prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="150.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="100.0" AnchorPane.topAnchor="150.0">
+                           <top>
+                              <Label text="RefferalForPatient" BorderPane.alignment="CENTER">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Label>
+                           </top>
+                           <center>
+                              <TextArea fx:id="refferalforpatient" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+                           </center>
+                        </BorderPane>
+                     </children>
+                  </AnchorPane>
+              </content>
+            </Tab>
+            <Tab text="Untitled Tab">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+              </content>
+            </Tab>
             </tabs>
         </TabPane>
     </center>
@@ -72,9 +97,14 @@
             </Button>
                 <Button fx:id="addTextButton" mnemonicParsing="false" onAction="#addTextButtonClicked" text="Add">
                     <HBox.margin>
-                        <Insets bottom="30.0" left="10.0" />
+                        <Insets bottom="30.0" left="20.0" />
                     </HBox.margin>
                 </Button>
+            <Button fx:id="addRefferalButton" mnemonicParsing="false" onAction="#addRefferalButtonClicked" text="addRefferal">
+               <HBox.margin>
+                  <Insets bottom="30.0" left="20.0" />
+               </HBox.margin>
+            </Button>
             </children>
             <BorderPane.margin>
                 <Insets />

@@ -2,7 +2,6 @@ package mappers;
 
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Options;
-import org.apache.ibatis.annotations.Select;
 import pojo.PatientsHistory;
 
 public interface PatientsHistoryMapper {
