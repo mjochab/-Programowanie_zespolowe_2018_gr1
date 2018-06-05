@@ -62,6 +62,7 @@ public class AdminAdministrationController implements Initializable, ControllerP
     private AdminAdministrationDTO adminAdministrationDTO;
     private FilteredList filteredList;
     private ObservableList tableData;
+    public static Administrator administrator;
 
     public AdminAdministrationController() {
         this.adminAdministrationDTO = new AdminAdministrationDTO();

@@ -2,6 +2,7 @@ package controllers.admin;
 
 import dto.DoctorAdministrationDTO;
 import pojo.Address;
+import pojo.Administrator;
 import pojo.Doctor;
 import helpers.ControllerPagination;
 import helpers.DialogBox;
@@ -69,6 +70,7 @@ public class DoctorAdministrationController implements ControllerPagination {
             phoneNumberColumn,
             addressColumn;
 
+    public static Administrator administrator;
     @FXML
     private Tab editWorkingHoursTab;
 

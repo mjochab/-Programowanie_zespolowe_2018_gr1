@@ -13,6 +13,7 @@ import javafx.scene.layout.BorderPane;
 
 import java.io.IOException;
 import javafx.util.*;
+import pojo.Administrator;
 import pojo.Doctor;
 
 
@@ -47,10 +48,16 @@ public class DoctorMainController implements ControllerPagination {
 
 
     public static Doctor d;
+    public static Administrator administrator;
 
-
-    @FXML public void initialize(){
+    @FXML public void initialize() {
         //helpers.getCurrentDateTime(dateLabel, timeLabel);
+        //if (d==null){
+            //lLabel.setText(administrator.getFirstName() + "  " + administrator.getLastName());
+        //}
+        //if (admnistrator==null){
+            //lLabel.setText(d.getFirstName() + "  " + d.getLastName());
+        //}
     }
 
     @FXML void switchAdmissionModule(ActionEvent event) throws IOException{

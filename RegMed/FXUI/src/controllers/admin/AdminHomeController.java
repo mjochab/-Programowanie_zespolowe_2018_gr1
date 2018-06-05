@@ -1,5 +1,6 @@
 package controllers.admin;
 
+import controllers.doctor.DoctorMainController;
 import helpers.ControllerPagination;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -27,18 +28,22 @@ public class AdminHomeController implements ControllerPagination,Initializable {
     //ControllerHelpers helpers = new ControllerHelpers();
 
     public void patientsButtonClicked(ActionEvent event) throws IOException {
+        PatientAdministrationController.administrator = a;
         helpers.SwitchScene("admin/PatientAdministration", event);
     }
 
     public void doctorsButtonClicked(ActionEvent event) throws IOException {
+        DoctorAdministrationController.administrator = a;
         helpers.SwitchScene("admin/DoctorAdministration", event);
     }
 
     public void administratorsButtonClicked(ActionEvent event) throws IOException {
+        AdminAdministrationController.administrator = a;
         helpers.SwitchScene("admin/AdminAdministration", event);
     }
 
     public void doctorsModuleButtonClicked(ActionEvent event) throws IOException {
+        DoctorMainController.administrator = a;
         helpers.SwitchScene("doctor/DoctorMain", event);
     }
 

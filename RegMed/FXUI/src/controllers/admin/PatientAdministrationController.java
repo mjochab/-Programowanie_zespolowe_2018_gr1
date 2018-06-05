@@ -13,6 +13,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 import dto.PatientAdministrationDTO;
 import pojo.Address;
+import pojo.Administrator;
 import pojo.Patient;
 
 import java.io.IOException;
@@ -73,7 +74,7 @@ public class PatientAdministrationController implements ControllerPagination {
     private PatientAdministrationDTO patientAdministrationDTO;
 
     private FilteredList filteredList;
-
+    public static Administrator administrator;
     ObservableList<Patient> tableData;
 
     public PatientAdministrationController() {
