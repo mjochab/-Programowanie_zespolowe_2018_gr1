@@ -1,6 +1,7 @@
 package controllers.admin;
 
 import dto.DoctorAdministrationDTO;
+import javafx.fxml.Initializable;
 import pojo.Address;
 import pojo.Administrator;
 import pojo.Doctor;
@@ -17,9 +18,14 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 import java.util.function.Predicate;
 
-public class DoctorAdministrationController implements ControllerPagination {
+public class DoctorAdministrationController implements ControllerPagination , Initializable {
+
+    @FXML
+    private Label lLogged;
 
     @FXML
     private Button saveEditButton,
@@ -87,6 +93,7 @@ public class DoctorAdministrationController implements ControllerPagination {
     @FXML
     private void initialize() {
 
+
         //setup columns in the table
         idColumn.setCellValueFactory(new PropertyValueFactory<Doctor, Integer>("doctorId"));
         forenameColumn.setCellValueFactory(new PropertyValueFactory<Doctor, String>("firstName"));
@@ -101,7 +108,7 @@ public class DoctorAdministrationController implements ControllerPagination {
         loadDataToTable();
 
         filteredList = new FilteredList(tableData, e->true);    //list using to filter data
-
+        lLogged.setText( "Logged as: " +administrator.getFirstName()+ " " + administrator.getLastName());
 
         editTabDisable(true);
     }
@@ -283,7 +290,10 @@ public class DoctorAdministrationController implements ControllerPagination {
         specializationFieldAdd.setText(null);
     }
 
-
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        lLogged.setText(administrator.getFirstName() + " " + administrator.getLastName());
+    }
 
 
 

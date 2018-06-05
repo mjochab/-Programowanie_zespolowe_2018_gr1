@@ -68,6 +68,7 @@ public class RegisterController implements Initializable, ControllerPagination {
     private Button bBack;
 
     private ObservableList<Doctor> dataDoctors;
+    private ObservableList<Doctor> dataDoctors2;
 
 
 
@@ -107,31 +108,31 @@ public class RegisterController implements Initializable, ControllerPagination {
                                                 e.printStackTrace();
                                             }
                                         } else {
-                                            DialogBox.informationBox("Błędne dane", "Złe miasto");
+                                            DialogBox.informationBox("Błędne dane", "Zły adres");
                                         }
                                     } else {
-                                        DialogBox.informationBox("Błędne dane", "Nieprawidłowe Imie");
+                                        DialogBox.informationBox("Błędne dane", "Hasła są różne");
                                     }
                                 } else {
-                                    DialogBox.informationBox("Błędne dane", "Nieprawidłowe Nazwisko");
+                                    DialogBox.informationBox("Błędne dane", "Nieprawidłowy e-mail");
                                 }
                             } else {
-                                DialogBox.informationBox("Błędne dane", "Nieprawidłowy pesel");
+                                DialogBox.informationBox("Błędne dane", "Nieprawidłowy numer telefonu");
                             }
                         } else {
                             DialogBox.informationBox("Błędne dane", "Nieprawidłowy kod pocztowy");
                         }
                     } else {
-                        DialogBox.informationBox("Błędne dane", "Nieprawidłowy numer telefonu");
+                        DialogBox.informationBox("Błędne dane", "Nieprawidłowy pesel");
                     }
                 } else {
-                    DialogBox.informationBox("Błędne dane", "Nieprawidłowy adres E-mail.");
+                    DialogBox.informationBox("Błędne dane", "Nieprawidłowe nazwisko.");
                 }
             } else {
-                DialogBox.informationBox("Błędne dane", "Hasła różnią się!" );
+                DialogBox.informationBox("Błędne dane", "Nieprawidłowe imie." );
             }
         } else {
-            DialogBox.informationBox("Błędne dane", "Nieprawidłowa ulica lub numer");
+            DialogBox.informationBox("Błędne dane", "Niepoprawne miasto.");
         }
     }
 
@@ -153,14 +154,16 @@ public class RegisterController implements Initializable, ControllerPagination {
         DoctorAdministrationDTO dadto = new DoctorAdministrationDTO();
 
         dataDoctors = FXCollections.observableArrayList();
+        dataDoctors2 = FXCollections.observableArrayList();
+
         dataDoctors.addAll(dadto.getAll());
 
-        for (Doctor doct : dataDoctors){
-            if (doct.getSpecializationId()!=21) dataDoctors.remove(doct);
+        for (Doctor doct : dataDoctors) {
+            if (doct.getSpecializationId() == 21) dataDoctors2.add(doct);
         }
 
         //dataDoctors.addAll(dadto.getAll());
-        cbDoctor.setItems(dataDoctors);
+        cbDoctor.setItems(dataDoctors2);
 
 
         cbDoctor.setCellFactory(new Callback<ListView<Doctor>,ListCell<Doctor>>(){

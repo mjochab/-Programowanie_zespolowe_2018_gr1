@@ -248,5 +248,6 @@
             <Font size="24.0" />
          </font>
       </Button>
+      <Label fx:id="lLogged" layoutX="527.0" layoutY="32.0" prefHeight="35.0" prefWidth="179.0" />
    </children>
 </AnchorPane>

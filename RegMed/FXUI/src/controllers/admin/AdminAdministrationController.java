@@ -39,6 +39,8 @@ public class AdminAdministrationController implements Initializable, ControllerP
             peselFieldAdd,
             emailFieldAdd,
             phoneNumberFieldAdd;
+    @FXML
+    private Label lLogged;
 
     @FXML
     private TabPane tabPane;
@@ -75,6 +77,7 @@ public class AdminAdministrationController implements Initializable, ControllerP
         loadDataToTable();
         filteredList = new FilteredList(tableData, e->true);
         editTabDisable(true);
+        lLogged.setText(administrator.getFirstName() + " " + administrator.getLastName());
     }
 
     private void setupColumnsInTheTable() {
@@ -219,6 +222,9 @@ public class AdminAdministrationController implements Initializable, ControllerP
         emailFieldAdd.setText(null);
         phoneNumberFieldAdd.setText(null);
     }
+
+
+
 
 
     //HELPER METHODS

@@ -5,6 +5,7 @@ import helpers.ControllerPagination;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import pojo.Administrator;
 
@@ -18,6 +19,10 @@ public class AdminHomeController implements ControllerPagination,Initializable {
 
     @FXML
     private Label lLogged;
+
+
+    @FXML
+    private Button bLogout;
 
 
 
@@ -50,6 +55,15 @@ public class AdminHomeController implements ControllerPagination,Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        lLogged.setText(a.getFirstName() + " " + a.getLastName());
+        lLogged.setText( "Logged as: " +a.getFirstName() + " " + a.getLastName());
     }
+
+
+    @FXML
+    void logout(ActionEvent event) throws IOException {
+        a = null;
+        helpers.SwitchScene("homescreen/Homescreen", event);
+    }
+
+
 }
