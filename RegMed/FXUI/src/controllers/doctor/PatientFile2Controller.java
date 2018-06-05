@@ -6,6 +6,8 @@ import helpers.DialogBox;
 import htmlParser.ToHtmlDoctor;
 import htmlParser.ToHtmlParser;
 import htmlParser.ToHtmlPatient;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -27,7 +29,9 @@ import static controllers.doctor.PatientFile1Controller.getSelectedPatientId;
 public class PatientFile2Controller implements Initializable {
 
     ///////////////
-
+    private ObservableList<String> specializationsList;
+    private PatientModuleDTO patientModuleDTO;
+    private ObservableList<DoctorWorkingDays> doctorWorkingDaysTableData;
     @FXML
     private TextArea
             recognition,
@@ -49,6 +53,9 @@ public class PatientFile2Controller implements Initializable {
     @FXML
     WebView
             historyOfPatient;
+    @FXML
+    ChoiceBox<Specialization>
+            specializationChoiceBox;
 
 
 
@@ -57,9 +64,11 @@ public class PatientFile2Controller implements Initializable {
 
     private int doctorId = 12;
     private int specialistId = 3;
+    private int specializationId=0;
     public PatientFile2Controller() {
         this.patientsHistoryDTO = new PatientsHistoryDTO();
         this.patientsRefferalDTO = new PatientsRefferalDTO();
+        patientModuleDTO = new PatientModuleDTO();
     }
 
 
@@ -68,6 +77,7 @@ public class PatientFile2Controller implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         changeTab();
+        loadDataIntoSpecializationAndDoctorsChoiceBoxes();
     }
 
     public void changeTab() {
@@ -112,7 +122,6 @@ public class PatientFile2Controller implements Initializable {
 
     public void addRefferalButtonClicked(ActionEvent event){
         String  reff = refferalforpatient.getText();
-        
         if(getSelectedPatientId!=null){
             if(reff.length()!=0){
                 insertPatientsRefferal(getSelectedPatientId, reff);
@@ -125,7 +134,7 @@ public class PatientFile2Controller implements Initializable {
         PatientsRefferal refferalAdd = new PatientsRefferal();
         refferalAdd.setPatientId(patientId);
         refferalAdd.setDoctorId(doctorId);
-        refferalAdd.setSpecialistId(specialistId);
+        refferalAdd.setSpecialistId(specializationChoiceBox.getSelectionModel().getSelectedItem().getId());
         refferalAdd.setRefferalforpatient(refferalforpatient);
         patientsRefferalDTO.add(refferalAdd);
     }
@@ -142,7 +151,9 @@ public class PatientFile2Controller implements Initializable {
     }
 
 
-
+    private void loadDataIntoSpecializationAndDoctorsChoiceBoxes() {
+        specializationChoiceBox.setItems(FXCollections.observableArrayList(patientModuleDTO.getSpecializations()));
+    }
 
 
 

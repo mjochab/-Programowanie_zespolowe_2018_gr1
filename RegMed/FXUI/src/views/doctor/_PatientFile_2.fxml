@@ -74,14 +74,12 @@
                            <center>
                               <TextArea fx:id="refferalforpatient" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
                            </center>
+                           <bottom>
+                              <ChoiceBox fx:id="specializationChoiceBox" prefWidth="150.0" BorderPane.alignment="CENTER" />
+                           </bottom>
                         </BorderPane>
                      </children>
                   </AnchorPane>
-              </content>
-            </Tab>
-            <Tab text="Untitled Tab">
-              <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
               </content>
             </Tab>
             </tabs>

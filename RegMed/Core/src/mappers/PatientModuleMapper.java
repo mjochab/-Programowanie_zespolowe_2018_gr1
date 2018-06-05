@@ -157,8 +157,11 @@ public interface PatientModuleMapper {
     @Results(value = @Result(property = "name", column = "name"))
     List<String> getSpecializationsString();
 
-    @Select("select name from specializations")
-    @Results(@Result(property = "name", column = "name"))
+    @Select("select id_specialization, name from specializations")
+    @Results(value={
+            @Result(property = "id", column = "id_specialization"),
+            @Result(property = "name", column = "name")
+    })
     List<Specialization> getSpecializations();
 
     @Select("select id_doctor, first_name, last_name from doctors d INNER JOIN specializations s " +
