@@ -1,20 +1,18 @@
 package controllers.doctor;
 
 
-import controllers.homescreen.HomescreenController;
 import dto.*;
 import helpers.DialogBox;
 import htmlParser.ToHtmlDoctor;
 import htmlParser.ToHtmlParser;
 import htmlParser.ToHtmlPatient;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.web.WebView;
-import pojo.Doctor;
-import pojo.File;
-import pojo.Patient;
-import pojo.PatientsHistory;
+import pojo.*;
 
 import javafx.fxml.Initializable;
 
@@ -31,17 +29,22 @@ import static controllers.doctor.PatientFile1Controller.getSelectedPatientId;
 public class PatientFile2Controller implements Initializable {
 
     ///////////////
-
+    private ObservableList<String> specializationsList;
+    private PatientModuleDTO patientModuleDTO;
+    private ObservableList<DoctorWorkingDays> doctorWorkingDaysTableData;
     @FXML
     private TextArea
-            recognition;
+            recognition,
+            refferalforpatient;
+
 
 
     ///////////////
     @FXML
     Button
             addTextButton,
-            historyButton;
+            historyButton,
+            addRefferalButton;
 
     @FXML
     TabPane
@@ -50,32 +53,52 @@ public class PatientFile2Controller implements Initializable {
     @FXML
     WebView
             historyOfPatient;
+    @FXML
+    ChoiceBox<Specialization>
+            specializationChoiceBox;
 
 
 
     private PatientsHistoryDTO patientsHistoryDTO;
+    private PatientsRefferalDTO patientsRefferalDTO;
 
-    private int doctorId = HomescreenController.loggedUser;
-
+    private int doctorId = 12;
+    private int specialistId = 3;
+    private int specializationId=0;
     public PatientFile2Controller() {
         this.patientsHistoryDTO = new PatientsHistoryDTO();
+        this.patientsRefferalDTO = new PatientsRefferalDTO();
+        patientModuleDTO = new PatientModuleDTO();
     }
+
+
 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         changeTab();
+        loadDataIntoSpecializationAndDoctorsChoiceBoxes();
     }
 
     public void changeTab() {
             tabPane.getSelectionModel().selectedItemProperty().addListener((ov, oldTab, newTab) -> {
-                if (addTextButton.isVisible()) {
+
+                if (newTab.getId().equals("showHistoryTab")) {
                     addTextButton.setVisible(false);
                     historyButton.setVisible(true);
-                } else {
+                    addRefferalButton.setVisible(false);
+                }
+                if(newTab.getId().equals("interviewTab")){
                     addTextButton.setVisible(true);
                     historyButton.setVisible(false);
+                    addRefferalButton.setVisible(false);
                 }
+                if(newTab.getId().equals("refferalsTab")){
+                    addTextButton.setVisible(false);
+                    historyButton.setVisible(false);
+                    addRefferalButton.setVisible(true);
+                }
+
             });
     }
 
@@ -97,6 +120,27 @@ public class PatientFile2Controller implements Initializable {
         recognition.clear();
     }
 
+    public void addRefferalButtonClicked(ActionEvent event){
+        String  reff = refferalforpatient.getText();
+        if(getSelectedPatientId!=null){
+            if(reff.length()!=0){
+                insertPatientsRefferal(getSelectedPatientId, reff);
+            }
+        }
+        refferalforpatient.clear();
+    }
+
+    public void insertPatientsRefferal(int patientId, String refferalforpatient){
+        PatientsRefferal refferalAdd = new PatientsRefferal();
+        refferalAdd.setPatientId(patientId);
+        refferalAdd.setDoctorId(doctorId);
+        refferalAdd.setSpecialistId(specializationChoiceBox.getSelectionModel().getSelectedItem().getId());
+        refferalAdd.setRefferalforpatient(refferalforpatient);
+        patientsRefferalDTO.add(refferalAdd);
+    }
+
+
+
 
     public void insertPatientsFile(int patientId, String recognition) {
         PatientsHistory historyAdd = new PatientsHistory();
@@ -105,6 +149,17 @@ public class PatientFile2Controller implements Initializable {
         historyAdd.setRecognition(recognition);
         patientsHistoryDTO.add(historyAdd);
     }
+
+
+    private void loadDataIntoSpecializationAndDoctorsChoiceBoxes() {
+        specializationChoiceBox.setItems(FXCollections.observableArrayList(patientModuleDTO.getSpecializations()));
+    }
+
+
+
+
+
+
 
     public String showPatientFile(int patientId) {
         PatientAdministrationDTO patientDTO = new PatientAdministrationDTO();
