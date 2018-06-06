@@ -178,4 +178,14 @@ public interface DoctorAdministrationMapper {
 
 
 
+
+
+    @Insert("Insert into specializations (id_specialization, name) VALUES(#{id}, #{name})")
+    @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id_specialization")
+    void createSpeciatization(Specialization specialization);
+
+
+    @Delete("Delete from specializations where id_specialization=#{specializationId}")
+    void deleteSpecialization(int specializationId);
+
 }

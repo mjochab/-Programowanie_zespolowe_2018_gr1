@@ -1,6 +1,7 @@
 package controllers.doctor;
 
 
+import controllers.homescreen.HomescreenController;
 import dto.*;
 import helpers.DialogBox;
 import htmlParser.ToHtmlDoctor;
@@ -12,7 +13,10 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.web.WebView;
-import pojo.*;
+import pojo.Doctor;
+import pojo.File;
+import pojo.Patient;
+import pojo.PatientsHistory;
 
 import javafx.fxml.Initializable;
 
@@ -34,17 +38,14 @@ public class PatientFile2Controller implements Initializable {
     private ObservableList<DoctorWorkingDays> doctorWorkingDaysTableData;
     @FXML
     private TextArea
-            recognition,
-            refferalforpatient;
-
+            recognition;
 
 
     ///////////////
     @FXML
     Button
             addTextButton,
-            historyButton,
-            addRefferalButton;
+            historyButton;
 
     @FXML
     TabPane
@@ -60,7 +61,6 @@ public class PatientFile2Controller implements Initializable {
 
 
     private PatientsHistoryDTO patientsHistoryDTO;
-    private PatientsRefferalDTO patientsRefferalDTO;
 
     private int doctorId = 12;
     private int specialistId = 3;
@@ -69,9 +69,8 @@ public class PatientFile2Controller implements Initializable {
         this.patientsHistoryDTO = new PatientsHistoryDTO();
         this.patientsRefferalDTO = new PatientsRefferalDTO();
         patientModuleDTO = new PatientModuleDTO();
+
     }
-
-
 
 
     @Override
@@ -82,23 +81,13 @@ public class PatientFile2Controller implements Initializable {
 
     public void changeTab() {
             tabPane.getSelectionModel().selectedItemProperty().addListener((ov, oldTab, newTab) -> {
-
-                if (newTab.getId().equals("showHistoryTab")) {
+                if (addTextButton.isVisible()) {
                     addTextButton.setVisible(false);
                     historyButton.setVisible(true);
-                    addRefferalButton.setVisible(false);
-                }
-                if(newTab.getId().equals("interviewTab")){
+                } else {
                     addTextButton.setVisible(true);
                     historyButton.setVisible(false);
-                    addRefferalButton.setVisible(false);
                 }
-                if(newTab.getId().equals("refferalsTab")){
-                    addTextButton.setVisible(false);
-                    historyButton.setVisible(false);
-                    addRefferalButton.setVisible(true);
-                }
-
             });
     }
 
@@ -141,7 +130,6 @@ public class PatientFile2Controller implements Initializable {
 
 
 
-
     public void insertPatientsFile(int patientId, String recognition) {
         PatientsHistory historyAdd = new PatientsHistory();
         historyAdd.setPatientId(patientId);
@@ -151,9 +139,11 @@ public class PatientFile2Controller implements Initializable {
     }
 
 
+
     private void loadDataIntoSpecializationAndDoctorsChoiceBoxes() {
         specializationChoiceBox.setItems(FXCollections.observableArrayList(patientModuleDTO.getSpecializations()));
     }
+
 
 
 

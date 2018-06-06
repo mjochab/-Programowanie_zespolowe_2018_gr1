@@ -6,7 +6,7 @@
       <sourceFolder url="file://$MODULE_DIR$" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="true" />
     </content>
-    <orderEntry type="inheritedJdk" />
+    <orderEntry type="jdk" jdkName="1.8" jdkType="JavaSDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="Core" />
     <orderEntry type="module" module-name="FXUI" />
@@ -22,6 +22,7 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="library" scope="TEST" name="mybatis-3.4.6" level="project" />
     <orderEntry type="module-library" scope="TEST">
       <library name="JUnit5.0">
         <CLASSES>
@@ -45,8 +46,5 @@
       </library>
     </orderEntry>
     <orderEntry type="library" name="htmlParser" level="project" />
-    <orderEntry type="library" name="mysql-connector-java-5.1.46-bin" level="project" />
-    <orderEntry type="library" name="customControls" level="project" />
-    <orderEntry type="library" name="mybatis-3.4.6" level="project" />
   </component>
 </module>
