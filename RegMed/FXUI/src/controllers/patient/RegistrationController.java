@@ -24,12 +24,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import static controllers.homescreen.HomescreenController.loggedUser;
+
 /**
  * Allowing select visit at selected first contact doctor or specialist.
  *
  * @author Pawel Lawera
  */
 public class RegistrationController implements Initializable, ControllerPagination {
+
+    private int loggedPatientId = loggedUser;
 
     private static Patient patient;
     private int selectedDoctorId;
@@ -72,7 +76,7 @@ public class RegistrationController implements Initializable, ControllerPaginati
 
     public RegistrationController() {
         patientModuleDTO = new PatientModuleDTO();
-        patient = patientModuleDTO.get(1);
+        patient = patientModuleDTO.get(loggedPatientId);
     }
 
 
