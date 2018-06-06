@@ -21,7 +21,7 @@ import java.util.Date;
 public class ControllerHelpers{
 
     public void SwitchScene(String childView, ActionEvent event) throws IOException {
-        Parent child = FXMLLoader.load(getClass().getResource("../views/" + childView + ".fxml"));
+        Parent child = FXMLLoader.load(getClass().getResource("/views/" + childView + ".fxml"));
         Scene childScene = new Scene(child);
 
         Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
@@ -30,7 +30,7 @@ public class ControllerHelpers{
     }
 
     public AnchorPane SwitchAnchor(String childView, ActionEvent event) throws IOException {
-        Parent child = FXMLLoader.load(getClass().getResource("../views/" + childView + ".fxml"));
+        Parent child = FXMLLoader.load(getClass().getResource("/views/" + childView + ".fxml"));
         AnchorPane anchor = new AnchorPane(child);
 
         return anchor;
