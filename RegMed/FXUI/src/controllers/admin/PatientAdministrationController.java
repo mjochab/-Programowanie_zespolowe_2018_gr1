@@ -178,6 +178,9 @@ public class PatientAdministrationController implements ControllerPagination {
     }
 
 
+    /**
+     * Setting factory relation between values in table and pojo class.
+     */
     private void setupColumnsInTheVisitsTable() {
         visitIdColumn.setCellValueFactory(new PropertyValueFactory<VisitAdministrationModel, Integer>("id"));
         visitDoctorColumn.setCellValueFactory(new PropertyValueFactory<VisitAdministrationModel, String>("doctor"));
@@ -368,12 +371,17 @@ public class PatientAdministrationController implements ControllerPagination {
     }
 
 
-
+    /**
+     * Loading visits to table.
+     */
     @FXML
     private void manageVisitsTabClicked() {
         loadDataToVisitTable();
     }
 
+    /**
+     * Loading data to visits table.
+     */
     private void loadDataToVisitTable() {
         Patient selectedPatient;
         List<SingleVisit> visits = new ArrayList<>();
@@ -400,6 +408,9 @@ public class PatientAdministrationController implements ControllerPagination {
         visitTableView.refresh();
     }
 
+    /**
+     * Removing selected patient visits from table and database.
+     */
     @FXML
     public void removeVisitButtonClicked() {
         VisitAdministrationModel visitModelSelected = getSelectedVisit();
@@ -418,6 +429,9 @@ public class PatientAdministrationController implements ControllerPagination {
         }
     }
 
+    /**
+     * Removing all patient visits from database.
+     */
     @FXML
     public void removeAllVisitsButtonClicked() {
         Patient patient = getSelectedPatientInTable();
@@ -434,11 +448,18 @@ public class PatientAdministrationController implements ControllerPagination {
         }
     }
 
+    /**
+     * Adding new visit to database.
+     *
+     * @param event sending to function for switch scene.
+     * @throws IOException throws when fxml is not correct or not found.
+     */
     @FXML
     public void addVisitButtonClicked(ActionEvent event) throws IOException {
         helpers.SwitchScene("views/patient/Registration", event);
         //TODO: later copy fxml from patientModule when will be fin, and little edit
     }
+
 
     @FXML
     public void editVisitButtonClicked() {
@@ -490,6 +511,12 @@ public class PatientAdministrationController implements ControllerPagination {
 
     }
 
+    /**
+     * Loading visit hours for admission days.
+     *
+     * @param admissionDaysForSelectedDoctor    admission day, on which visit is editing.
+     * @param currentVisitId                    currently editing visit
+     */
     private void loadHoursForVisit(List<AdmissionDay2> admissionDaysForSelectedDoctor, int currentVisitId) {
         int selectedAdmissionDayIndex = visitDateChoiceBox.getSelectionModel().getSelectedIndex();
         AdmissionDay2 selectedAdmissionDay = admissionDaysForSelectedDoctor.get(selectedAdmissionDayIndex);
@@ -502,6 +529,9 @@ public class PatientAdministrationController implements ControllerPagination {
         visitHourChoiceBox.setItems(FXCollections.observableArrayList(freeVisitsHours));
     }
 
+    /**
+     * Deleting values form editing fields.
+     */
     @FXML
     private void declineChangesButtonClicked() {
         editVisitAnchorPane.setVisible(false);

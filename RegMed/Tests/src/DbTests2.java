@@ -42,6 +42,5 @@ public class DbTests2 extends DatabaseTestingAbstractClass {
         assertEquals("Kowalski", result.getLastName());
     }
 
-    //TODO: class converting dto -> they should use different db name -> reflexion
 }
 

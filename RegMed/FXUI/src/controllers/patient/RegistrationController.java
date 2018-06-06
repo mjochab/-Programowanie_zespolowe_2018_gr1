@@ -139,6 +139,9 @@ public class RegistrationController implements Initializable, ControllerPaginati
 
     }
 
+    /**
+     * Finding first possible to register to selected doctor and specialization term.
+     */
     private void setFirstPossibleTerm() {
         List<SingleVisit> listOfFreeVisits = new ArrayList<>(
                 patientModuleDTO.getFirst10FreeSingleVisits(selectedDoctorId));
@@ -186,6 +189,11 @@ public class RegistrationController implements Initializable, ControllerPaginati
 
     }
 
+    /**
+     * Parsing terms for showing in choice box containing terms.
+     * @param singleVisits  list of singleVisits objects.
+     * @return              list of terms.
+     */
     private List<String> parseTermsToStringChoiceBox(List<SingleVisit> singleVisits) {
         List<String> result = new ArrayList<>();
 
@@ -267,6 +275,11 @@ public class RegistrationController implements Initializable, ControllerPaginati
         });
     }
 
+    /**
+     * Checking if date is after today.
+     * @param admissionDay  admission day object containing date.
+     * @return              day, if date is after.
+     */
     private boolean dateIsAfterToday(AdmissionDay2 admissionDay) {
         LocalDate today = LocalDate.now();
         if (today.compareTo(admissionDay.getDate()) <= 0) {
@@ -311,6 +324,9 @@ public class RegistrationController implements Initializable, ControllerPaginati
 
     }
 
+    /**
+     * Seting values factory for visits.
+     */
     private void setVisitCellFactory() {
         hoursList.setCellFactory(param -> new ListCell<SingleVisit>() {
             @Override
@@ -332,6 +348,9 @@ public class RegistrationController implements Initializable, ControllerPaginati
     }
 
 
+    /**
+     * Saving selected visit to database.
+     */
     @FXML
     private void selectVisitButtonClicked() {
         try {
@@ -352,11 +371,25 @@ public class RegistrationController implements Initializable, ControllerPaginati
         }
     }
 
+
+    /**
+     * Saving selected visit to database.
+     *
+     * @param selectedVisit
+     * @return              returning selected visit (if some is selected of course).
+     */
     private SingleVisit saveSelectedVisitToDatabase(SingleVisit selectedVisit) {
             patientModuleDTO.addSingleVisit(selectedVisit);
             return selectedVisit;
     }
 
+
+    /**
+     * Getting single visit with associated patient data.
+     *
+     * @param patient
+     * @return
+     */
     private SingleVisit getSelectedSingleVisitWithPatient(Patient patient) {
         AdmissionDay2 admissionDay = patientModuleDTO.getAdmissionDayForVisitPicker(visitDatePicker.getValue(), selectedDoctorId);
         List<SingleVisit> allVisits = new ArrayList<>(patientModuleDTO.getAllVisits(admissionDay));

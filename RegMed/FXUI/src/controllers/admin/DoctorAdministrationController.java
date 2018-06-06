@@ -489,6 +489,10 @@ public class DoctorAdministrationController implements ControllerPagination {
 
     //SPECIALIZATIONS
 
+    /**
+     * Creating specalization form value in textField and saving it
+     * in database.
+     */
     @FXML
     private void createSpecializationButtonClicked() {
         Specialization specializationToAdd = new Specialization();
@@ -499,6 +503,9 @@ public class DoctorAdministrationController implements ControllerPagination {
         setSpecializations();
     }
 
+    /**
+     * Removing selected in listView specialization from database.
+     */
     @FXML
     private void removeSpecializationClicked() {
         Specialization selectedToRemoveSpec =
