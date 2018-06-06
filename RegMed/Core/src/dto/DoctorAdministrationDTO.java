@@ -119,6 +119,26 @@ public class DoctorAdministrationDTO {
         }
     }
 
+    public void createSpecialization(Specialization specialization) {
+        dbConnection.openSession();
+        try {
+            dbConnection.getMapper().createSpeciatization(specialization);
+            dbConnection.commit();
+        } finally {
+            dbConnection.closeSession();
+        }
+    }
+
+    public void deleteSpecialization(int specializationId) {
+        dbConnection.openSession();
+        try {
+            dbConnection.getMapper().deleteSpecialization(specializationId);
+            dbConnection.commit();
+        } finally {
+            dbConnection.closeSession();
+        }
+    }
+
 
 
 }
