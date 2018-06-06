@@ -1,5 +1,6 @@
 package controllers.patient;
 
+import controllers.homescreen.HomescreenController;
 import dto.PatientModuleDTO;
 import helpers.ControllerPagination;
 import javafx.collections.FXCollections;
@@ -20,6 +21,7 @@ import java.util.ResourceBundle;
 
 public class PatientHomeController implements Initializable, ControllerPagination {
 
+    private int loggedUserId = HomescreenController.loggedUser;
     private static Patient patient;
 
     @FXML
@@ -45,7 +47,7 @@ public class PatientHomeController implements Initializable, ControllerPaginatio
 
     public PatientHomeController() {
         this.patientModuleDTO = new PatientModuleDTO();
-        patient = patientModuleDTO.get(1);
+        patient = patientModuleDTO.get(loggedUserId);
     }
 
     @Override
@@ -119,7 +121,10 @@ public class PatientHomeController implements Initializable, ControllerPaginatio
     }
 
 
-
+    @FXML
+    private void logoutButtonClicked(ActionEvent event) throws IOException {
+        helpers.SwitchScene("homescreen/Homescreen", event);
+    }
 
 
 

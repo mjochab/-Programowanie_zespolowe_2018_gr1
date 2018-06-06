@@ -22,7 +22,7 @@ public interface PatientAdministrationMapper {
      * @return all patients from database written to list.
      */
     @Select("SELECT id_patient, first_name, last_name, PESEL, id_address," +
-            " email, phone_number,id_firstcontact_doctor FROM patients;")
+            " email, phone_number, id_firstcontact_doctor, password FROM patients;")
     @Results({
             @Result(property = "id", column = "id_patient"),
             @Result(property = "firstName", column = "first_name"),
@@ -33,6 +33,7 @@ public interface PatientAdministrationMapper {
                     fetchType = FetchType.EAGER)),
             @Result(property = "email", column = "email"),
             @Result(property = "phoneNumber", column = "phone_number"),
+            @Result(property = "password", column = "password"),
             @Result(property = "firstContactDoctor", column = "id_firstcontact_doctor",
                     javaType = Doctor.class, one = @One(select = "selectFirstcontactDoctor",
                     fetchType = FetchType.EAGER))

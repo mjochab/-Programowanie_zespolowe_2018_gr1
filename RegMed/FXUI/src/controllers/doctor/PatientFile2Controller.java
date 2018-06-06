@@ -1,6 +1,7 @@
 package controllers.doctor;
 
 
+import controllers.homescreen.HomescreenController;
 import dto.*;
 import helpers.DialogBox;
 import htmlParser.ToHtmlDoctor;
@@ -54,7 +55,7 @@ public class PatientFile2Controller implements Initializable {
 
     private PatientsHistoryDTO patientsHistoryDTO;
 
-    private int doctorId = 12;
+    private int doctorId = HomescreenController.loggedUser;
 
     public PatientFile2Controller() {
         this.patientsHistoryDTO = new PatientsHistoryDTO();

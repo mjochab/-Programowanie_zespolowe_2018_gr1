@@ -1,8 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import customControls.CityTextField?>
+<?import customControls.EmailTextField?>
+<?import customControls.NameTextField?>
+<?import customControls.NumberTextField?>
+<?import customControls.PeselTextField?>
+<?import customControls.PhoneTextField?>
+<?import customControls.StreetTextField?>
+<?import customControls.ZipTextField?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
@@ -12,7 +21,6 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<?import customControls.*?>
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.admin.DoctorAdministrationController">
    <children>
       <TextField fx:id="searchField" layoutX="14.0" layoutY="110.0" onKeyReleased="#filterDoctorsByPeselAndName" prefHeight="50.0" prefWidth="350.0">
@@ -232,6 +240,36 @@
                    <!--HERE I AM-->
                    <fx:include source="../doctor/_DoctorEdit.fxml" />
                </content>
+            </Tab>
+            <Tab fx:id="specializatonsTab" text="Specializations">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <Label layoutX="14.0" layoutY="14.0" text="Create specialization">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="createSpecializationField" layoutX="214.0" layoutY="15.0" promptText="specialization name" />
+                        <ListView fx:id="removeSpecializationListView" layoutX="90.0" layoutY="112.0" prefHeight="405.0" prefWidth="249.0" />
+                        <Label layoutX="119.0" layoutY="72.0" text="Remove specialization">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <Button layoutX="371.0" layoutY="12.0" mnemonicParsing="false" onAction="#createSpecializationButtonClicked" text="Create">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Button>
+                        <Button layoutX="79.0" layoutY="527.0" mnemonicParsing="false" onAction="#removeSpecializationClicked" text="Remove selected specialization">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Button>
+                     </children>
+                  </AnchorPane>
+              </content>
             </Tab>
         </tabs>
       </TabPane>

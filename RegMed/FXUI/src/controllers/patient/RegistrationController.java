@@ -1,22 +1,16 @@
 package controllers.patient;
 
-import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
-import com.sun.javafx.scene.control.skin.DatePickerContent;
-import com.sun.javafx.scene.control.skin.DatePickerSkin;
 import dto.PatientModuleDTO;
 import helpers.ControllerPagination;
 import helpers.DialogBox;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
 import javafx.util.Callback;
 import org.apache.ibatis.exceptions.PersistenceException;
 import pojo.*;
@@ -30,12 +24,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import static controllers.homescreen.HomescreenController.loggedUser;
+
 /**
  * Allowing select visit at selected first contact doctor or specialist.
  *
  * @author Pawel Lawera
  */
 public class RegistrationController implements Initializable, ControllerPagination {
+
+    private int loggedPatientId = loggedUser;
 
     private static Patient patient;
     private int selectedDoctorId;
@@ -78,7 +76,7 @@ public class RegistrationController implements Initializable, ControllerPaginati
 
     public RegistrationController() {
         patientModuleDTO = new PatientModuleDTO();
-        patient = patientModuleDTO.get(1);
+        patient = patientModuleDTO.get(loggedPatientId);
     }
 
 
@@ -399,6 +397,9 @@ public class RegistrationController implements Initializable, ControllerPaginati
     private LocalDate getDateFromCalendar() {
         return visitDatePicker.getValue();
     }
+
+
+
 
 
 }
