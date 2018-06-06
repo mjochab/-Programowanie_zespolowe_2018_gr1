@@ -2,6 +2,7 @@ package controllers.doctor;
 
 import database.MyBatisDbConnection;
 import dto.PatientDataDTO;
+import dto.PatientListDTO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -14,6 +15,8 @@ import pojo.PatientData;
 import java.net.URL;
 
 import java.util.ResourceBundle;
+
+import static controllers.homescreen.HomescreenController.loggedUser;
 
 
 public class PatientFile1Controller implements Initializable {
@@ -40,11 +43,11 @@ public class PatientFile1Controller implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
+        PatientListDTO patientList = new PatientListDTO();
         patientId.setCellValueFactory(new PropertyValueFactory<PatientData, Integer>("patientId"));
         firstName.setCellValueFactory(new PropertyValueFactory<PatientData, String>("firstName"));
         lastName.setCellValueFactory(new PropertyValueFactory<PatientData, String>("lastName"));
-        tableData = FXCollections.observableArrayList(patientDataDTO.getAll());
+        tableData = FXCollections.observableArrayList(patientList.getPatientList(loggedUser));
         tableID.setItems(tableData);
         tableOnChange();
     }
