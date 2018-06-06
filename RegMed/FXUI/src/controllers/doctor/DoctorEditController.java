@@ -122,6 +122,15 @@ public class DoctorEditController implements ControllerPagination {
 
     }
 
+    /**
+     * inserting working days to db
+     * @param day day of week
+     * @param hourFrom start admissions
+     * @param hourTo end admissions
+     * @param hourInterval time for one patient
+     * @param validateDay date of validate admission days
+     */
+
     public void insertWorkingDays(String day, String hourFrom, String hourTo, String hourInterval, String validateDay) {
         DoctorWorkingDays dayToAdd = new DoctorWorkingDays();
         dayToAdd.setId(loggedUser);
@@ -133,10 +142,18 @@ public class DoctorEditController implements ControllerPagination {
         doctorModuleDTO.add(dayToAdd);
     }
 
+
+    /**
+     * check if doctor have admission days in db
+     */
     public void getDaysIfExist() {
         days = doctorModuleDTO.getDoctorWorkingDays(loggedUser);
     }
 
+
+    /**
+     * fill textfields with hours from db if exist
+     */
     public void fillHours() {
         if (days.get("monday") != null) {
             mondayBox.setSelected(true);

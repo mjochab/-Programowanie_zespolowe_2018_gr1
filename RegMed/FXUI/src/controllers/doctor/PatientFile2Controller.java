@@ -130,6 +130,12 @@ public class PatientFile2Controller implements Initializable {
         refferalforpatient.clear();
     }
 
+    /**
+     * inserting refferals to db
+     * @param patientId
+     * @param refferalforpatient
+     */
+
     public void insertPatientsRefferal(int patientId, String refferalforpatient){
         PatientsRefferal refferalAdd = new PatientsRefferal();
         refferalAdd.setPatientId(patientId);
@@ -140,7 +146,11 @@ public class PatientFile2Controller implements Initializable {
     }
 
 
-
+    /**
+     * inserting file records to db
+     * @param patientId
+     * @param recognition
+     */
 
     public void insertPatientsFile(int patientId, String recognition) {
         PatientsHistory historyAdd = new PatientsHistory();
@@ -156,9 +166,11 @@ public class PatientFile2Controller implements Initializable {
     }
 
 
-
-
-
+    /**
+     * Method showing patient history
+     * @param patientId id of admitted patient
+     * @return
+     */
 
 
     public String showPatientFile(int patientId) {

@@ -44,7 +44,10 @@ public class DoctorReportController implements ControllerPagination {
         reportWebView.getEngine().loadContent(test);
     }
 
-
+    /**
+     * Metod to run html creator and get data from DB
+     * @return
+     */
     private String dailyPatientList(){
         PatientListDTO patientList = new PatientListDTO();
         ToHtmlParser parser = new ToHtmlParser();
