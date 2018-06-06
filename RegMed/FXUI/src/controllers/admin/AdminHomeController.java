@@ -1,20 +1,46 @@
 package controllers.admin;
 
+import controllers.homescreen.HomescreenController;
+import dto.AdminAdministrationDTO;
 import helpers.ControllerPagination;
+import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.control.Label;
 
 
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
 /**
  * Controller holding links to all administration module actions/pages.
  *
  * @author Szymon P
  */
-public class AdminHomeController implements ControllerPagination {
+public class AdminHomeController implements ControllerPagination, Initializable {
 
-    //ControllerHelpers helpers = new ControllerHelpers();
+    private int loggedAdminId = HomescreenController.loggedUser;
+    AdminAdministrationDTO dto;
+
+    @FXML
+    private Label loggedAdminLabel;
+
+
+    public AdminHomeController() {
+        dto = new AdminAdministrationDTO();
+
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        String txt = String.format("%s %s", dto.get(loggedAdminId).getFirstName(),
+                dto.get(loggedAdminId).getLastName());
+        loggedAdminLabel.setText(txt);
+    }
+
+
 
     /**
      * Switching scene to patients administration page.
@@ -51,5 +77,11 @@ public class AdminHomeController implements ControllerPagination {
     public void administratorsButtonClicked(ActionEvent event) throws IOException {
         helpers.SwitchScene("admin/AdminAdministration", event);
     }
+
+    @FXML
+    private void logoutButtonClicked(ActionEvent event) throws IOException {
+        helpers.SwitchScene("homescreen/Homescreen", event);
+    }
+
 
 }

@@ -21,7 +21,7 @@ public interface AdminAdministrationMapper {
      *
      * @return all patients from database written to list.
      */
-    @Select("select id_administrator, first_name, last_name, PESEL, email, phone_number " +
+    @Select("select id_administrator, first_name, last_name, PESEL, email, phone_number, password " +
             "from administrators")
     @Results({
             @Result(property = "id", column = "id_administrator"),
@@ -30,6 +30,7 @@ public interface AdminAdministrationMapper {
             @Result(property = "pesel", column = "PESEL"),
             @Result(property = "email", column = "email"),
             @Result(property = "phoneNumber", column = "phone_number"),
+            @Result(property = "password", column = "password"),
     })
     List<Administrator> getAllAdministratorsToTable();
 

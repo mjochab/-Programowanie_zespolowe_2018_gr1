@@ -38,7 +38,11 @@ public class DoctorAdministrationController implements ControllerPagination {
             declineEditButton;
 
     @FXML
-    private TextField searchField;
+    private TextField searchField,
+            createSpecializationField;
+
+    @FXML
+    private ListView<Specialization> removeSpecializationListView;
 
     @FXML
     private NameTextField forenameField,
@@ -142,8 +146,22 @@ public class DoctorAdministrationController implements ControllerPagination {
         filteredList = new FilteredList(tableData, e->true);    //list using to filter data
         editTabDisable(true);
 
-        specializationChoiceBox.setItems(FXCollections.observableArrayList(specializationsToString()));
+        //specializationChoiceBox.setItems(FXCollections.observableArrayList(specializationsToString()));
+        //removeSpecializationListView.setItems(FXCollections.observableArrayList(specializations));
+        setSpecializations();
+
     }
+
+    private void setSpecializations() {
+        specializations = FXCollections.observableArrayList(
+                doctorAdministrationDTO.getAllSpecializations());
+        specializationChoiceBox.setItems(FXCollections.observableArrayList(specializationsToString()));
+        removeSpecializationListView.setItems(FXCollections.observableArrayList(specializations));
+        loadSpecializationsToChoiceBox();
+
+    }
+
+
 
     /**
      * Loading/refreshing data in table. Also applying filteredList on table
@@ -467,5 +485,35 @@ public class DoctorAdministrationController implements ControllerPagination {
         }
         return listToReturn;
     }
+
+
+    //SPECIALIZATIONS
+
+    @FXML
+    private void createSpecializationButtonClicked() {
+        Specialization specializationToAdd = new Specialization();
+        specializationToAdd.setName(createSpecializationField.getText());
+
+        doctorAdministrationDTO.createSpecialization(specializationToAdd);
+        DialogBox.informationBox("Success!", "Specialization created successfully.");
+        setSpecializations();
+    }
+
+    @FXML
+    private void removeSpecializationClicked() {
+        Specialization selectedToRemoveSpec =
+                removeSpecializationListView.getSelectionModel().getSelectedItem();
+        int specId = selectedToRemoveSpec.getId();
+        doctorAdministrationDTO.deleteSpecialization(specId);
+        DialogBox.informationBox("Success!", "Specialization removed successfully.");
+        setSpecializations();
+
+    }
+
+
+
+
+
+
 
 }

@@ -20,6 +20,7 @@ import java.util.Date;
 
 import javafx.util.*;
 
+import static controllers.homescreen.HomescreenController.loggedUser;
 
 
 public class DoctorMainController implements ControllerPagination {
@@ -56,7 +57,7 @@ public class DoctorMainController implements ControllerPagination {
     }
 
     @FXML public void initialize(){
-        nameLabel.setText(doctorModuleDTO.getDoctor(12).getFirstName() + " " +doctorModuleDTO.getDoctor(12).getLastName());
+        nameLabel.setText(doctorModuleDTO.getDoctor(loggedUser).getFirstName() + " " +doctorModuleDTO.getDoctor(loggedUser).getLastName());
         getCurrentDateTime(dateLabel, hourLabel);
     }
 
