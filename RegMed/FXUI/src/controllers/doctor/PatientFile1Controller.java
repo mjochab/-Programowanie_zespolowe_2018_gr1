@@ -11,6 +11,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import pojo.PatientData;
+import pojo.PatientList;
 
 import java.net.URL;
 
@@ -22,7 +23,7 @@ import static controllers.homescreen.HomescreenController.loggedUser;
 public class PatientFile1Controller implements Initializable {
 
     @FXML
-    private TableView<PatientData> tableID;
+    private TableView<PatientList> tableID;
     @FXML
     private TableColumn<PatientData, Integer> patientId;
     @FXML
@@ -58,7 +59,7 @@ public class PatientFile1Controller implements Initializable {
     public void tableOnChange() {
         tableID.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
-                selectedPatientId = tableID.getSelectionModel().getSelectedItem().patientId;
+                selectedPatientId = tableID.getSelectionModel().getSelectedItem().getId();
                 getSelectedPatientId = selectedPatientId;
             }
         });

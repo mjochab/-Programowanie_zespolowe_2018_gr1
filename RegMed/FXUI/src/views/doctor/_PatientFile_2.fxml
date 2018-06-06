@@ -95,9 +95,14 @@
             </Button>
                 <Button fx:id="addTextButton" mnemonicParsing="false" onAction="#addTextButtonClicked" text="Add">
                     <HBox.margin>
-                        <Insets bottom="30.0" left="10.0" />
+                        <Insets bottom="30.0" left="20.0" />
                     </HBox.margin>
                 </Button>
+            <Button fx:id="addRefferalButton" mnemonicParsing="false" onAction="#addRefferalButtonClicked" text="addRefferal">
+               <HBox.margin>
+                  <Insets bottom="30.0" left="20.0" />
+               </HBox.margin>
+            </Button>
             </children>
             <BorderPane.margin>
                 <Insets />

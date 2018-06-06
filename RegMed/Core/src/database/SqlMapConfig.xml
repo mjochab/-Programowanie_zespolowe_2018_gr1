@@ -26,5 +26,6 @@
         <mapper class="mappers.FileMapper" />
         <mapper class="mappers.PatientModuleMapper" />
         <mapper class="mappers.PatientListMapper" />
+        <mapper class="mappers.PatientRefferalMapper"/>
     </mappers>
 </configuration>
